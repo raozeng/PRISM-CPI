@@ -1,0 +1,23 @@
+{
+  "input_receptor": "docking_3d/receptors_prep/4G5J_in.pdb",
+  "output_pdb": "docking_3d/receptors_prep/4G5J_ph74.pdb",
+  "output_pdbqt": "docking_3d/receptors_prep/4G5J_ph74.pdbqt",
+  "ph": 7.4,
+  "protonated": true,
+  "backend": "openmm_amber14",
+  "pocket_center": [
+    50.602,
+    1.594,
+    -20.67
+  ],
+  "titratable_states": {
+    "GLU": 25,
+    "LYS": 22,
+    "ASP": 21,
+    "HID": 7,
+    "CYS": 6,
+    "HIE": 1
+  },
+  "total_hydrogens": 2492,
+  "polar_hd_donors": 528
+}

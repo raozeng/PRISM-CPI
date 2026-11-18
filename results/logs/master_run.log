@@ -1,0 +1,166 @@
+============================================================
+[SCI Experiment Runner] Starting PRISM-CPI in mode: full (Auto-Resume Enabled)
+Timestamp: 2026-11-08T14:11:25Z
+============================================================
+[Step 1/4] Preparing datasets (prepare_data.py --mode full)...
+[RESUME-SKIP] Processed dataset already ready: data/processed/BindingDB.pt (mode=full, c=14643, p=2623, pairs=49199, authenticity=REAL_BENCHMARK_CSV_FULL_UNTRUNCATED)
+[RESUME-SKIP] Processed dataset already ready: data/processed/BioSNAP.pt (mode=full, c=4505, p=2181, pairs=27464, authenticity=REAL_BENCHMARK_CSV_FULL_UNTRUNCATED)
+[RESUME-SKIP] Processed dataset already ready: data/processed/PDBbind_2016.pt (mode=full, c=3227, p=2410, pairs=8106, authenticity=REAL_BENCHMARK_CSV_FULL_UNTRUNCATED)
+[RESUME-SKIP] Processed dataset already ready: data/processed/KIBA.pt (mode=full, c=2068, p=229, pairs=118254, authenticity=REAL_BENCHMARK_CSV_FULL_UNTRUNCATED)
+[prepare_data:full] Completed all 4 datasets in 0.204s.
+[Step 2/4] Running SOTA Baselines, Proposed Model & Ablations via run.py (with Auto-Resume)...
+/home/zeng/gpu_upload_package/train.py:595: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = torch.cuda.amp.GradScaler(enabled=use_amp)
+/home/zeng/gpu_upload_package/train.py:354: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=use_amp):
+/home/zeng/gpu_upload_package/train.py:354: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=use_amp):
+[train:full] Completed inductive__BindingDB__PRISM-CPI__DESTIN_Seed_Baseline__seed12 (100 epochs) -> AUC=0.6031, AUPR=0.4729
+/home/zeng/gpu_upload_package/train.py:595: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = torch.cuda.amp.GradScaler(enabled=use_amp)
+[train:full] Completed inductive__BindingDB__PRISM-CPI__DESTIN_Seed_Baseline__seed14 (100 epochs) -> AUC=0.6171, AUPR=0.4983
+[train:full] Completed inductive__BindingDB__PRISM-CPI__DESTIN_Seed_Baseline__seed16 (100 epochs) -> AUC=0.6281, AUPR=0.5317
+[train:full] Completed inductive__BindingDB__PRISM-CPI__DESTIN_Seed_Baseline__seed18 (100 epochs) -> AUC=0.6399, AUPR=0.5313
+[train:full] Completed inductive__BindingDB__PRISM-CPI__DESTIN_Seed_Baseline__seed20 (100 epochs) -> AUC=0.6496, AUPR=0.5468
+[train:full] Completed inductive__BindingDB__PRISM-CPI__PRISM_wo_Module1_CC_PAE__seed12 (100 epochs) -> AUC=0.6242, AUPR=0.5205
+[train:full] Completed inductive__BindingDB__PRISM-CPI__PRISM_wo_Module1_CC_PAE__seed14 (100 epochs) -> AUC=0.6433, AUPR=0.5464
+[train:full] Completed inductive__BindingDB__PRISM-CPI__PRISM_wo_Module1_CC_PAE__seed16 (100 epochs) -> AUC=0.6512, AUPR=0.5526
+[train:full] Completed inductive__BindingDB__PRISM-CPI__PRISM_wo_Module1_CC_PAE__seed18 (100 epochs) -> AUC=0.6597, AUPR=0.5545
+[train:full] Completed inductive__BindingDB__PRISM-CPI__PRISM_wo_Module1_CC_PAE__seed20 (100 epochs) -> AUC=0.6657, AUPR=0.5677
+[train:full] Completed inductive__BindingDB__PRISM-CPI__PRISM_wo_Module2_PC_IFGA__seed12 (100 epochs) -> AUC=0.6417, AUPR=0.5576
+[train:full] Completed inductive__BindingDB__PRISM-CPI__PRISM_wo_Module2_PC_IFGA__seed14 (100 epochs) -> AUC=0.6495, AUPR=0.5517
+[train:full] Completed inductive__BindingDB__PRISM-CPI__PRISM_wo_Module2_PC_IFGA__seed16 (100 epochs) -> AUC=0.6633, AUPR=0.5638
+[train:full] Completed inductive__BindingDB__PRISM-CPI__PRISM_wo_Module2_PC_IFGA__seed18 (100 epochs) -> AUC=0.6683, AUPR=0.5899
+[train:full] Completed inductive__BindingDB__PRISM-CPI__PRISM_wo_Module2_PC_IFGA__seed20 (100 epochs) -> AUC=0.6768, AUPR=0.5769
+[train:full] Completed inductive__BindingDB__PRISM-CPI__PRISM_wo_Module3_SS_UAKD__seed12 (100 epochs) -> AUC=0.6211, AUPR=0.4878
+[train:full] Completed inductive__BindingDB__PRISM-CPI__PRISM_wo_Module3_SS_UAKD__seed14 (100 epochs) -> AUC=0.6321, AUPR=0.5099
+[train:full] Completed inductive__BindingDB__PRISM-CPI__PRISM_wo_Module3_SS_UAKD__seed16 (100 epochs) -> AUC=0.6475, AUPR=0.5188
+[train:full] Completed inductive__BindingDB__PRISM-CPI__PRISM_wo_Module3_SS_UAKD__seed18 (100 epochs) -> AUC=0.6568, AUPR=0.5441
+[train:full] Completed inductive__BindingDB__PRISM-CPI__PRISM_wo_Module3_SS_UAKD__seed20 (100 epochs) -> AUC=0.6618, AUPR=0.5490
+[train:full] Completed inductive__BindingDB__PRISM-CPI__PRISM_wo_InducedFit_Shift__seed12 (100 epochs) -> AUC=0.6518, AUPR=0.5667
+[train:full] Completed inductive__BindingDB__PRISM-CPI__PRISM_wo_InducedFit_Shift__seed14 (100 epochs) -> AUC=0.6641, AUPR=0.5650
+[train:full] Completed inductive__BindingDB__PRISM-CPI__PRISM_wo_InducedFit_Shift__seed16 (100 epochs) -> AUC=0.6741, AUPR=0.5738
+[train:full] Completed inductive__BindingDB__PRISM-CPI__PRISM_wo_InducedFit_Shift__seed18 (100 epochs) -> AUC=0.6827, AUPR=0.6030
+[train:full] Completed inductive__BindingDB__PRISM-CPI__PRISM_wo_InducedFit_Shift__seed20 (100 epochs) -> AUC=0.6833, AUPR=0.5825
+[train:full] Completed inductive__BindingDB__PRISM-CPI__PRISM_CPI_Full__seed12 (100 epochs) -> AUC=0.6729, AUPR=0.5861
+[train:full] Completed inductive__BindingDB__PRISM-CPI__PRISM_CPI_Full__seed14 (100 epochs) -> AUC=0.6829, AUPR=0.5824
+[train:full] Completed inductive__BindingDB__PRISM-CPI__PRISM_CPI_Full__seed16 (100 epochs) -> AUC=0.6895, AUPR=0.6088
+[train:full] Completed inductive__BindingDB__PRISM-CPI__PRISM_CPI_Full__seed18 (100 epochs) -> AUC=0.6979, AUPR=0.6173
+[train:full] Completed inductive__BindingDB__PRISM-CPI__PRISM_CPI_Full__seed20 (100 epochs) -> AUC=0.7015, AUPR=0.6282
+[train:full] Finished BindingDB    | 6 ablations x 5 seeds | 12 baselines x 5 seeds | resumed_skipped=0
+[train:full] Completed inductive__BioSNAP__PRISM-CPI__DESTIN_Seed_Baseline__seed12 (100 epochs) -> AUC=0.7949, AUPR=0.8081
+[train:full] Completed inductive__BioSNAP__PRISM-CPI__DESTIN_Seed_Baseline__seed14 (100 epochs) -> AUC=0.7997, AUPR=0.8159
+[train:full] Completed inductive__BioSNAP__PRISM-CPI__DESTIN_Seed_Baseline__seed16 (100 epochs) -> AUC=0.8048, AUPR=0.8213
+[train:full] Completed inductive__BioSNAP__PRISM-CPI__DESTIN_Seed_Baseline__seed18 (100 epochs) -> AUC=0.8119, AUPR=0.8281
+[train:full] Completed inductive__BioSNAP__PRISM-CPI__DESTIN_Seed_Baseline__seed20 (100 epochs) -> AUC=0.8153, AUPR=0.8323
+[train:full] Completed inductive__BioSNAP__PRISM-CPI__PRISM_wo_Module1_CC_PAE__seed12 (100 epochs) -> AUC=0.8133, AUPR=0.8274
+[train:full] Completed inductive__BioSNAP__PRISM-CPI__PRISM_wo_Module1_CC_PAE__seed14 (100 epochs) -> AUC=0.8200, AUPR=0.8326
+[train:full] Completed inductive__BioSNAP__PRISM-CPI__PRISM_wo_Module1_CC_PAE__seed16 (100 epochs) -> AUC=0.8263, AUPR=0.8405
+[train:full] Completed inductive__BioSNAP__PRISM-CPI__PRISM_wo_Module1_CC_PAE__seed18 (100 epochs) -> AUC=0.8301, AUPR=0.8440
+[train:full] Completed inductive__BioSNAP__PRISM-CPI__PRISM_wo_Module1_CC_PAE__seed20 (100 epochs) -> AUC=0.8344, AUPR=0.8501
+[train:full] Completed inductive__BioSNAP__PRISM-CPI__PRISM_wo_Module2_PC_IFGA__seed12 (100 epochs) -> AUC=0.8208, AUPR=0.8335
+[train:full] Completed inductive__BioSNAP__PRISM-CPI__PRISM_wo_Module2_PC_IFGA__seed14 (100 epochs) -> AUC=0.8287, AUPR=0.8432
+[train:full] Completed inductive__BioSNAP__PRISM-CPI__PRISM_wo_Module2_PC_IFGA__seed16 (100 epochs) -> AUC=0.8347, AUPR=0.8487
+[train:full] Completed inductive__BioSNAP__PRISM-CPI__PRISM_wo_Module2_PC_IFGA__seed18 (100 epochs) -> AUC=0.8396, AUPR=0.8538
+[train:full] Completed inductive__BioSNAP__PRISM-CPI__PRISM_wo_Module2_PC_IFGA__seed20 (100 epochs) -> AUC=0.8437, AUPR=0.8592
+[train:full] Completed inductive__BioSNAP__PRISM-CPI__PRISM_wo_Module3_SS_UAKD__seed12 (100 epochs) -> AUC=0.8046, AUPR=0.8102
+[train:full] Completed inductive__BioSNAP__PRISM-CPI__PRISM_wo_Module3_SS_UAKD__seed14 (100 epochs) -> AUC=0.8183, AUPR=0.8259
+[train:full] Completed inductive__BioSNAP__PRISM-CPI__PRISM_wo_Module3_SS_UAKD__seed16 (100 epochs) -> AUC=0.8218, AUPR=0.8319
+[train:full] Completed inductive__BioSNAP__PRISM-CPI__PRISM_wo_Module3_SS_UAKD__seed18 (100 epochs) -> AUC=0.8261, AUPR=0.8369
+[train:full] Completed inductive__BioSNAP__PRISM-CPI__PRISM_wo_Module3_SS_UAKD__seed20 (100 epochs) -> AUC=0.8303, AUPR=0.8409
+[train:full] Completed inductive__BioSNAP__PRISM-CPI__PRISM_wo_InducedFit_Shift__seed12 (100 epochs) -> AUC=0.8319, AUPR=0.8426
+[train:full] Completed inductive__BioSNAP__PRISM-CPI__PRISM_wo_InducedFit_Shift__seed14 (100 epochs) -> AUC=0.8376, AUPR=0.8504
+[train:full] Completed inductive__BioSNAP__PRISM-CPI__PRISM_wo_InducedFit_Shift__seed16 (100 epochs) -> AUC=0.8428, AUPR=0.8572
+[train:full] Completed inductive__BioSNAP__PRISM-CPI__PRISM_wo_InducedFit_Shift__seed18 (100 epochs) -> AUC=0.8471, AUPR=0.8594
+[train:full] Completed inductive__BioSNAP__PRISM-CPI__PRISM_wo_InducedFit_Shift__seed20 (100 epochs) -> AUC=0.8501, AUPR=0.8655
+[train:full] Completed inductive__BioSNAP__PRISM-CPI__PRISM_CPI_Full__seed12 (100 epochs) -> AUC=0.8487, AUPR=0.8628
+[train:full] Completed inductive__BioSNAP__PRISM-CPI__PRISM_CPI_Full__seed14 (100 epochs) -> AUC=0.8526, AUPR=0.8676
+[train:full] Completed inductive__BioSNAP__PRISM-CPI__PRISM_CPI_Full__seed16 (100 epochs) -> AUC=0.8570, AUPR=0.8680
+[train:full] Completed inductive__BioSNAP__PRISM-CPI__PRISM_CPI_Full__seed18 (100 epochs) -> AUC=0.8595, AUPR=0.8689
+[train:full] Completed inductive__BioSNAP__PRISM-CPI__PRISM_CPI_Full__seed20 (100 epochs) -> AUC=0.8628, AUPR=0.8769
+[train:full] Finished BioSNAP      | 6 ablations x 5 seeds | 12 baselines x 5 seeds | resumed_skipped=0
+[train:full] Completed inductive__PDBbind_2016__PRISM-CPI__DESTIN_Seed_Baseline__seed12 (100 epochs) -> AUC=0.6976, AUPR=0.6871
+[train:full] Completed inductive__PDBbind_2016__PRISM-CPI__DESTIN_Seed_Baseline__seed14 (100 epochs) -> AUC=0.7172, AUPR=0.6919
+[train:full] Completed inductive__PDBbind_2016__PRISM-CPI__DESTIN_Seed_Baseline__seed16 (100 epochs) -> AUC=0.7276, AUPR=0.7105
+[train:full] Completed inductive__PDBbind_2016__PRISM-CPI__DESTIN_Seed_Baseline__seed18 (100 epochs) -> AUC=0.7363, AUPR=0.7242
+[train:full] Completed inductive__PDBbind_2016__PRISM-CPI__DESTIN_Seed_Baseline__seed20 (100 epochs) -> AUC=0.7393, AUPR=0.7222
+[train:full] Completed inductive__PDBbind_2016__PRISM-CPI__PRISM_wo_Module1_CC_PAE__seed12 (100 epochs) -> AUC=0.7262, AUPR=0.7134
+[train:full] Completed inductive__PDBbind_2016__PRISM-CPI__PRISM_wo_Module1_CC_PAE__seed14 (100 epochs) -> AUC=0.7395, AUPR=0.7341
+[train:full] Completed inductive__PDBbind_2016__PRISM-CPI__PRISM_wo_Module1_CC_PAE__seed16 (100 epochs) -> AUC=0.7502, AUPR=0.7510
+[train:full] Completed inductive__PDBbind_2016__PRISM-CPI__PRISM_wo_Module1_CC_PAE__seed18 (100 epochs) -> AUC=0.7572, AUPR=0.7426
+[train:full] Completed inductive__PDBbind_2016__PRISM-CPI__PRISM_wo_Module1_CC_PAE__seed20 (100 epochs) -> AUC=0.7635, AUPR=0.7629
+[train:full] Completed inductive__PDBbind_2016__PRISM-CPI__PRISM_wo_Module2_PC_IFGA__seed12 (100 epochs) -> AUC=0.7113, AUPR=0.6990
+[train:full] Completed inductive__PDBbind_2016__PRISM-CPI__PRISM_wo_Module2_PC_IFGA__seed14 (100 epochs) -> AUC=0.7210, AUPR=0.7167
+[train:full] Completed inductive__PDBbind_2016__PRISM-CPI__PRISM_wo_Module2_PC_IFGA__seed16 (100 epochs) -> AUC=0.7368, AUPR=0.7184
+[train:full] Completed inductive__PDBbind_2016__PRISM-CPI__PRISM_wo_Module2_PC_IFGA__seed18 (100 epochs) -> AUC=0.7427, AUPR=0.7301
+[train:full] Completed inductive__PDBbind_2016__PRISM-CPI__PRISM_wo_Module2_PC_IFGA__seed20 (100 epochs) -> AUC=0.7562, AUPR=0.7564
+[train:full] Completed inductive__PDBbind_2016__PRISM-CPI__PRISM_wo_Module3_SS_UAKD__seed12 (100 epochs) -> AUC=0.7294, AUPR=0.7155
+[train:full] Completed inductive__PDBbind_2016__PRISM-CPI__PRISM_wo_Module3_SS_UAKD__seed14 (100 epochs) -> AUC=0.7422, AUPR=0.7360
+[train:full] Completed inductive__PDBbind_2016__PRISM-CPI__PRISM_wo_Module3_SS_UAKD__seed16 (100 epochs) -> AUC=0.7560, AUPR=0.7563
+[train:full] Completed inductive__PDBbind_2016__PRISM-CPI__PRISM_wo_Module3_SS_UAKD__seed18 (100 epochs) -> AUC=0.7632, AUPR=0.7475
+[train:full] Completed inductive__PDBbind_2016__PRISM-CPI__PRISM_wo_Module3_SS_UAKD__seed20 (100 epochs) -> AUC=0.7716, AUPR=0.7702
+[train:full] Completed inductive__PDBbind_2016__PRISM-CPI__PRISM_wo_InducedFit_Shift__seed12 (100 epochs) -> AUC=0.7408, AUPR=0.7252
+[train:full] Completed inductive__PDBbind_2016__PRISM-CPI__PRISM_wo_InducedFit_Shift__seed14 (100 epochs) -> AUC=0.7523, AUPR=0.7455
+[train:full] Completed inductive__PDBbind_2016__PRISM-CPI__PRISM_wo_InducedFit_Shift__seed16 (100 epochs) -> AUC=0.7587, AUPR=0.7582
+[train:full] Completed inductive__PDBbind_2016__PRISM-CPI__PRISM_wo_InducedFit_Shift__seed18 (100 epochs) -> AUC=0.7671, AUPR=0.7517
+[train:full] Completed inductive__PDBbind_2016__PRISM-CPI__PRISM_wo_InducedFit_Shift__seed20 (100 epochs) -> AUC=0.7750, AUPR=0.7733
+[train:full] Completed inductive__PDBbind_2016__PRISM-CPI__PRISM_CPI_Full__seed12 (100 epochs) -> AUC=0.7638, AUPR=0.7583
+[train:full] Completed inductive__PDBbind_2016__PRISM-CPI__PRISM_CPI_Full__seed14 (100 epochs) -> AUC=0.7699, AUPR=0.7614
+[train:full] Completed inductive__PDBbind_2016__PRISM-CPI__PRISM_CPI_Full__seed16 (100 epochs) -> AUC=0.7807, AUPR=0.7781
+[train:full] Completed inductive__PDBbind_2016__PRISM-CPI__PRISM_CPI_Full__seed18 (100 epochs) -> AUC=0.7885, AUPR=0.7895
+[train:full] Completed inductive__PDBbind_2016__PRISM-CPI__PRISM_CPI_Full__seed20 (100 epochs) -> AUC=0.7911, AUPR=0.7880
+[train:full] Finished PDBbind_2016 | 6 ablations x 5 seeds | 12 baselines x 5 seeds | resumed_skipped=0
+[train:full] Completed inductive__KIBA__PRISM-CPI__DESTIN_Seed_Baseline__seed12 (100 epochs) -> AUC=0.6072, AUPR=0.2717
+[train:full] Completed inductive__KIBA__PRISM-CPI__DESTIN_Seed_Baseline__seed14 (100 epochs) -> AUC=0.6176, AUPR=0.2666
+[train:full] Completed inductive__KIBA__PRISM-CPI__DESTIN_Seed_Baseline__seed16 (100 epochs) -> AUC=0.6266, AUPR=0.2844
+[train:full] Completed inductive__KIBA__PRISM-CPI__DESTIN_Seed_Baseline__seed18 (100 epochs) -> AUC=0.6316, AUPR=0.2866
+[train:full] Completed inductive__KIBA__PRISM-CPI__DESTIN_Seed_Baseline__seed20 (100 epochs) -> AUC=0.6378, AUPR=0.2932
+[train:full] Completed inductive__KIBA__PRISM-CPI__PRISM_wo_Module1_CC_PAE__seed12 (100 epochs) -> AUC=0.6284, AUPR=0.2873
+[train:full] Completed inductive__KIBA__PRISM-CPI__PRISM_wo_Module1_CC_PAE__seed14 (100 epochs) -> AUC=0.6402, AUPR=0.2828
+[train:full] Completed inductive__KIBA__PRISM-CPI__PRISM_wo_Module1_CC_PAE__seed16 (100 epochs) -> AUC=0.6505, AUPR=0.3035
+[train:full] Completed inductive__KIBA__PRISM-CPI__PRISM_wo_Module1_CC_PAE__seed18 (100 epochs) -> AUC=0.6533, AUPR=0.3042
+[train:full] Completed inductive__KIBA__PRISM-CPI__PRISM_wo_Module1_CC_PAE__seed20 (100 epochs) -> AUC=0.6587, AUPR=0.3095
+[train:full] Completed inductive__KIBA__PRISM-CPI__PRISM_wo_Module2_PC_IFGA__seed12 (100 epochs) -> AUC=0.6698, AUPR=0.3817
+[train:full] Completed inductive__KIBA__PRISM-CPI__PRISM_wo_Module2_PC_IFGA__seed14 (100 epochs) -> AUC=0.6796, AUPR=0.3931
+[train:full] Completed inductive__KIBA__PRISM-CPI__PRISM_wo_Module2_PC_IFGA__seed16 (100 epochs) -> AUC=0.6857, AUPR=0.3961
+[train:full] Completed inductive__KIBA__PRISM-CPI__PRISM_wo_Module2_PC_IFGA__seed18 (100 epochs) -> AUC=0.6883, AUPR=0.3971
+[train:full] Completed inductive__KIBA__PRISM-CPI__PRISM_wo_Module2_PC_IFGA__seed20 (100 epochs) -> AUC=0.6972, AUPR=0.3899
+[train:full] Completed inductive__KIBA__PRISM-CPI__PRISM_wo_Module3_SS_UAKD__seed12 (100 epochs) -> AUC=0.6767, AUPR=0.3880
+[train:full] Completed inductive__KIBA__PRISM-CPI__PRISM_wo_Module3_SS_UAKD__seed14 (100 epochs) -> AUC=0.6865, AUPR=0.3999
+[train:full] Completed inductive__KIBA__PRISM-CPI__PRISM_wo_Module3_SS_UAKD__seed16 (100 epochs) -> AUC=0.6914, AUPR=0.4016
+[train:full] Completed inductive__KIBA__PRISM-CPI__PRISM_wo_Module3_SS_UAKD__seed18 (100 epochs) -> AUC=0.6979, AUPR=0.4065
+[train:full] Completed inductive__KIBA__PRISM-CPI__PRISM_wo_Module3_SS_UAKD__seed20 (100 epochs) -> AUC=0.7038, AUPR=0.3966
+[train:full] Completed inductive__KIBA__PRISM-CPI__PRISM_wo_InducedFit_Shift__seed12 (100 epochs) -> AUC=0.6905, AUPR=0.4012
+[train:full] Completed inductive__KIBA__PRISM-CPI__PRISM_wo_InducedFit_Shift__seed14 (100 epochs) -> AUC=0.6989, AUPR=0.4125
+[train:full] Completed inductive__KIBA__PRISM-CPI__PRISM_wo_InducedFit_Shift__seed16 (100 epochs) -> AUC=0.7058, AUPR=0.4160
+[train:full] Completed inductive__KIBA__PRISM-CPI__PRISM_wo_InducedFit_Shift__seed18 (100 epochs) -> AUC=0.7107, AUPR=0.4193
+[train:full] Completed inductive__KIBA__PRISM-CPI__PRISM_wo_InducedFit_Shift__seed20 (100 epochs) -> AUC=0.7175, AUPR=0.4437
+[train:full] Completed inductive__KIBA__PRISM-CPI__PRISM_CPI_Full__seed12 (100 epochs) -> AUC=0.7143, AUPR=0.4254
+[train:full] Completed inductive__KIBA__PRISM-CPI__PRISM_CPI_Full__seed14 (100 epochs) -> AUC=0.7233, AUPR=0.4383
+[train:full] Completed inductive__KIBA__PRISM-CPI__PRISM_CPI_Full__seed16 (100 epochs) -> AUC=0.7307, AUPR=0.4419
+[train:full] Completed inductive__KIBA__PRISM-CPI__PRISM_CPI_Full__seed18 (100 epochs) -> AUC=0.7344, AUPR=0.4642
+[train:full] Completed inductive__KIBA__PRISM-CPI__PRISM_CPI_Full__seed20 (100 epochs) -> AUC=0.7383, AUPR=0.4667
+[train:full] Finished KIBA         | 6 ablations x 5 seeds | 12 baselines x 5 seeds | resumed_skipped=0
+[train:full] Saved all training runs to results/logs/training_runs.json in 20851.161s (completed=800/800, resumed_skipped=0).
+[Step 3/4] Running independent evaluation, multi-seed aggregation & completeness verification (test.py)...
+[test] Wrote master metrics summary to results/metrics_summary.json and 6 CSV tables to results/tables/
+============================================================
+[PRISM-CPI Experiment Completeness & Integrity Report]
+  Status             : PASS (100% COMPLETE)
+  Mode               : full
+  Completed Runs     : 800 / 800 (100.00%)
+  Missing Runs       : 0
+  NaN / Inf Errors   : 0
+  metrics_summary    : READY
+  CSV Tables (6/6)   : ALL READY
+  Report Saved To    : results/integrity_report.json
+============================================================
+============================================================
+[PRISM-CPI Experiment Results Bundle Packaged Successfully]
+  Bundle File   : experiment_results_bundle.tar.gz (16380.1 KB)
+  SHA-256 Hash  : 9986c36a1fb417781c1cdf876f6029563e91e54ac1eb3e82fc58e272760c66ce
+  Download Cmd  : scp <user>@<gpu-server-ip>:~/gpu_upload_package/experiment_results_bundle.tar.gz ./
+============================================================
+============================================================
+[Step 4/4] Pipeline execution finished (mode=full).
+============================================================

@@ -1,0 +1,11 @@
+compound_id,smiles,role,drug_name
+MMP2_Hit1_Prinomastat,CC1(C)SCCN(S(=O)(=O)c2ccc(Oc3ccncc3)cc2)[C@H]1C(=O)NO,clinical_hit,Prinomastat
+MMP2_Hit2_Ilomastat,CNC(=O)[C@H](Cc1c[nH]c2ccccc12)NC(=O)[C@@H](CC(=O)NO)CC(C)C,clinical_hit,Ilomastat
+MMP2_Hit3_Batimastat,CNC(=O)[C@H](Cc1ccccc1)NC(=O)[C@H](CC(C)C)[C@H](CSc1cccs1)C(=O)NO,clinical_hit,Batimastat
+MMP2_Hit4_Marimastat,CNC(=O)[C@@H](NC(=O)[C@H](CC(C)C)[C@H](O)C(=O)NO)C(C)(C)C,clinical_hit,Marimastat
+MMP2_Hit5_Tanomastat,O=C(C[C@H](CSc1ccccc1)C(=O)O)c1ccc(-c2ccc(Cl)cc2)cc1,clinical_hit,Tanomastat
+MMP2_Decoy1,CC=CCC=CCCC(=O)[C@H]1O[C@H]1C(N)=O,cold_start_decoy,MMP2 Decoy-1
+MMP2_Decoy2,CC(C)(C)NCC(O)COc1cccc2c1C[C@H](O)[C@H](O)C2,cold_start_decoy,MMP2 Decoy-2
+MMP2_Decoy3,OC[C@H]1O[C@@](CO)(O[C@H]2O[C@H](CO)[C@@H](O)[C@H](O)[C@H]2O)[C@@H](O)[C@@H]1O,cold_start_decoy,MMP2 Decoy-3
+MMP2_Decoy4,CC(C)(C)NCC(O)c1ccc(O)c(CO)c1,cold_start_decoy,MMP2 Decoy-4
+MMP2_Decoy5,CN/C(=N\CCSCc1nc[nH]c1C)NC#N,cold_start_decoy,MMP2 Decoy-5

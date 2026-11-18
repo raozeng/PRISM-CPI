@@ -1,0 +1,11 @@
+compound_id,smiles,net_charge,docking_score_kcal_mol,strain_energy_kcal_mol,rotatable_bonds,docked_sdf,status
+EGFR_Hit1_Afatinib,C[NH+](C)C/C=C/C(=O)Nc1cc2c(Nc3ccc(F)c(Cl)c3)ncnc2cc1O[C@H]1CCOC1,1,-7.84,5.16,8,docking_3d/vina_EGFR/poses/EGFR_Hit1_Afatinib_docked.sdf,SUCCESS
+EGFR_Hit2_Dacomitinib,COc1cc2ncnc(Nc3ccc(F)c(Cl)c3)c2cc1NC(=O)/C=C/C[NH+]1CCCCC1,1,-8.05,12.1,7,docking_3d/vina_EGFR/poses/EGFR_Hit2_Dacomitinib_docked.sdf,SUCCESS
+EGFR_Hit3_Osimertinib,C=CC(=O)Nc1cc(Nc2nccc(-c3cn(C)c4ccccc34)n2)c(OC)cc1N(C)CC[NH+](C)C,1,-7.63,14.12,10,docking_3d/vina_EGFR/poses/EGFR_Hit3_Osimertinib_docked.sdf,SUCCESS
+EGFR_Hit4_Lapatinib,CS(=O)(=O)CC[NH2+]Cc1ccc(-c2ccc3ncnc(Nc4ccc(OCc5cccc(F)c5)c(Cl)c4)c3c2)o1,1,-7.8,6.79,11,docking_3d/vina_EGFR/poses/EGFR_Hit4_Lapatinib_docked.sdf,SUCCESS
+EGFR_Hit5_Neratinib,CCOc1cc2ncc(C#N)c(Nc3ccc(OCc4ccccn4)c(Cl)c3)c2cc1NC(=O)/C=C/C[NH+](C)C,1,-7.37,38.37,11,docking_3d/vina_EGFR/poses/EGFR_Hit5_Neratinib_docked.sdf,SUCCESS
+EGFR_Decoy1,C[C@H](N=C(O)[C@H](C)N=C(O)OC(C)(C)C)C(=N)O,0,-5.67,5.9,4,docking_3d/vina_EGFR/poses/EGFR_Decoy1_docked.sdf,SUCCESS
+EGFR_Decoy2,COCCc1ccc(OC[C@@H](O)C[NH2+]C(C)C)cc1,1,-5.39,0.42,9,docking_3d/vina_EGFR/poses/EGFR_Decoy2_docked.sdf,SUCCESS
+EGFR_Decoy3,O=S(=O)([O-])CCC[NH+]1CCOCC1,0,-5.21,44.65,4,docking_3d/vina_EGFR/poses/EGFR_Decoy3_docked.sdf,SUCCESS
+EGFR_Decoy4,O=S(=O)(NCCC(F)(F)F)c1ccc2c(c1)C[NH2+][C@@H](CF)C2,1,-7.68,6.42,5,docking_3d/vina_EGFR/poses/EGFR_Decoy4_docked.sdf,SUCCESS
+EGFR_Decoy5,C[N+](C)(C)CCOC(=O)CCC(=O)OCC[N+](C)(C)C,2,-4.76,21.21,9,docking_3d/vina_EGFR/poses/EGFR_Decoy5_docked.sdf,SUCCESS

@@ -1,0 +1,38 @@
+\begin{table}[H]
+\centering
+\caption{\textbf{Quantitative evaluation of pocket localization, induced-fit adaptation, uncertainty calibration, and latent-space alignment across the four benchmarks.} Results are reported as mean and standard deviation over five random seeds, with best values in \textbf{bold} and unambiguous second-best values \underline{underlined}.}
+\label{tab:interpretability_study}
+{\footnotesize\setlength{\tabcolsep}{1.4pt}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{l cccccccccc}
+\toprule
+\textbf{Model} & \textbf{Pocket} & \textbf{Pocket} & \textbf{Pocket} & \textbf{Loop} & \textbf{Act./Dec.} & \textbf{BAN} & \textbf{Uncert.} & \textbf{Contact} & \textbf{Silh.} & \textbf{Domain} \\
+\textbf{Variant} & \textbf{AUC ($\uparrow$)} & \textbf{P@32 ($\uparrow$)} & \textbf{$\mathrm{EF}_{10\%}$ ($\uparrow$)} & \textbf{Attn\% ($\downarrow$)} & \textbf{Shift ($\uparrow$/$\downarrow$)} & \textbf{Rank ($\uparrow$)} & \textbf{Corr.\ ($\uparrow$)} & \textbf{Hit@10 ($\uparrow$)} & \textbf{SC ($\uparrow$)} & \textbf{$\mathrm{MMD}^2$ ($\downarrow$)} \\
+\midrule
+\multicolumn{11}{l}{\textbf{BindingDB Benchmark}} \\
+\hspace{3pt}DESTIN & 0.625${\pm}$0.005 & 0.381${\pm}$0.006 & 1.58${\pm}$0.07 & 34.50${\pm}$0.28 & 0.000/0.000 & 1.71${\pm}$0.37 & 0.126${\pm}$0.013 & 28.4${\pm}$1.3 & 0.264${\pm}$0.011 & 0.218${\pm}$0.009 \\
+\hspace{3pt}w/o 3Di Gate & 0.799${\pm}$0.005 & 0.652${\pm}$0.006 & 3.19${\pm}$0.06 & 20.44${\pm}$0.27 & 0.359/0.211 & 8.88${\pm}$0.35 & 0.797${\pm}$0.013 & 56.2${\pm}$1.4 & 0.482${\pm}$0.010 & 0.094${\pm}$0.006 \\
+\hspace{3pt}w/o IF Shift & \underline{0.901${\pm}$0.004} & \underline{0.814${\pm}$0.004} & \underline{4.64${\pm}$0.05} & \underline{7.71${\pm}$0.20} & 0.000/0.000 & \underline{12.07${\pm}$0.26} & \underline{0.844${\pm}$0.010} & \underline{74.6${\pm}$1.1} & \underline{0.576${\pm}$0.009} & \underline{0.064${\pm}$0.005} \\
+\hspace{3pt}\textbf{PRISM-CPI} & \textbf{0.917${\pm}$0.005} & \textbf{0.840${\pm}$0.006} & \textbf{4.90${\pm}$0.07} & \textbf{5.57${\pm}$0.28} & \textbf{0.453/0.150} & \textbf{15.62${\pm}$0.36} & \textbf{0.862${\pm}$0.013} & \textbf{83.2${\pm}$1.1} & \textbf{0.648${\pm}$0.011} & \textbf{0.042${\pm}$0.004} \\
+\midrule
+\multicolumn{11}{l}{\textbf{BioSNAP Benchmark}} \\
+\hspace{3pt}DESTIN & 0.623${\pm}$0.004 & 0.376${\pm}$0.005 & 1.60${\pm}$0.06 & 35.64${\pm}$0.25 & 0.000/0.000 & 2.17${\pm}$0.33 & 0.132${\pm}$0.012 & 27.6${\pm}$1.2 & 0.248${\pm}$0.010 & 0.234${\pm}$0.010 \\
+\hspace{3pt}w/o 3Di Gate & 0.790${\pm}$0.005 & 0.642${\pm}$0.006 & 3.11${\pm}$0.07 & 21.55${\pm}$0.31 & 0.350/0.215 & 8.79${\pm}$0.40 & 0.794${\pm}$0.015 & 54.8${\pm}$1.5 & 0.464${\pm}$0.011 & 0.102${\pm}$0.006 \\
+\hspace{3pt}w/o IF Shift & \underline{0.883${\pm}$0.007} & \underline{0.789${\pm}$0.009} & \underline{4.37${\pm}$0.10} & \underline{7.66${\pm}$0.41} & 0.000/0.000 & \underline{11.04${\pm}$0.54} & \underline{0.809${\pm}$0.020} & \underline{72.8${\pm}$1.2} & \underline{0.558${\pm}$0.010} & \underline{0.071${\pm}$0.005} \\
+\hspace{3pt}\textbf{PRISM-CPI} & \textbf{0.906${\pm}$0.003} & \textbf{0.821${\pm}$0.004} & \textbf{4.71${\pm}$0.04} & \textbf{5.83${\pm}$0.18} & \textbf{0.430/0.160} & \textbf{14.82${\pm}$0.24} & \textbf{0.841${\pm}$0.009} & \textbf{81.8${\pm}$1.2} & \textbf{0.626${\pm}$0.010} & \textbf{0.048${\pm}$0.004} \\
+\midrule
+\multicolumn{11}{l}{\textbf{PDBbind 2016 Benchmark}} \\
+\hspace{3pt}DESTIN & 0.647${\pm}$0.003 & 0.410${\pm}$0.003 & 1.72${\pm}$0.04 & 31.74${\pm}$0.16 & 0.000/0.000 & 1.98${\pm}$0.21 & 0.141${\pm}$0.008 & 29.4${\pm}$1.2 & 0.296${\pm}$0.009 & 0.194${\pm}$0.008 \\
+\hspace{3pt}w/o 3Di Gate & 0.826${\pm}$0.004 & 0.684${\pm}$0.004 & 3.42${\pm}$0.05 & 18.63${\pm}$0.20 & 0.386/0.195 & 9.36${\pm}$0.27 & 0.818${\pm}$0.010 & 58.6${\pm}$1.4 & 0.528${\pm}$0.010 & 0.082${\pm}$0.005 \\
+\hspace{3pt}w/o IF Shift & \underline{0.916${\pm}$0.005} & \underline{0.838${\pm}$0.006} & \underline{4.88${\pm}$0.07} & \underline{6.30${\pm}$0.28} & 0.000/0.000 & \underline{12.24${\pm}$0.36} & \underline{0.843${\pm}$0.013} & \underline{76.8${\pm}$1.1} & \underline{0.624${\pm}$0.008} & \underline{0.054${\pm}$0.004} \\
+\hspace{3pt}\textbf{PRISM-CPI} & \textbf{0.940${\pm}$0.003} & \textbf{0.871${\pm}$0.004} & \textbf{5.27${\pm}$0.04} & \textbf{4.73${\pm}$0.18} & \textbf{0.489/0.140} & \textbf{16.40${\pm}$0.23} & \textbf{0.881${\pm}$0.008} & \textbf{86.4${\pm}$0.9} & \textbf{0.692${\pm}$0.009} & \textbf{0.036${\pm}$0.003} \\
+\midrule
+\multicolumn{11}{l}{\textbf{KIBA Benchmark}} \\
+\hspace{3pt}DESTIN & 0.633${\pm}$0.007 & 0.393${\pm}$0.009 & 1.62${\pm}$0.10 & 33.00${\pm}$0.41 & 0.000/0.000 & 1.70${\pm}$0.54 & 0.127${\pm}$0.020 & 28.8${\pm}$1.4 & 0.258${\pm}$0.012 & 0.212${\pm}$0.009 \\
+\hspace{3pt}w/o 3Di Gate & 0.811${\pm}$0.003 & 0.667${\pm}$0.003 & 3.28${\pm}$0.04 & 19.48${\pm}$0.16 & 0.369/0.204 & 9.04${\pm}$0.21 & 0.803${\pm}$0.008 & 57.4${\pm}$1.3 & 0.476${\pm}$0.011 & 0.089${\pm}$0.006 \\
+\hspace{3pt}w/o IF Shift & \underline{0.904${\pm}$0.006} & \underline{0.822${\pm}$0.007} & \underline{4.70${\pm}$0.08} & \underline{6.97${\pm}$0.35} & 0.000/0.000 & \underline{11.99${\pm}$0.45} & \underline{0.839${\pm}$0.017} & \underline{75.4${\pm}$1.2} & \underline{0.568${\pm}$0.010} & \underline{0.061${\pm}$0.005} \\
+\hspace{3pt}\textbf{PRISM-CPI} & \textbf{0.919${\pm}$0.004} & \textbf{0.845${\pm}$0.004} & \textbf{4.94${\pm}$0.05} & \textbf{5.01${\pm}$0.21} & \textbf{0.456/0.150} & \textbf{15.62${\pm}$0.27} & \textbf{0.856${\pm}$0.010} & \textbf{84.6${\pm}$1.0} & \textbf{0.642${\pm}$0.010} & \textbf{0.040${\pm}$0.004} \\
+\bottomrule
+\end{tabular}%
+}}
+\end{table}

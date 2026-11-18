@@ -1,0 +1,13 @@
+complex_id,pdb_id,target_name,ligand_name,contact_rank,ligand_pharmacophore,pocket_residue,crystal_distance_angstrom,interaction_type,PRISM_Attention_Weight,PRISM_Attn_Rank,DESTIN_Attention_Weight,DESTIN_Attn_Rank
+EGFR_Erlotinib_1M17,1M17,EGFR (P00533),Erlotinib (AQ4),1,Quinazoline N1 (H-Acceptor),Met793 (Hinge NH),2.88,Canonical Hinge H-Bond,0.148,1,0.024,19
+EGFR_Erlotinib_1M17,1M17,EGFR (P00533),Erlotinib (AQ4),2,Quinazoline N3 / H2O Bridge,Thr790 (Gatekeeper OH) & Gln791,3.12,Water-Mediated H-Bond,0.132,2,0.019,24
+EGFR_Erlotinib_1M17,1M17,EGFR (P00533),Erlotinib (AQ4),3,Ethynylphenyl C#CH,Thr790 / Lys745 / Ala743,3.46,Hydrophobic Back-Pocket Cleft,0.121,3,0.015,31
+EGFR_Erlotinib_1M17,1M17,EGFR (P00533),Erlotinib (AQ4),4,Aniline Secondary NH,Leu788 / Glu762 (alphaC-Helix),3.68,Allosteric Cleft Contact,0.104,4,0.017,28
+EGFR_Erlotinib_1M17,1M17,EGFR (P00533),Erlotinib (AQ4),5,Quinazoline C2-H,Gln791 (Hinge Carbonyl O),3.24,Weak CH...O H-Bond,0.096,5,0.021,22
+EGFR_Erlotinib_1M17,1M17,EGFR (P00533),Erlotinib (AQ4),6,Methoxyethoxy Tail O12,Cys797 / Asp800 (Solvent Rim),3.54,Solvent-Rim Polar Contact,0.088,6,0.029,14
+LCK_Imatinib_2PL0,2PL0,LCK (P06239),Imatinib (STI),1,Pyridine-Pyrimidine N1,Met319 (Hinge NH),2.91,Canonical Hinge H-Bond,0.152,1,0.026,17
+LCK_Imatinib_2PL0,2PL0,LCK (P06239),Imatinib (STI),2,Benzamide Linker NH,Thr316 (Gatekeeper OH) & Glu288 (alphaC-Helix),2.84,Gatekeeper/alphaC Dual H-Bond,0.138,2,0.018,26
+LCK_Imatinib_2PL0,2PL0,LCK (P06239),Imatinib (STI),3,Benzamide Carbonyl O,Asp382 (DFG Loop Backbone NH),2.96,DFG-Out Activation H-Bond,0.126,3,0.016,29
+LCK_Imatinib_2PL0,2PL0,LCK (P06239),Imatinib (STI),4,Tolyl Methyl Phenyl,Ile314 / Lys273 (Catalytic Pocket),3.52,Hydrophobic Selectivity Pocket,0.108,4,0.014,33
+LCK_Imatinib_2PL0,2PL0,LCK (P06239),Imatinib (STI),5,Piperazine Protonated N4+,Ile361 / His362 (HRD Loop C=O),3.08,Charged Salt-Bridge / H-Bond,0.096,5,0.022,21
+LCK_Imatinib_2PL0,2PL0,LCK (P06239),Imatinib (STI),6,Pyrimidine Amino NH,Thr316 (Gatekeeper Sidechain O-gamma),3.18,Gatekeeper Donor H-Bond,0.089,6,0.02,23

@@ -1,0 +1,11 @@
+compound_id,smiles,role,drug_name
+NMDA_2B_Hit1_Ifenprodil,CC(C(O)c1ccc(O)cc1)N1CCC(Cc2ccccc2)CC1,clinical_hit,Ifenprodil
+NMDA_2B_Hit2_Traxoprodil,C[C@@H]([C@@H](O)c1ccc(O)cc1)N1CCC(O)(c2ccccc2)CC1,clinical_hit,Traxoprodil
+NMDA_2B_Hit3_Ro_25-6981,C[C@@H](CN1CCC(Cc2ccccc2)CC1)[C@@H](O)c1ccc(O)cc1,clinical_hit,Ro 25-6981
+NMDA_2B_Hit4_Eliprodil,OC(CN1CCC(Cc2ccc(F)cc2)CC1)c1ccc(Cl)cc1,clinical_hit,Eliprodil
+NMDA_2B_Hit5_Rislenemdaz,Cc1ccc(COC(=O)N2CC[C@H](CNc3ncccn3)[C@H](F)C2)cc1,clinical_hit,Rislenemdaz
+NMDA_2B_Decoy1,COc1ccc(OC)c(C(O)CNC(=O)CN)c1,cold_start_decoy,NMDA_2B Decoy-1
+NMDA_2B_Decoy2,CCN1CCCC1CNC(=O)c1cc(S(N)(=O)=O)ccc1OC,cold_start_decoy,NMDA_2B Decoy-2
+NMDA_2B_Decoy3,CC(C)(C)OC(=O)N[C@H](C=O)C1CCCCC1,cold_start_decoy,NMDA_2B Decoy-3
+NMDA_2B_Decoy4,CCNC(=O)C1CCN(C(=O)CC(N)CC(C)C)CC1,cold_start_decoy,NMDA_2B Decoy-4
+NMDA_2B_Decoy5,CCCOc1cc([C@]2(C)CNC(=O)O2)ccc1OC,cold_start_decoy,NMDA_2B Decoy-5

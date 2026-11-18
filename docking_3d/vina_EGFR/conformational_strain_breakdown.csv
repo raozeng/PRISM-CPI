@@ -1,0 +1,11 @@
+compound_id,smiles,net_charge,docking_score_kcal_mol,strain_energy_kcal_mol,e_bound_relaxed_kcal_mol,e_free_min_kcal_mol,e_bound_raw_kcal_mol,num_confs_sampled,rotatable_bonds,status
+EGFR_Hit1_Afatinib,C[NH+](C)C/C=C/C(=O)Nc1cc2c(Nc3ccc(F)c(Cl)c3)ncnc2cc1O[C@H]1CCOC1,1,-7.84,5.16,1.03,-4.13,61.37,50,8,SUCCESS
+EGFR_Hit2_Dacomitinib,COc1cc2ncnc(Nc3ccc(F)c(Cl)c3)c2cc1NC(=O)/C=C/C[NH+]1CCCCC1,1,-8.05,12.1,-10.28,-22.38,43.62,50,7,SUCCESS
+EGFR_Hit3_Osimertinib,C=CC(=O)Nc1cc(Nc2nccc(-c3cn(C)c4ccccc34)n2)c(OC)cc1N(C)CC[NH+](C)C,1,-7.63,14.12,23.64,9.51,113.9,50,10,SUCCESS
+EGFR_Hit4_Lapatinib,CS(=O)(=O)CC[NH2+]Cc1ccc(-c2ccc3ncnc(Nc4ccc(OCc5cccc(F)c5)c(Cl)c4)c3c2)o1,1,-7.8,6.79,14.31,7.52,53.4,50,11,SUCCESS
+EGFR_Hit5_Neratinib,CCOc1cc2ncc(C#N)c(Nc3ccc(OCc4ccccn4)c(Cl)c3)c2cc1NC(=O)/C=C/C[NH+](C)C,1,-7.37,38.37,110.86,72.49,155.66,50,11,SUCCESS
+EGFR_Decoy1,C[C@H](N=C(O)[C@H](C)N=C(O)OC(C)(C)C)C(=N)O,0,-5.67,5.9,-22.2,-28.11,26.74,50,4,SUCCESS
+EGFR_Decoy2,COCCc1ccc(OC[C@@H](O)C[NH2+]C(C)C)cc1,1,-5.39,0.42,67.11,66.68,172.6,50,9,SUCCESS
+EGFR_Decoy3,O=S(=O)([O-])CCC[NH+]1CCOCC1,0,-5.21,44.65,19.05,-25.61,44.32,50,4,SUCCESS
+EGFR_Decoy4,O=S(=O)(NCCC(F)(F)F)c1ccc2c(c1)C[NH2+][C@@H](CF)C2,1,-7.68,6.42,-13.11,-19.53,5.5,50,5,SUCCESS
+EGFR_Decoy5,C[N+](C)(C)CCOC(=O)CCC(=O)OCC[N+](C)(C)C,2,-4.76,21.21,78.2,56.99,226.74,50,9,SUCCESS

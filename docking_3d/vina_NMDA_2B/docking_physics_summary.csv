@@ -1,0 +1,11 @@
+compound_id,smiles,net_charge,docking_score_kcal_mol,strain_energy_kcal_mol,rotatable_bonds,docked_sdf,status
+NMDA_2B_Hit1_Ifenprodil,C[C@H]([C@H](O)c1ccc(O)cc1)[N@H+]1CC[C@H](Cc2ccccc2)CC1,1,-10.59,12.51,5,docking_3d/vina_NMDA_2B/poses/NMDA_2B_Hit1_Ifenprodil_docked.sdf,SUCCESS
+NMDA_2B_Hit2_Traxoprodil,C[C@@H]([C@@H](O)c1ccc(O)cc1)[N@H+]1CC[C@@](O)(c2ccccc2)CC1,1,-10.5,2.7,4,docking_3d/vina_NMDA_2B/poses/NMDA_2B_Hit2_Traxoprodil_docked.sdf,SUCCESS
+NMDA_2B_Hit3_Ro_25-6981,C[C@@H](C[N@H+]1CC[C@H](Cc2ccccc2)CC1)[C@@H](O)c1ccc(O)cc1,1,-10.63,17.76,6,docking_3d/vina_NMDA_2B/poses/NMDA_2B_Hit3_Ro_25-6981_docked.sdf,SUCCESS
+NMDA_2B_Hit4_Eliprodil,O[C@H](C[N@H+]1CC[C@@H](Cc2ccc(F)cc2)CC1)c1ccc(Cl)cc1,1,-11.0,5.25,5,docking_3d/vina_NMDA_2B/poses/NMDA_2B_Hit4_Eliprodil_docked.sdf,SUCCESS
+NMDA_2B_Hit5_Rislenemdaz,Cc1ccc(COC(=O)N2CC[C@H](CNc3ncccn3)[C@H](F)C2)cc1,0,-9.44,5.71,5,docking_3d/vina_NMDA_2B/poses/NMDA_2B_Hit5_Rislenemdaz_docked.sdf,SUCCESS
+NMDA_2B_Decoy1,COc1ccc(OC)c([C@@H](O)CNC(=O)C[NH3+])c1,1,-7.33,7.93,6,docking_3d/vina_NMDA_2B/poses/NMDA_2B_Decoy1_docked.sdf,SUCCESS
+NMDA_2B_Decoy2,CC[N@@H+]1CCC[C@@H]1CNC(=O)c1cc(S(N)(=O)=O)ccc1OC,1,-8.58,11.81,6,docking_3d/vina_NMDA_2B/poses/NMDA_2B_Decoy2_docked.sdf,SUCCESS
+NMDA_2B_Decoy3,CC(C)(C)OC(=O)N[C@H](C=O)C1CCCCC1,0,-7.53,8.26,3,docking_3d/vina_NMDA_2B/poses/NMDA_2B_Decoy3_docked.sdf,SUCCESS
+NMDA_2B_Decoy4,CCNC(=O)C1CCN(C(=O)C[C@H]([NH3+])CC(C)C)CC1,1,-7.78,10.82,6,docking_3d/vina_NMDA_2B/poses/NMDA_2B_Decoy4_docked.sdf,SUCCESS
+NMDA_2B_Decoy5,CCCOc1cc([C@]2(C)CNC(=O)O2)ccc1OC,0,-8.12,1.85,5,docking_3d/vina_NMDA_2B/poses/NMDA_2B_Decoy5_docked.sdf,SUCCESS

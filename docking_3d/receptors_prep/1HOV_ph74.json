@@ -1,0 +1,22 @@
+{
+  "input_receptor": "docking_3d/receptors_prep/1HOV_in.pdb",
+  "output_pdb": "docking_3d/receptors_prep/1HOV_ph74.pdb",
+  "output_pdbqt": "docking_3d/receptors_prep/1HOV_ph74.pdbqt",
+  "ph": 7.4,
+  "protonated": true,
+  "backend": "openmm_amber14",
+  "pocket_center": [
+    5.872,
+    18.868,
+    22.589
+  ],
+  "titratable_states": {
+    "LYS": 6,
+    "ASP": 18,
+    "GLU": 7,
+    "HID": 4,
+    "HIE": 3
+  },
+  "total_hydrogens": 1205,
+  "polar_hd_donors": 266
+}

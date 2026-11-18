@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+*$py.class
+.DS_Store
+.env
+.venv/
+venv/
+data_dry_run/
+checkpoints/last_resume_*.pt
+results/logs/runner.pid
+

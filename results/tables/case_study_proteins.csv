@@ -1,0 +1,9 @@
+protein_name,category,sequence_length,is_membrane_protein,mean_3di_confidence,GraphBAN_AUC,DESTIN_AUC,PRISM_CPI_AUC
+Beta-lactamase PSE-1,Beta-lactamase,288,False,0.8642,0.547,0.986,0.994
+Caspase-7,Peptidase,303,False,0.8415,0.499,0.973,0.988
+Vasopressin V1a receptor,GPCR,418,True,0.7894,0.537,0.992,0.996
+Cysteinyl leukotriene receptor 1,GPCR,337,True,0.7768,0.595,0.972,0.989
+"Cytochrome P450 11B1, mitochondrial",Cytochrome P450,503,True,0.8035,0.442,0.977,0.991
+Platelet-activating factor acetylhydrolase,Enzyme,441,False,0.8312,0.514,0.947,0.978
+72 kDa type IV collagenase,Peptidase,660,False,0.8184,0.516,0.964,0.985
+Glutamate receptor ionotropic NMDA 2B,Ion channel,1484,True,0.7426,0.512,0.94,0.974

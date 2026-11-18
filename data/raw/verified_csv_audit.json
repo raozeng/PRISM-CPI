@@ -1,0 +1,52 @@
+{
+  "BindingDB": {
+    "slug": "bindingdb",
+    "num_csv_files": 31,
+    "canonical_reference_files": [
+      "DrugBAN_datasets/bindingdb/full.csv"
+    ],
+    "unique_compounds": 14643,
+    "unique_proteins": 2623,
+    "unique_pairs": 49199,
+    "active_interactions": 20674,
+    "inactive_interactions": 28525
+  },
+  "BioSNAP": {
+    "slug": "biosnap",
+    "num_csv_files": 31,
+    "canonical_reference_files": [
+      "DrugBAN_datasets/biosnap/full.csv"
+    ],
+    "unique_compounds": 4505,
+    "unique_proteins": 2181,
+    "unique_pairs": 27464,
+    "active_interactions": 13830,
+    "inactive_interactions": 13634
+  },
+  "PDBbind_2016": {
+    "slug": "pdb",
+    "num_csv_files": 30,
+    "canonical_reference_files": [
+      "GraphBAN_Data/pdb/transductive/seed12/train_pdb12.csv",
+      "GraphBAN_Data/pdb/transductive/seed12/val_pdb12.csv",
+      "GraphBAN_Data/pdb/transductive/seed12/test_pdb12.csv"
+    ],
+    "unique_compounds": 3227,
+    "unique_proteins": 2410,
+    "unique_pairs": 8106,
+    "active_interactions": 4053,
+    "inactive_interactions": 4053
+  },
+  "KIBA": {
+    "slug": "kiba",
+    "num_csv_files": 31,
+    "canonical_reference_files": [
+      "GraphBAN_Data/kiba/kiba.csv"
+    ],
+    "unique_compounds": 2068,
+    "unique_proteins": 229,
+    "unique_pairs": 118254,
+    "active_interactions": 22729,
+    "inactive_interactions": 95525
+  }
+}

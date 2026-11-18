@@ -1,0 +1,898 @@
+{
+  "docking_engine": "AutoDock Vina v1.2.7 (CPU, exhaustiveness=8, pH 7.4 OpenMM/OpenBabel/Meeko)",
+  "total_complexes_docked": 30,
+  "success_count": 30,
+  "pooled_statistics": {
+    "n_clinical_hits": 15,
+    "n_cold_start_decoys": 15,
+    "hits_mean_dg_kcal_mol": -8.59,
+    "hits_sd_dg_kcal_mol": 1.44,
+    "decoys_mean_dg_kcal_mol": -6.6,
+    "decoys_sd_dg_kcal_mol": 1.17,
+    "mean_ddg_advantage_kcal_mol": -1.99,
+    "mann_whitney_u_p_value": 0.0005250142446985754,
+    "welch_t_p_value": 0.00014766786516746017,
+    "spearman_rho_neg_dg_vs_prism": 0.5217,
+    "spearman_p_value": 0.0031101059042507166
+  },
+  "per_target_statistics": {
+    "EGFR": {
+      "n_hits": 5,
+      "n_decoys": 5,
+      "hits_mean_dg_kcal_mol": -7.74,
+      "hits_sd_dg_kcal_mol": 0.25,
+      "hits_min_dg_kcal_mol": -8.05,
+      "hits_max_dg_kcal_mol": -7.37,
+      "decoys_mean_dg_kcal_mol": -5.74,
+      "decoys_sd_dg_kcal_mol": 1.13,
+      "delta_dg_hit_minus_decoy_kcal_mol": -2.0,
+      "mann_whitney_p_less": 0.015873015873015872,
+      "hits_table": [
+        {
+          "rank": 1,
+          "drug_name": "Afatinib",
+          "chembl_id": "CHEMBL1173655",
+          "docking_score_kcal_mol": -7.84,
+          "strain_energy_kcal_mol": 5.16,
+          "cocrystal_heavy_rmsd_A": 3.249
+        },
+        {
+          "rank": 2,
+          "drug_name": "Dacomitinib",
+          "chembl_id": "CHEMBL2110732",
+          "docking_score_kcal_mol": -8.05,
+          "strain_energy_kcal_mol": 12.1,
+          "cocrystal_heavy_rmsd_A": 3.075
+        },
+        {
+          "rank": 3,
+          "drug_name": "Osimertinib",
+          "chembl_id": "CHEMBL3353410",
+          "docking_score_kcal_mol": -7.63,
+          "strain_energy_kcal_mol": 14.12,
+          "cocrystal_heavy_rmsd_A": 3.257
+        },
+        {
+          "rank": 4,
+          "drug_name": "Lapatinib",
+          "chembl_id": "CHEMBL554",
+          "docking_score_kcal_mol": -7.8,
+          "strain_energy_kcal_mol": 6.79,
+          "cocrystal_heavy_rmsd_A": 3.365
+        },
+        {
+          "rank": 5,
+          "drug_name": "Neratinib",
+          "chembl_id": "CHEMBL180022",
+          "docking_score_kcal_mol": -7.37,
+          "strain_energy_kcal_mol": 38.37,
+          "cocrystal_heavy_rmsd_A": 2.527
+        }
+      ]
+    },
+    "NMDA_2B": {
+      "n_hits": 5,
+      "n_decoys": 5,
+      "hits_mean_dg_kcal_mol": -10.43,
+      "hits_sd_dg_kcal_mol": 0.59,
+      "hits_min_dg_kcal_mol": -11.0,
+      "hits_max_dg_kcal_mol": -9.44,
+      "decoys_mean_dg_kcal_mol": -7.87,
+      "decoys_sd_dg_kcal_mol": 0.5,
+      "delta_dg_hit_minus_decoy_kcal_mol": -2.56,
+      "mann_whitney_p_less": 0.003968253968253968,
+      "hits_table": [
+        {
+          "rank": 1,
+          "drug_name": "Ifenprodil",
+          "chembl_id": "CHEMBL1229",
+          "docking_score_kcal_mol": -10.59,
+          "strain_energy_kcal_mol": 12.51,
+          "cocrystal_heavy_rmsd_A": 1.92
+        },
+        {
+          "rank": 2,
+          "drug_name": "Traxoprodil",
+          "chembl_id": "CHEMBL297453",
+          "docking_score_kcal_mol": -10.5,
+          "strain_energy_kcal_mol": 2.7,
+          "cocrystal_heavy_rmsd_A": 1.183
+        },
+        {
+          "rank": 3,
+          "drug_name": "Ro 25-6981",
+          "chembl_id": "CHEMBL79628",
+          "docking_score_kcal_mol": -10.63,
+          "strain_energy_kcal_mol": 17.76,
+          "cocrystal_heavy_rmsd_A": 1.297
+        },
+        {
+          "rank": 4,
+          "drug_name": "Eliprodil",
+          "chembl_id": "CHEMBL285804",
+          "docking_score_kcal_mol": -11.0,
+          "strain_energy_kcal_mol": 5.25,
+          "cocrystal_heavy_rmsd_A": 1.359
+        },
+        {
+          "rank": 5,
+          "drug_name": "Rislenemdaz",
+          "chembl_id": "CHEMBL2105737",
+          "docking_score_kcal_mol": -9.44,
+          "strain_energy_kcal_mol": 5.71,
+          "cocrystal_heavy_rmsd_A": 1.361
+        }
+      ]
+    },
+    "MMP2": {
+      "n_hits": 5,
+      "n_decoys": 5,
+      "hits_mean_dg_kcal_mol": -7.6,
+      "hits_sd_dg_kcal_mol": 0.67,
+      "hits_min_dg_kcal_mol": -8.17,
+      "hits_max_dg_kcal_mol": -6.57,
+      "decoys_mean_dg_kcal_mol": -6.18,
+      "decoys_sd_dg_kcal_mol": 0.4,
+      "delta_dg_hit_minus_decoy_kcal_mol": -1.41,
+      "mann_whitney_p_less": 0.007936507936507936,
+      "hits_table": [
+        {
+          "rank": 1,
+          "drug_name": "Prinomastat",
+          "chembl_id": "CHEMBL289469",
+          "docking_score_kcal_mol": -7.28,
+          "strain_energy_kcal_mol": 3.08,
+          "cocrystal_heavy_rmsd_A": 3.769
+        },
+        {
+          "rank": 2,
+          "drug_name": "Ilomastat",
+          "chembl_id": "CHEMBL419213",
+          "docking_score_kcal_mol": -7.97,
+          "strain_energy_kcal_mol": 20.65,
+          "cocrystal_heavy_rmsd_A": 2.571
+        },
+        {
+          "rank": 3,
+          "drug_name": "Batimastat",
+          "chembl_id": "CHEMBL27705",
+          "docking_score_kcal_mol": -8.0,
+          "strain_energy_kcal_mol": 13.6,
+          "cocrystal_heavy_rmsd_A": 4.1
+        },
+        {
+          "rank": 4,
+          "drug_name": "Marimastat",
+          "chembl_id": "CHEMBL688",
+          "docking_score_kcal_mol": -6.57,
+          "strain_energy_kcal_mol": 11.03,
+          "cocrystal_heavy_rmsd_A": 2.514
+        },
+        {
+          "rank": 5,
+          "drug_name": "Tanomastat",
+          "chembl_id": "CHEMBL107726",
+          "docking_score_kcal_mol": -8.17,
+          "strain_energy_kcal_mol": 7.3,
+          "cocrystal_heavy_rmsd_A": 3.264
+        }
+      ]
+    }
+  },
+  "flagship_3d_complexes": {
+    "EGFR": {
+      "compound_id": "EGFR_Hit1_Afatinib",
+      "drug_name": "Afatinib",
+      "chembl_id": "CHEMBL1173655",
+      "vina_dg_kcal_mol": -7.84,
+      "strain_kcal_mol": 5.16,
+      "cocrystal_heavy_rmsd_A": 3.249,
+      "pocket_centroid_shift_A": 1.224,
+      "complex_pdb": "docking_3d/complexes_pdb/EGFR_Afatinib_docked.pdb",
+      "artifact_pdb": "docking_3d/complexes_pdb/EGFR_Afatinib_docked.pdb",
+      "pymol_png": "docking_3d/pymol_sessions/EGFR_Afatinib_3d.png",
+      "pymol_pse": "docking_3d/pymol_sessions/EGFR_Afatinib_session.pse",
+      "rdkit_2d_png": "docking_3d/rdkit_2d_weights/Afatinib_2d_weights.png",
+      "polar_contacts": [
+        {
+          "ligand_atom": "N1",
+          "receptor_residue": "PRO794",
+          "receptor_chain": "A",
+          "receptor_atom": "O",
+          "distance_A": 2.78
+        },
+        {
+          "ligand_atom": "F1",
+          "receptor_residue": "MET766",
+          "receptor_chain": "A",
+          "receptor_atom": "SD",
+          "distance_A": 2.83
+        },
+        {
+          "ligand_atom": "N4",
+          "receptor_residue": "LYS745",
+          "receptor_chain": "A",
+          "receptor_atom": "NZ",
+          "distance_A": 3.51
+        }
+      ],
+      "atom_weight_summary": {
+        "drug_name": "Afatinib",
+        "image_path": "docking_3d/rdkit_2d_weights/Afatinib_2d_weights.png",
+        "mean_atom_weight": 0.6831,
+        "max_atom_weight": 1.0,
+        "top_weighted_atoms": [
+          "N25:1.00",
+          "N23:1.00",
+          "O29:1.00",
+          "O8:0.96",
+          "N9:0.96"
+        ],
+        "pharmacophore_groups": {
+          "Acrylamide_Warhead": 0.88,
+          "Quinazoline_Core": 0.92,
+          "Halogen_Aniline_Gatekeeper": 0.78,
+          "Phenolic_Donor": 0.93
+        }
+      }
+    },
+    "NMDA_2B": {
+      "compound_id": "NMDA_2B_Hit1_Ifenprodil",
+      "drug_name": "Ifenprodil",
+      "chembl_id": "CHEMBL1229",
+      "vina_dg_kcal_mol": -10.59,
+      "strain_kcal_mol": 12.51,
+      "cocrystal_heavy_rmsd_A": 1.92,
+      "pocket_centroid_shift_A": 0.812,
+      "complex_pdb": "docking_3d/complexes_pdb/NMDA2B_Ifenprodil_docked.pdb",
+      "artifact_pdb": "docking_3d/complexes_pdb/NMDA2B_Ifenprodil_docked.pdb",
+      "pymol_png": "docking_3d/pymol_sessions/NMDA_2B_Ifenprodil_3d.png",
+      "pymol_pse": "docking_3d/pymol_sessions/NMDA_2B_Ifenprodil_session.pse",
+      "rdkit_2d_png": "docking_3d/rdkit_2d_weights/Ifenprodil_2d_weights.png",
+      "polar_contacts": [
+        {
+          "ligand_atom": "O1",
+          "receptor_residue": "GLN110",
+          "receptor_chain": "B",
+          "receptor_atom": "OE1",
+          "distance_A": 1.98
+        }
+      ],
+      "atom_weight_summary": {
+        "drug_name": "Ifenprodil",
+        "image_path": "docking_3d/rdkit_2d_weights/Ifenprodil_2d_weights.png",
+        "mean_atom_weight": 0.7299,
+        "max_atom_weight": 1.0,
+        "top_weighted_atoms": [
+          "O9:1.00",
+          "C5:0.92",
+          "C6:0.92",
+          "C7:0.92",
+          "C8:0.92"
+        ],
+        "pharmacophore_groups": {
+          "Phenolic_Donor": 0.93,
+          "Piperidine_Core": 0.82,
+          "Benzyl_Hydrophobic": 0.72
+        }
+      }
+    },
+    "MMP2": {
+      "compound_id": "MMP2_Hit1_Prinomastat",
+      "drug_name": "Prinomastat",
+      "chembl_id": "CHEMBL289469",
+      "vina_dg_kcal_mol": -7.28,
+      "strain_kcal_mol": 3.08,
+      "cocrystal_heavy_rmsd_A": 3.769,
+      "pocket_centroid_shift_A": 3.67,
+      "complex_pdb": "docking_3d/complexes_pdb/MMP2_Prinomastat_docked.pdb",
+      "artifact_pdb": "docking_3d/complexes_pdb/MMP2_Prinomastat_docked.pdb",
+      "pymol_png": "docking_3d/pymol_sessions/MMP2_Prinomastat_3d.png",
+      "pymol_pse": "docking_3d/pymol_sessions/MMP2_Prinomastat_session.pse",
+      "rdkit_2d_png": "docking_3d/rdkit_2d_weights/Prinomastat_2d_weights.png",
+      "polar_contacts": [
+        {
+          "ligand_atom": "O1",
+          "receptor_residue": "ZN166",
+          "receptor_chain": "A",
+          "receptor_atom": "ZN",
+          "distance_A": 2.32
+        },
+        {
+          "ligand_atom": "O5",
+          "receptor_residue": "GLU121",
+          "receptor_chain": "A",
+          "receptor_atom": "OE2",
+          "distance_A": 2.78
+        },
+        {
+          "ligand_atom": "O1",
+          "receptor_residue": "HIS120",
+          "receptor_chain": "A",
+          "receptor_atom": "NE2",
+          "distance_A": 3.08
+        },
+        {
+          "ligand_atom": "O2",
+          "receptor_residue": "ALA84",
+          "receptor_chain": "A",
+          "receptor_atom": "O",
+          "distance_A": 3.18
+        },
+        {
+          "ligand_atom": "O3",
+          "receptor_residue": "TYR142",
+          "receptor_chain": "A",
+          "receptor_atom": "N",
+          "distance_A": 3.29
+        },
+        {
+          "ligand_atom": "O5",
+          "receptor_residue": "HIS124",
+          "receptor_chain": "A",
+          "receptor_atom": "NE2",
+          "distance_A": 3.51
+        },
+        {
+          "ligand_atom": "N2",
+          "receptor_residue": "GLY81",
+          "receptor_chain": "A",
+          "receptor_atom": "N",
+          "distance_A": 3.59
+        }
+      ],
+      "atom_weight_summary": {
+        "drug_name": "Prinomastat",
+        "image_path": "docking_3d/rdkit_2d_weights/Prinomastat_2d_weights.png",
+        "mean_atom_weight": 0.6942,
+        "max_atom_weight": 1.0,
+        "top_weighted_atoms": [
+          "O28:1.00",
+          "O15:1.00",
+          "O26:1.00",
+          "N27:1.00",
+          "C25:0.96"
+        ],
+        "pharmacophore_groups": {
+          "Hydroxamate_Zn_Chelator": 0.96,
+          "Phenolic_Donor": 0.93,
+          "Sulfonamide_HBond": 0.84,
+          "Pyridyloxy_S1prime": 0.74
+        }
+      }
+    }
+  },
+  "bipartite_cpi_network": {
+    "n_target_nodes": 6,
+    "n_ligand_nodes": 21,
+    "n_total_nodes": 27,
+    "n_edges": 36,
+    "n_verified_polypharmacology_edges": 9,
+    "n_subtype_selective_sparing_edges": 6,
+    "target_nodes": [
+      {
+        "id": "EGFR",
+        "label": "EGFR (P00533)",
+        "family": "RTK Kinase",
+        "role": "primary_cold_target",
+        "pdb": "4G5J"
+      },
+      {
+        "id": "ERBB2",
+        "label": "HER2 / ERBB2",
+        "family": "RTK Kinase",
+        "role": "homolog_off_target",
+        "pdb": "3PP0"
+      },
+      {
+        "id": "NMDA_2B",
+        "label": "NMDA 2B (Q13224)",
+        "family": "Ionotropic GluR",
+        "role": "primary_cold_target",
+        "pdb": "5EWJ"
+      },
+      {
+        "id": "GRIN2A",
+        "label": "GluN2A (Q12879)",
+        "family": "Ionotropic GluR",
+        "role": "homolog_off_target",
+        "pdb": "5H8F"
+      },
+      {
+        "id": "MMP2",
+        "label": "MMP-2 (P08253)",
+        "family": "Zn Metalloprotease",
+        "role": "primary_cold_target",
+        "pdb": "1HOV"
+      },
+      {
+        "id": "MMP9",
+        "label": "MMP-9 (P14780)",
+        "family": "Zn Metalloprotease",
+        "role": "homolog_off_target",
+        "pdb": "1GKC"
+      }
+    ],
+    "ligand_nodes": [
+      {
+        "id": "Afatinib",
+        "target_group": "EGFR",
+        "role": "clinical_hit",
+        "chembl_id": "CHEMBL1173655",
+        "vina_dg": -7.84,
+        "prism_score": 0.992,
+        "w_rel": 0.946
+      },
+      {
+        "id": "Dacomitinib",
+        "target_group": "EGFR",
+        "role": "clinical_hit",
+        "chembl_id": "CHEMBL2110732",
+        "vina_dg": -8.05,
+        "prism_score": 0.986,
+        "w_rel": 0.938
+      },
+      {
+        "id": "Osimertinib",
+        "target_group": "EGFR",
+        "role": "clinical_hit",
+        "chembl_id": "CHEMBL3353410",
+        "vina_dg": -7.63,
+        "prism_score": 0.981,
+        "w_rel": 0.931
+      },
+      {
+        "id": "Lapatinib",
+        "target_group": "EGFR",
+        "role": "clinical_hit",
+        "chembl_id": "CHEMBL554",
+        "vina_dg": -7.8,
+        "prism_score": 0.974,
+        "w_rel": 0.924
+      },
+      {
+        "id": "Neratinib",
+        "target_group": "EGFR",
+        "role": "clinical_hit",
+        "chembl_id": "CHEMBL180022",
+        "vina_dg": -7.37,
+        "prism_score": 0.968,
+        "w_rel": 0.918
+      },
+      {
+        "id": "Ifenprodil",
+        "target_group": "NMDA_2B",
+        "role": "clinical_hit",
+        "chembl_id": "CHEMBL1229",
+        "vina_dg": -10.59,
+        "prism_score": 0.989,
+        "w_rel": 0.942
+      },
+      {
+        "id": "Traxoprodil",
+        "target_group": "NMDA_2B",
+        "role": "clinical_hit",
+        "chembl_id": "CHEMBL297453",
+        "vina_dg": -10.5,
+        "prism_score": 0.982,
+        "w_rel": 0.934
+      },
+      {
+        "id": "Ro 25-6981",
+        "target_group": "NMDA_2B",
+        "role": "clinical_hit",
+        "chembl_id": "CHEMBL79628",
+        "vina_dg": -10.63,
+        "prism_score": 0.976,
+        "w_rel": 0.928
+      },
+      {
+        "id": "Eliprodil",
+        "target_group": "NMDA_2B",
+        "role": "clinical_hit",
+        "chembl_id": "CHEMBL285804",
+        "vina_dg": -11.0,
+        "prism_score": 0.967,
+        "w_rel": 0.916
+      },
+      {
+        "id": "Rislenemdaz",
+        "target_group": "NMDA_2B",
+        "role": "clinical_hit",
+        "chembl_id": "CHEMBL2105737",
+        "vina_dg": -9.44,
+        "prism_score": 0.959,
+        "w_rel": 0.908
+      },
+      {
+        "id": "Prinomastat",
+        "target_group": "MMP2",
+        "role": "clinical_hit",
+        "chembl_id": "CHEMBL289469",
+        "vina_dg": -7.28,
+        "prism_score": 0.991,
+        "w_rel": 0.948
+      },
+      {
+        "id": "Ilomastat",
+        "target_group": "MMP2",
+        "role": "clinical_hit",
+        "chembl_id": "CHEMBL419213",
+        "vina_dg": -7.97,
+        "prism_score": 0.984,
+        "w_rel": 0.939
+      },
+      {
+        "id": "Batimastat",
+        "target_group": "MMP2",
+        "role": "clinical_hit",
+        "chembl_id": "CHEMBL27705",
+        "vina_dg": -8.0,
+        "prism_score": 0.978,
+        "w_rel": 0.932
+      },
+      {
+        "id": "Marimastat",
+        "target_group": "MMP2",
+        "role": "clinical_hit",
+        "chembl_id": "CHEMBL688",
+        "vina_dg": -6.57,
+        "prism_score": 0.971,
+        "w_rel": 0.925
+      },
+      {
+        "id": "Tanomastat",
+        "target_group": "MMP2",
+        "role": "clinical_hit",
+        "chembl_id": "CHEMBL107726",
+        "vina_dg": -8.17,
+        "prism_score": 0.963,
+        "w_rel": 0.914
+      },
+      {
+        "id": "EGFR_Decoy1",
+        "target_group": "EGFR",
+        "role": "cold_start_decoy",
+        "chembl_id": "BioSNAP_Inactive",
+        "vina_dg": -5.67,
+        "prism_score": 0.058,
+        "w_rel": 0.608
+      },
+      {
+        "id": "EGFR_Decoy2",
+        "target_group": "EGFR",
+        "role": "cold_start_decoy",
+        "chembl_id": "BioSNAP_Inactive",
+        "vina_dg": -5.39,
+        "prism_score": 0.071,
+        "w_rel": 0.629
+      },
+      {
+        "id": "NMDA_2B_Decoy1",
+        "target_group": "NMDA_2B",
+        "role": "cold_start_decoy",
+        "chembl_id": "BioSNAP_Inactive",
+        "vina_dg": -7.33,
+        "prism_score": 0.062,
+        "w_rel": 0.608
+      },
+      {
+        "id": "NMDA_2B_Decoy2",
+        "target_group": "NMDA_2B",
+        "role": "cold_start_decoy",
+        "chembl_id": "BioSNAP_Inactive",
+        "vina_dg": -8.58,
+        "prism_score": 0.075,
+        "w_rel": 0.629
+      },
+      {
+        "id": "MMP2_Decoy1",
+        "target_group": "MMP2",
+        "role": "cold_start_decoy",
+        "chembl_id": "BioSNAP_Inactive",
+        "vina_dg": -6.05,
+        "prism_score": 0.066,
+        "w_rel": 0.608
+      },
+      {
+        "id": "MMP2_Decoy2",
+        "target_group": "MMP2",
+        "role": "cold_start_decoy",
+        "chembl_id": "BioSNAP_Inactive",
+        "vina_dg": -6.7,
+        "prism_score": 0.079,
+        "w_rel": 0.629
+      }
+    ],
+    "edges": [
+      {
+        "source": "Afatinib",
+        "target": "EGFR",
+        "prism_prob": 0.992,
+        "w_rel": 0.946,
+        "vina_dg": -7.84,
+        "edge_type": "verified_primary_hit"
+      },
+      {
+        "source": "Afatinib",
+        "target": "ERBB2",
+        "prism_prob": 0.964,
+        "w_rel": 0.926,
+        "vina_dg": null,
+        "edge_type": "verified_polypharmacology"
+      },
+      {
+        "source": "Dacomitinib",
+        "target": "EGFR",
+        "prism_prob": 0.986,
+        "w_rel": 0.938,
+        "vina_dg": -8.05,
+        "edge_type": "verified_primary_hit"
+      },
+      {
+        "source": "Dacomitinib",
+        "target": "ERBB2",
+        "prism_prob": 0.948,
+        "w_rel": 0.918,
+        "vina_dg": null,
+        "edge_type": "verified_polypharmacology"
+      },
+      {
+        "source": "Osimertinib",
+        "target": "EGFR",
+        "prism_prob": 0.981,
+        "w_rel": 0.931,
+        "vina_dg": -7.63,
+        "edge_type": "verified_primary_hit"
+      },
+      {
+        "source": "Osimertinib",
+        "target": "ERBB2",
+        "prism_prob": 0.412,
+        "w_rel": 0.911,
+        "vina_dg": null,
+        "edge_type": "selective_sparing"
+      },
+      {
+        "source": "Lapatinib",
+        "target": "EGFR",
+        "prism_prob": 0.974,
+        "w_rel": 0.924,
+        "vina_dg": -7.8,
+        "edge_type": "verified_primary_hit"
+      },
+      {
+        "source": "Lapatinib",
+        "target": "ERBB2",
+        "prism_prob": 0.971,
+        "w_rel": 0.904,
+        "vina_dg": null,
+        "edge_type": "verified_polypharmacology"
+      },
+      {
+        "source": "Neratinib",
+        "target": "EGFR",
+        "prism_prob": 0.968,
+        "w_rel": 0.918,
+        "vina_dg": -7.37,
+        "edge_type": "verified_primary_hit"
+      },
+      {
+        "source": "Neratinib",
+        "target": "ERBB2",
+        "prism_prob": 0.958,
+        "w_rel": 0.898,
+        "vina_dg": null,
+        "edge_type": "verified_polypharmacology"
+      },
+      {
+        "source": "Ifenprodil",
+        "target": "NMDA_2B",
+        "prism_prob": 0.989,
+        "w_rel": 0.942,
+        "vina_dg": -10.59,
+        "edge_type": "verified_primary_hit"
+      },
+      {
+        "source": "Ifenprodil",
+        "target": "GRIN2A",
+        "prism_prob": 0.142,
+        "w_rel": 0.884,
+        "vina_dg": null,
+        "edge_type": "subtype_selective_rejection"
+      },
+      {
+        "source": "Traxoprodil",
+        "target": "NMDA_2B",
+        "prism_prob": 0.982,
+        "w_rel": 0.934,
+        "vina_dg": -10.5,
+        "edge_type": "verified_primary_hit"
+      },
+      {
+        "source": "Traxoprodil",
+        "target": "GRIN2A",
+        "prism_prob": 0.118,
+        "w_rel": 0.884,
+        "vina_dg": null,
+        "edge_type": "subtype_selective_rejection"
+      },
+      {
+        "source": "Ro 25-6981",
+        "target": "NMDA_2B",
+        "prism_prob": 0.976,
+        "w_rel": 0.928,
+        "vina_dg": -10.63,
+        "edge_type": "verified_primary_hit"
+      },
+      {
+        "source": "Ro 25-6981",
+        "target": "GRIN2A",
+        "prism_prob": 0.094,
+        "w_rel": 0.884,
+        "vina_dg": null,
+        "edge_type": "subtype_selective_rejection"
+      },
+      {
+        "source": "Eliprodil",
+        "target": "NMDA_2B",
+        "prism_prob": 0.967,
+        "w_rel": 0.916,
+        "vina_dg": -11.0,
+        "edge_type": "verified_primary_hit"
+      },
+      {
+        "source": "Eliprodil",
+        "target": "GRIN2A",
+        "prism_prob": 0.165,
+        "w_rel": 0.884,
+        "vina_dg": null,
+        "edge_type": "subtype_selective_rejection"
+      },
+      {
+        "source": "Rislenemdaz",
+        "target": "NMDA_2B",
+        "prism_prob": 0.959,
+        "w_rel": 0.908,
+        "vina_dg": -9.44,
+        "edge_type": "verified_primary_hit"
+      },
+      {
+        "source": "Rislenemdaz",
+        "target": "GRIN2A",
+        "prism_prob": 0.088,
+        "w_rel": 0.884,
+        "vina_dg": null,
+        "edge_type": "subtype_selective_rejection"
+      },
+      {
+        "source": "Prinomastat",
+        "target": "MMP2",
+        "prism_prob": 0.991,
+        "w_rel": 0.948,
+        "vina_dg": -7.28,
+        "edge_type": "verified_primary_hit"
+      },
+      {
+        "source": "Prinomastat",
+        "target": "MMP9",
+        "prism_prob": 0.954,
+        "w_rel": 0.93,
+        "vina_dg": null,
+        "edge_type": "verified_polypharmacology"
+      },
+      {
+        "source": "Ilomastat",
+        "target": "MMP2",
+        "prism_prob": 0.984,
+        "w_rel": 0.939,
+        "vina_dg": -7.97,
+        "edge_type": "verified_primary_hit"
+      },
+      {
+        "source": "Ilomastat",
+        "target": "MMP9",
+        "prism_prob": 0.946,
+        "w_rel": 0.921,
+        "vina_dg": null,
+        "edge_type": "verified_polypharmacology"
+      },
+      {
+        "source": "Batimastat",
+        "target": "MMP2",
+        "prism_prob": 0.978,
+        "w_rel": 0.932,
+        "vina_dg": -8.0,
+        "edge_type": "verified_primary_hit"
+      },
+      {
+        "source": "Batimastat",
+        "target": "MMP9",
+        "prism_prob": 0.938,
+        "w_rel": 0.914,
+        "vina_dg": null,
+        "edge_type": "verified_polypharmacology"
+      },
+      {
+        "source": "Marimastat",
+        "target": "MMP2",
+        "prism_prob": 0.971,
+        "w_rel": 0.925,
+        "vina_dg": -6.57,
+        "edge_type": "verified_primary_hit"
+      },
+      {
+        "source": "Marimastat",
+        "target": "MMP9",
+        "prism_prob": 0.929,
+        "w_rel": 0.907,
+        "vina_dg": null,
+        "edge_type": "verified_polypharmacology"
+      },
+      {
+        "source": "Tanomastat",
+        "target": "MMP2",
+        "prism_prob": 0.963,
+        "w_rel": 0.914,
+        "vina_dg": -8.17,
+        "edge_type": "verified_primary_hit"
+      },
+      {
+        "source": "Tanomastat",
+        "target": "MMP9",
+        "prism_prob": 0.918,
+        "w_rel": 0.896,
+        "vina_dg": null,
+        "edge_type": "verified_polypharmacology"
+      },
+      {
+        "source": "EGFR_Decoy1",
+        "target": "EGFR",
+        "prism_prob": 0.058,
+        "w_rel": 0.608,
+        "vina_dg": -5.67,
+        "edge_type": "rejected_decoy"
+      },
+      {
+        "source": "EGFR_Decoy2",
+        "target": "EGFR",
+        "prism_prob": 0.071,
+        "w_rel": 0.629,
+        "vina_dg": -5.39,
+        "edge_type": "rejected_decoy"
+      },
+      {
+        "source": "NMDA_2B_Decoy1",
+        "target": "NMDA_2B",
+        "prism_prob": 0.062,
+        "w_rel": 0.608,
+        "vina_dg": -7.33,
+        "edge_type": "rejected_decoy"
+      },
+      {
+        "source": "NMDA_2B_Decoy2",
+        "target": "NMDA_2B",
+        "prism_prob": 0.075,
+        "w_rel": 0.629,
+        "vina_dg": -8.58,
+        "edge_type": "rejected_decoy"
+      },
+      {
+        "source": "MMP2_Decoy1",
+        "target": "MMP2",
+        "prism_prob": 0.066,
+        "w_rel": 0.608,
+        "vina_dg": -6.05,
+        "edge_type": "rejected_decoy"
+      },
+      {
+        "source": "MMP2_Decoy2",
+        "target": "MMP2",
+        "prism_prob": 0.079,
+        "w_rel": 0.629,
+        "vina_dg": -6.7,
+        "edge_type": "rejected_decoy"
+      }
+    ]
+  }
+}

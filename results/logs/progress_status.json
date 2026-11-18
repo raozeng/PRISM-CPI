@@ -1,0 +1,26 @@
+{
+  "status": "COMPLETED",
+  "mode": "full",
+  "started_at": "2026-11-08T22:11:28.091072+08:00",
+  "updated_at": "2026-11-09T03:58:59.222422+08:00",
+  "elapsed_sec": 20851.13,
+  "eta_sec": 0.0,
+  "total_tasks": 800,
+  "completed_tasks": 800,
+  "resumed_skipped_tasks": 0,
+  "failed_tasks": 0,
+  "progress_percent": 100.0,
+  "current_task": {
+    "exp_id": "inductive__KIBA__PRISM-CPI__PRISM_CPI_Full__seed20",
+    "dataset": "KIBA",
+    "scenario": "inductive",
+    "model": "PRISM-CPI",
+    "ablation": "PRISM_CPI_Full",
+    "seed": 20,
+    "current_epoch": 100,
+    "total_epochs": 100,
+    "latest_loss": 0.1166,
+    "latest_val_auc": 0.0,
+    "latest_val_aupr": 0.0
+  }
+}
