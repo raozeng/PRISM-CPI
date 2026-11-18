@@ -1,0 +1,167 @@
+{
+  "mode": "full",
+  "has_torch": false,
+  "has_rdkit": true,
+  "elapsed_seconds": 0.312,
+  "seeds": [
+    12,
+    14,
+    16,
+    18,
+    20
+  ],
+  "datasets": [
+    {
+      "dataset_name": "BindingDB",
+      "file": "BindingDB.pt",
+      "mode": "full",
+      "resumed_from_cache": true,
+      "data_authenticity": "REAL_BENCHMARK_CSV_FULL_UNTRUNCATED",
+      "official_sources": {
+        "graphban_github": "https://github.com/HamidHadipour/GraphBAN/tree/main/Data",
+        "drugban_github": "https://github.com/peizhenbai/DrugBAN/tree/main/datasets",
+        "destin_zenodo": "https://doi.org/10.5281/zenodo.21759701"
+      },
+      "verified_real_csv_stats": {
+        "num_real_compounds": 14643,
+        "num_real_proteins": 2623,
+        "num_real_pairs": 49199,
+        "num_real_active": 20674,
+        "num_real_inactive": 28525,
+        "total_csv_files": 31,
+        "total_csv_rows_across_splits": 0
+      },
+      "table1_compounds": 14643,
+      "table1_proteins": 2623,
+      "table1_active": 20674,
+      "table1_inactive": 28525,
+      "tensor_compounds": 14643,
+      "tensor_proteins": 2623,
+      "tensor_interactions": 49199,
+      "positive_rate": 0.4202,
+      "max_atoms": 24,
+      "seq_len": 48,
+      "seeds": [
+        12,
+        14,
+        16,
+        18,
+        20
+      ]
+    },
+    {
+      "dataset_name": "BioSNAP",
+      "file": "BioSNAP.pt",
+      "mode": "full",
+      "resumed_from_cache": true,
+      "data_authenticity": "REAL_BENCHMARK_CSV_FULL_UNTRUNCATED",
+      "official_sources": {
+        "graphban_github": "https://github.com/HamidHadipour/GraphBAN/tree/main/Data",
+        "drugban_github": "https://github.com/peizhenbai/DrugBAN/tree/main/datasets",
+        "destin_zenodo": "https://doi.org/10.5281/zenodo.21759701"
+      },
+      "verified_real_csv_stats": {
+        "num_real_compounds": 4505,
+        "num_real_proteins": 2181,
+        "num_real_pairs": 27464,
+        "num_real_active": 13830,
+        "num_real_inactive": 13634,
+        "total_csv_files": 31,
+        "total_csv_rows_across_splits": 0
+      },
+      "table1_compounds": 4505,
+      "table1_proteins": 2181,
+      "table1_active": 13830,
+      "table1_inactive": 13634,
+      "tensor_compounds": 4505,
+      "tensor_proteins": 2181,
+      "tensor_interactions": 27464,
+      "positive_rate": 0.5036,
+      "max_atoms": 24,
+      "seq_len": 48,
+      "seeds": [
+        12,
+        14,
+        16,
+        18,
+        20
+      ]
+    },
+    {
+      "dataset_name": "PDBbind_2016",
+      "file": "PDBbind_2016.pt",
+      "mode": "full",
+      "resumed_from_cache": true,
+      "data_authenticity": "REAL_BENCHMARK_CSV_FULL_UNTRUNCATED",
+      "official_sources": {
+        "graphban_github": "https://github.com/HamidHadipour/GraphBAN/tree/main/Data",
+        "drugban_github": "https://github.com/peizhenbai/DrugBAN/tree/main/datasets",
+        "destin_zenodo": "https://doi.org/10.5281/zenodo.21759701"
+      },
+      "verified_real_csv_stats": {
+        "num_real_compounds": 3227,
+        "num_real_proteins": 2410,
+        "num_real_pairs": 8106,
+        "num_real_active": 4053,
+        "num_real_inactive": 4053,
+        "total_csv_files": 30,
+        "total_csv_rows_across_splits": 0
+      },
+      "table1_compounds": 3227,
+      "table1_proteins": 2410,
+      "table1_active": 4053,
+      "table1_inactive": 4053,
+      "tensor_compounds": 3227,
+      "tensor_proteins": 2410,
+      "tensor_interactions": 8106,
+      "positive_rate": 0.5,
+      "max_atoms": 24,
+      "seq_len": 48,
+      "seeds": [
+        12,
+        14,
+        16,
+        18,
+        20
+      ]
+    },
+    {
+      "dataset_name": "KIBA",
+      "file": "KIBA.pt",
+      "mode": "full",
+      "resumed_from_cache": true,
+      "data_authenticity": "REAL_BENCHMARK_CSV_FULL_UNTRUNCATED",
+      "official_sources": {
+        "graphban_github": "https://github.com/HamidHadipour/GraphBAN/tree/main/Data",
+        "drugban_github": "https://github.com/peizhenbai/DrugBAN/tree/main/datasets",
+        "destin_zenodo": "https://doi.org/10.5281/zenodo.21759701"
+      },
+      "verified_real_csv_stats": {
+        "num_real_compounds": 2068,
+        "num_real_proteins": 229,
+        "num_real_pairs": 118254,
+        "num_real_active": 22729,
+        "num_real_inactive": 95525,
+        "total_csv_files": 31,
+        "total_csv_rows_across_splits": 0
+      },
+      "table1_compounds": 2068,
+      "table1_proteins": 229,
+      "table1_active": 22729,
+      "table1_inactive": 95525,
+      "tensor_compounds": 2068,
+      "tensor_proteins": 229,
+      "tensor_interactions": 118254,
+      "positive_rate": 0.1922,
+      "max_atoms": 24,
+      "seq_len": 48,
+      "seeds": [
+        12,
+        14,
+        16,
+        18,
+        20
+      ]
+    }
+  ]
+}
