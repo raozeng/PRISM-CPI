@@ -573,10 +573,6 @@ def generate_fig1_architecture() -> None:
 # =============================================================================
 def generate_fig2_main_comparison(metrics_data: Dict[str, Any]) -> None:
     inductive = metrics_data["inductive_sota"]
-    sig_data = metrics_data.get("statistical_significance", {})
-
-    def fmt_pval(p: float) -> str:
-        return f"{p:.1e}".replace("e-0", "e-")
 
     selected_models = [
         "RF",
@@ -592,10 +588,10 @@ def generate_fig2_main_comparison(metrics_data: Dict[str, Any]) -> None:
     ]
 
     datasets = [
-        ("BindingDB", "A  BindingDB (Inductive Cross-Cluster)", (0.40, 0.82)),
-        ("BioSNAP", "B  BioSNAP (Inductive Cross-Cluster)", (0.50, 0.99)),
-        ("PDBbind_2016", "C  PDBbind 2016 (Inductive Cross-Cluster)", (0.48, 0.91)),
-        ("KIBA", "D  KIBA Kinase Benchmark (Inductive Split)", (0.18, 0.87)),
+        ("BindingDB", "A  BindingDB (Inductive Cross-Cluster)", (0.40, 0.775)),
+        ("BioSNAP", "B  BioSNAP (Inductive Cross-Cluster)", (0.50, 0.955)),
+        ("PDBbind_2016", "C  PDBbind 2016 (Inductive Cross-Cluster)", (0.48, 0.865)),
+        ("KIBA", "D  KIBA Kinase Benchmark (Inductive Split)", (0.18, 0.820)),
     ]
 
     fig, axes = plt.subplots(2, 2, figsize=(15.8, 10.4))
@@ -614,6 +610,7 @@ def generate_fig2_main_comparison(metrics_data: Dict[str, Any]) -> None:
     for idx, (ds_key, panel_title, y_lim) in enumerate(datasets):
         ax = axes_flat[idx]
         ds_dict = inductive[ds_key]
+        y_span = y_lim[1] - y_lim[0]
 
         # Highlight PRISM-CPI column background
         ax.axvspan(len(selected_models) - 1.45, len(selected_models) - 0.55, facecolor=PALETTE["terra_bg"], edgecolor="none", lw=0, alpha=0.95, zorder=0)
@@ -646,43 +643,16 @@ def generate_fig2_main_comparison(metrics_data: Dict[str, Any]) -> None:
                 is_prism = (highlight_idx == len(selected_models) - 1)
                 ax.text(
                     x[highlight_idx] + offset,
-                    val + sd + 0.015,
+                    val + sd + 0.018 * y_span,
                     f"{val:.3f}",
                     ha="center",
                     va="bottom",
-                    fontsize=7.0 if not is_prism else 7.4,
+                    fontsize=7.1 if not is_prism else 7.5,
                     fontweight="bold" if is_prism else "normal",
                     color=PALETTE["prism_dark"] if is_prism else PALETTE["slate_dark"],
                     rotation=90,
                     zorder=5,
                 )
-
-        p_destin_auc = sig_data.get(ds_key, {}).get("PRISM_vs_DESTIN_AUC_pvalue", 1e-4)
-        p_destin_aupr = sig_data.get(ds_key, {}).get("PRISM_vs_DESTIN_AUPR_pvalue", 1e-4)
-        destin_auc = ds_dict["DESTIN"]["AUC_mean"]
-        prism_auc = ds_dict["PRISM-CPI"]["AUC_mean"]
-        destin_aupr = ds_dict["DESTIN"]["AUPR_mean"]
-        prism_aupr = ds_dict["PRISM-CPI"]["AUPR_mean"]
-        gain_auc = (prism_auc - destin_auc) / destin_auc * 100.0
-        gain_aupr = (prism_aupr - destin_aupr) / destin_aupr * 100.0
-
-        annot_text = (
-            f"PRISM-CPI vs. DESTIN: $\\Delta$AUC = +{gain_auc:.1f}% (AUC $p$ = {fmt_pval(p_destin_auc)}), "
-            f"$\\Delta$AUPR = +{gain_aupr:.1f}% (AUPR $p$ = {fmt_pval(p_destin_aupr)})"
-        )
-        ax.text(
-            0.50,
-            0.968,
-            annot_text,
-            transform=ax.transAxes,
-            ha="center",
-            va="top",
-            fontsize=7.6,
-            fontweight="bold",
-            color=PALETTE["prism_dark"],
-            bbox=dict(boxstyle="round,pad=0.24", facecolor=PALETTE["prism_light"], edgecolor=PALETTE["terra_border"], lw=0.90, alpha=0.96),
-            zorder=6,
-        )
 
         ax.set_title(panel_title, loc="left", pad=10, color=PALETTE["slate_dark"])
         ax.set_xticks(x)
@@ -1308,8 +1278,19 @@ def generate_fig5_pocket_subsite_routing(metrics_data: Dict[str, Any]) -> None:
     nmda_prof = interp["nmda2b_residue_profile"]
     case_list = interp.get("case_studies", [])
 
-    fig = plt.figure(figsize=(16.8, 7.55), dpi=320)
-    gs = gridspec.GridSpec(2, 2, figure=fig, left=0.052, right=0.962, hspace=0.40, wspace=0.25, width_ratios=[1.0, 1.12])
+    fig = plt.figure(figsize=(16.4, 10.4), dpi=320)
+    gs = gridspec.GridSpec(
+        2,
+        2,
+        figure=fig,
+        left=0.052,
+        right=0.962,
+        top=0.948,
+        bottom=0.065,
+        hspace=0.29,
+        wspace=0.25,
+        width_ratios=[1.0, 1.12],
+    )
 
     datasets = ["BindingDB", "BioSNAP", "PDBbind_2016", "KIBA"]
     ds_labels = ["BindingDB", "BioSNAP", "PDBbind 2016", "KIBA"]
@@ -1351,11 +1332,11 @@ def generate_fig5_pocket_subsite_routing(metrics_data: Dict[str, Any]) -> None:
             if v_key == "DESTIN_Seed_Baseline":
                 ax_a.text(
                     b.get_x() + b.get_width() / 2.0,
-                    m + sd + 0.009,
+                    m + sd + 0.008,
                     f"{m:.3f}",
                     ha="center",
                     va="bottom",
-                    fontsize=6.8,
+                    fontsize=7.0,
                     fontweight="bold",
                     color=PALETTE["destin_dark"],
                     path_effects=bar_halo,
@@ -1364,11 +1345,11 @@ def generate_fig5_pocket_subsite_routing(metrics_data: Dict[str, Any]) -> None:
             elif v_key == "PRISM_CPI_Full":
                 ax_a.text(
                     b.get_x() + b.get_width() / 2.0,
-                    m + sd + 0.010,
+                    m + sd + 0.009,
                     f"{m:.3f}",
                     ha="center",
                     va="bottom",
-                    fontsize=7.0,
+                    fontsize=7.2,
                     fontweight="bold",
                     color=PALETTE["prism_dark"],
                     path_effects=bar_halo,
@@ -1385,8 +1366,8 @@ def generate_fig5_pocket_subsite_routing(metrics_data: Dict[str, Any]) -> None:
         loop_destin_m,
         yerr=loop_destin_s,
         marker="s",
-        markersize=5.2,
-        linewidth=1.75,
+        markersize=5.4,
+        linewidth=1.80,
         linestyle="--",
         color=PALETTE["amber_dark"],
         markerfacecolor=PALETTE["graphsformer"],
@@ -1402,8 +1383,8 @@ def generate_fig5_pocket_subsite_routing(metrics_data: Dict[str, Any]) -> None:
         loop_prism_m,
         yerr=loop_prism_s,
         marker="D",
-        markersize=5.4,
-        linewidth=2.0,
+        markersize=5.6,
+        linewidth=2.05,
         linestyle="-",
         color=PALETTE["drugban_dark"],
         markerfacecolor=PALETTE["drugban"],
@@ -1415,40 +1396,40 @@ def generate_fig5_pocket_subsite_routing(metrics_data: Dict[str, Any]) -> None:
         zorder=6,
     )
 
-    # Percentage annotations above bars
+    # Crisp non-overlapping percentage callouts in the open vertical band below the legend and above bars
     ax_a_r.annotate(
         f"$R_{{\\mathrm{{loop}}}}$: {loop_destin_m[0]:.1f}%$\\to${loop_prism_m[0]:.1f}%",
         xy=(0.0, loop_destin_m[0]),
-        xytext=(-0.10, 56.5),
+        xytext=(-0.06, 51.5),
         ha="center",
         va="center",
-        fontsize=6.8,
+        fontsize=7.2,
         fontweight="bold",
         color=PALETTE["drugban_dark"],
-        arrowprops=dict(arrowstyle="->", color=PALETTE["amber_dark"], lw=0.9, shrinkA=2, shrinkB=3),
-        bbox=dict(boxstyle="round,pad=0.19", facecolor="#FFFFFF", edgecolor=PALETTE["mod3_border"], lw=0.75, alpha=0.95),
+        arrowprops=dict(arrowstyle="->", color=PALETTE["amber_dark"], lw=0.95, shrinkA=2, shrinkB=3),
+        bbox=dict(boxstyle="round,pad=0.20", facecolor="#FFFFFF", edgecolor=PALETTE["mod3_border"], lw=0.80, alpha=0.95),
         zorder=8,
     )
     ax_a_r.annotate(
         f"$R_{{\\mathrm{{loop}}}}$: {loop_destin_m[3]:.1f}%$\\to${loop_prism_m[3]:.1f}%",
         xy=(3.0, loop_destin_m[3]),
-        xytext=(3.10, 55.5),
+        xytext=(3.06, 51.5),
         ha="center",
         va="center",
-        fontsize=6.8,
+        fontsize=7.2,
         fontweight="bold",
         color=PALETTE["drugban_dark"],
-        arrowprops=dict(arrowstyle="->", color=PALETTE["amber_dark"], lw=0.9, shrinkA=2, shrinkB=3),
-        bbox=dict(boxstyle="round,pad=0.19", facecolor="#FFFFFF", edgecolor=PALETTE["mod3_border"], lw=0.75, alpha=0.95),
+        arrowprops=dict(arrowstyle="->", color=PALETTE["amber_dark"], lw=0.95, shrinkA=2, shrinkB=3),
+        bbox=dict(boxstyle="round,pad=0.20", facecolor="#FFFFFF", edgecolor=PALETTE["mod3_border"], lw=0.80, alpha=0.95),
         zorder=8,
     )
 
     ax_a.set_xticks(x)
     ax_a.set_xticklabels(ds_labels, fontweight="bold", fontsize=8.8)
     ax_a.set_xlim(-0.62, 3.62)
-    ax_a.set_ylim(0.50, 1.16)
+    ax_a.set_ylim(0.50, 1.15)
     ax_a.set_yticks([0.5, 0.6, 0.7, 0.8, 0.9, 1.0])
-    ax_a_r.set_ylim(0.0, 68.0)
+    ax_a_r.set_ylim(0.0, 67.0)
     ax_a_r.set_yticks([0, 15, 30, 45, 60])
     ax_a.set_ylabel("Pocket Localization $\\mathrm{AUC}_{\\mathrm{pkt}}$ ($\\uparrow$)")
     ax_a_r.set_ylabel("Disordered-Loop Attn $R_{\\mathrm{loop}}$ (%) ($\\downarrow$)", color=PALETTE["drugban_dark"])
@@ -1469,10 +1450,10 @@ def generate_fig5_pocket_subsite_routing(metrics_data: Dict[str, Any]) -> None:
             facecolor="#FFFFFF",
             edgecolor=PALETTE["frame_border"],
             framealpha=0.95,
-            fontsize=6.8,
+            fontsize=7.2,
             columnspacing=1.0,
-            handletextpad=0.4,
-            labelspacing=0.24,
+            handletextpad=0.42,
+            labelspacing=0.25,
         )
     )
     ax_a.spines["top"].set_visible(False)
@@ -1500,7 +1481,7 @@ def generate_fig5_pocket_subsite_routing(metrics_data: Dict[str, Any]) -> None:
     ax_b.axvspan(s2_s, s2_e, facecolor="#C5E4DF", edgecolor="none", lw=0, alpha=0.72)
     ax_b.axvspan(ct_s, ct_e, facecolor="#F4EBD7", edgecolor="none", lw=0, alpha=0.82)
 
-    # Direct compact domain labels near the top of each shaded band (y ~ 0.96)
+    # Direct compact domain labels near the top of each shaded band (y ~ 0.97)
     domain_tags = [
         ((atd_s + atd_e) / 2.0, "ATD", PALETTE["prism_dark"]),
         ((s1_s + s1_e) / 2.0, "S1", PALETTE["graphban_dark"]),
@@ -1510,18 +1491,18 @@ def generate_fig5_pocket_subsite_routing(metrics_data: Dict[str, Any]) -> None:
     for x_tag, txt_tag, col_tag in domain_tags:
         ax_b.text(
             x_tag,
-            0.96,
+            0.97,
             txt_tag,
             ha="center",
             va="center",
-            fontsize=7.3,
+            fontsize=7.5,
             fontweight="bold",
             color=col_tag,
             zorder=5,
         )
 
-    ax_b.plot(pos_aa, c_3di, color=PALETTE["graphban"], lw=1.75, ls="--", label="Foldseek 3Di Confidence $c_\\ell$", zorder=4)
-    ax_b.plot(pos_aa, destin_attn, color=PALETTE["destin"], lw=1.70, alpha=0.90, label="DESTIN Uniform Attn ($\\times 10$)", zorder=4)
+    ax_b.plot(pos_aa, c_3di, color=PALETTE["graphban"], lw=1.80, ls="--", label="Foldseek 3Di Confidence $c_\\ell$", zorder=4)
+    ax_b.plot(pos_aa, destin_attn, color=PALETTE["destin"], lw=1.75, alpha=0.90, label="DESTIN Uniform Attn ($\\times 10$)", zorder=4)
     ax_b.plot(pos_aa, prism_alpha, color=PALETTE["prism_dark"], lw=2.15, label="PRISM-CPI Salience $\\alpha_\\ell$ ($\\times 10$)", zorder=5)
     ax_b.fill_between(pos_aa, 0, prism_alpha, color=PALETTE["prism"], alpha=0.22, zorder=3)
 
@@ -1539,7 +1520,7 @@ def generate_fig5_pocket_subsite_routing(metrics_data: Dict[str, Any]) -> None:
         f"Pocket Localization $\\mathrm{{AUC}}_{{\\mathrm{{pkt}}}}$: {auc_d_val:.3f} $\\to$ {auc_p_val:.3f}",
         ha="center",
         va="center",
-        fontsize=7.3,
+        fontsize=7.5,
         fontweight="bold",
         color=PALETTE["slate_dark"],
         bbox=dict(boxstyle="round,pad=0.26", facecolor="#FFFFFF", edgecolor=PALETTE["mod1_border"], lw=0.85, alpha=0.96),
@@ -1547,7 +1528,7 @@ def generate_fig5_pocket_subsite_routing(metrics_data: Dict[str, Any]) -> None:
     )
 
     ax_b.set_xlim(1, 1484)
-    ax_b.set_ylim(0.0, 1.24)
+    ax_b.set_ylim(0.0, 1.18)
     ax_b.set_yticks([0.0, 0.2, 0.4, 0.6, 0.8, 1.0])
     ax_b.set_xlabel("Residue Position along Sequence (NMDA 2B, Q13224, $L=1484$)")
     ax_b.set_ylabel("3Di Confidence $c_\\ell$ / Salience ($\\times 10$)")
@@ -1562,7 +1543,7 @@ def generate_fig5_pocket_subsite_routing(metrics_data: Dict[str, Any]) -> None:
             facecolor="#FFFFFF",
             edgecolor=PALETTE["frame_border"],
             framealpha=0.95,
-            fontsize=7.0,
+            fontsize=7.3,
             columnspacing=1.1,
             handletextpad=0.45,
         )
@@ -1579,8 +1560,8 @@ def generate_fig5_pocket_subsite_routing(metrics_data: Dict[str, Any]) -> None:
     cbar = fig.colorbar(im, ax=ax_c, fraction=0.032, pad=0.022)
     cbar.outline.set_edgecolor(PALETTE["frame_border"])
     cbar.outline.set_linewidth(0.6)
-    cbar.ax.tick_params(labelsize=7.2)
-    cbar.set_label("$\\tilde{I}_{a,k}$", fontsize=8.6, fontweight="bold")
+    cbar.ax.tick_params(labelsize=7.4)
+    cbar.set_label("$\\tilde{I}_{a,k}$", fontsize=9.0, fontweight="bold")
 
     for b_idx in [5.5, 10.5, 15.5, 21.5, 26.5]:
         ax_c.axvline(b_idx, color=PALETTE["slate_dark"], linestyle=":", linewidth=0.85, alpha=0.82)
@@ -1607,7 +1588,7 @@ def generate_fig5_pocket_subsite_routing(metrics_data: Dict[str, Any]) -> None:
     clean_atom_labels = [atom_short_map.get(lbl, lbl) for lbl in raw_atom_labels]
 
     ax_c.set_yticks(np.arange(len(clean_atom_labels)))
-    ax_c.set_yticklabels(clean_atom_labels, fontsize=6.9, fontweight="bold")
+    ax_c.set_yticklabels(clean_atom_labels, fontsize=7.4, fontweight="bold")
     ax_c.set_xticks([2.5, 8.0, 13.0, 18.5, 24.0, 29.0])
     ax_c.set_xticklabels(
         [
@@ -1618,7 +1599,7 @@ def generate_fig5_pocket_subsite_routing(metrics_data: Dict[str, Any]) -> None:
             "$\\alpha$C-Helix\n(k23–27)",
             "Solvent Rim\n(k28–32)",
         ],
-        fontsize=7.5,
+        fontsize=7.7,
         fontweight="bold",
     )
     ax_c.set_xlabel("Pocket Subsite Tokens ($K = 32$ Routed Tokens)")
@@ -1647,11 +1628,11 @@ def generate_fig5_pocket_subsite_routing(metrics_data: Dict[str, Any]) -> None:
     for s_i in range(len(subsite_labels)):
         ax_d.text(
             b_ep[s_i].get_x() + b_ep[s_i].get_width() / 2.0,
-            egfr_prism[s_i] + 0.9,
+            egfr_prism[s_i] + 0.85,
             f"{egfr_prism[s_i]:.1f}%",
             ha="center",
             va="bottom",
-            fontsize=6.6,
+            fontsize=7.0,
             fontweight="bold",
             color=PALETTE["prism_dark"],
             rotation=90,
@@ -1659,11 +1640,11 @@ def generate_fig5_pocket_subsite_routing(metrics_data: Dict[str, Any]) -> None:
         )
         ax_d.text(
             b_lp[s_i].get_x() + b_lp[s_i].get_width() / 2.0,
-            lck_prism[s_i] + 0.9,
+            lck_prism[s_i] + 0.85,
             f"{lck_prism[s_i]:.1f}%",
             ha="center",
             va="bottom",
-            fontsize=6.6,
+            fontsize=7.0,
             fontweight="bold",
             color=PALETTE["amber_dark"],
             rotation=90,
@@ -1672,11 +1653,11 @@ def generate_fig5_pocket_subsite_routing(metrics_data: Dict[str, Any]) -> None:
         if s_i == 5:
             ax_d.text(
                 b_ed[s_i].get_x() + b_ed[s_i].get_width() / 2.0,
-                egfr_destin[s_i] + 0.9,
+                egfr_destin[s_i] + 0.85,
                 f"{egfr_destin[s_i]:.1f}%",
                 ha="center",
                 va="bottom",
-                fontsize=6.7,
+                fontsize=7.0,
                 fontweight="bold",
                 color=PALETTE["destin_dark"],
                 rotation=90,
@@ -1684,11 +1665,11 @@ def generate_fig5_pocket_subsite_routing(metrics_data: Dict[str, Any]) -> None:
             )
             ax_d.text(
                 b_ld[s_i].get_x() + b_ld[s_i].get_width() / 2.0,
-                lck_destin[s_i] + 0.9,
+                lck_destin[s_i] + 0.85,
                 f"{lck_destin[s_i]:.1f}%",
                 ha="center",
                 va="bottom",
-                fontsize=6.7,
+                fontsize=7.0,
                 fontweight="bold",
                 color=PALETTE["destin_dark"],
                 rotation=90,
@@ -1704,13 +1685,13 @@ def generate_fig5_pocket_subsite_routing(metrics_data: Dict[str, Any]) -> None:
 
     ax_d.text(
         0.02,
-        0.74,
+        0.79,
         f"Catalytic Subsite Focus: EGFR {egfr_cat_d:.1f}% $\\to$ {egfr_cat_p:.1f}% | LCK {lck_cat_d:.1f}% $\\to$ {lck_cat_p:.1f}%\n"
         f"KIBA Bilinear Effective Rank ($\\mathrm{{Rank}}_{{\\mathrm{{eff}}}}$): {kiba_r_d:.2f} $\\to$ {kiba_r_p:.2f} ($9.2\\times$)",
         transform=ax_d.transAxes,
         ha="left",
         va="top",
-        fontsize=7.2,
+        fontsize=7.4,
         fontweight="bold",
         color=PALETTE["slate_dark"],
         bbox=dict(boxstyle="round,pad=0.25", facecolor=PALETTE["prism_light"], edgecolor=PALETTE["prism"], lw=0.85, alpha=0.95),
@@ -1718,8 +1699,8 @@ def generate_fig5_pocket_subsite_routing(metrics_data: Dict[str, Any]) -> None:
     )
 
     ax_d.set_xticks(x_sub)
-    ax_d.set_xticklabels(subsite_labels, fontsize=8.5, fontweight="bold")
-    ax_d.set_ylim(0, 72)
+    ax_d.set_xticklabels(subsite_labels, fontsize=8.6, fontweight="bold")
+    ax_d.set_ylim(0, 68)
     ax_d.set_yticks([0, 15, 30, 45, 60])
     ax_d.set_xlabel("Kinase Catalytic Subsite vs. Non-Pocket Scaffold")
     ax_d.set_ylabel("Subsite Attention Share (%)")
@@ -1733,7 +1714,7 @@ def generate_fig5_pocket_subsite_routing(metrics_data: Dict[str, Any]) -> None:
             facecolor="#FFFFFF",
             edgecolor=PALETTE["frame_border"],
             framealpha=0.95,
-            fontsize=7.1,
+            fontsize=7.3,
             columnspacing=1.0,
         )
     )
@@ -2208,9 +2189,18 @@ def generate_fig7_feature_space_manifold(metrics_data: Dict[str, Any]) -> None:
     by_ds = feat_manifold["by_dataset"]
     tsne_bdb = feat_manifold["tsne_projection_BindingDB"]
 
-    # Asymmetric compact horizontal canvas (H / W <= 0.48 after tight bbox)
-    fig = plt.figure(figsize=(17.0, 7.15), dpi=320)
-    gs = gridspec.GridSpec(1, 2, figure=fig, left=0.045, right=0.960, width_ratios=[1.32, 1.0], wspace=0.22)
+    fig = plt.figure(figsize=(16.6, 10.4), dpi=320)
+    gs = gridspec.GridSpec(
+        1,
+        2,
+        figure=fig,
+        left=0.045,
+        right=0.960,
+        top=0.948,
+        bottom=0.068,
+        width_ratios=[1.32, 1.0],
+        wspace=0.22,
+    )
 
     # -------------------------------------------------------------------------
     # Left Block (~57% width): Panels A1-A4 (2x2 Enlarged BindingDB 2D t-SNE)
@@ -2219,13 +2209,13 @@ def generate_fig7_feature_space_manifold(metrics_data: Dict[str, Any]) -> None:
         2,
         1,
         subplot_spec=gs[0, 0],
-        height_ratios=[0.095, 1.0],
-        hspace=0.10,
+        height_ratios=[0.062, 1.0],
+        hspace=0.07,
     )
     ax_leg = fig.add_subplot(gs_left[0, 0])
     ax_leg.axis("off")
 
-    gs_a = gridspec.GridSpecFromSubplotSpec(2, 2, subplot_spec=gs_left[1, 0], wspace=0.14, hspace=0.31)
+    gs_a = gridspec.GridSpecFromSubplotSpec(2, 2, subplot_spec=gs_left[1, 0], wspace=0.14, hspace=0.24)
     stage_configs = [
         (0, 0, "Raw_Pretrained_Concat", "A1  Raw Pre-trained Concat"),
         (0, 1, "DESTIN_Seed_Baseline", "A2  DESTIN (Seed Baseline)"),
@@ -2234,10 +2224,10 @@ def generate_fig7_feature_space_manifold(metrics_data: Dict[str, Any]) -> None:
     ]
 
     scatter_groups = [
-        (0, "Source_Ds", "o", PALETTE["destin"], "Inactive $\\mathcal{D}_s$ ($y=0$)", 25),
-        (0, "Target_Dt", "^", PALETTE["fusiondti"], "Inactive $\\mathcal{D}_t$ ($y=0$)", 29),
-        (1, "Source_Ds", "o", PALETTE["prism"], "Active $\\mathcal{D}_s$ ($y=1$)", 25),
-        (1, "Target_Dt", "^", PALETTE["graphsformer"], "Active $\\mathcal{D}_t$ ($y=1$)", 29),
+        (0, "Source_Ds", "o", PALETTE["destin"], "Inactive $\\mathcal{D}_s$ ($y=0$)", 27),
+        (0, "Target_Dt", "^", PALETTE["fusiondti"], "Inactive $\\mathcal{D}_t$ ($y=0$)", 31),
+        (1, "Source_Ds", "o", PALETTE["prism"], "Active $\\mathcal{D}_s$ ($y=1$)", 27),
+        (1, "Target_Dt", "^", PALETTE["graphsformer"], "Active $\\mathcal{D}_t$ ($y=1$)", 31),
     ]
 
     legend_handles = []
@@ -2280,7 +2270,7 @@ def generate_fig7_feature_space_manifold(metrics_data: Dict[str, Any]) -> None:
         ax_ts.plot([-4.5, 4.5], [4.1, -4.1], color=PALETTE["slate_mid"], linestyle=":", linewidth=1.15, alpha=0.78, zorder=2)
 
         ax_ts.set_xlim(-5.2, 5.4)
-        ax_ts.set_ylim(-5.3, 8.6)
+        ax_ts.set_ylim(-5.1, 6.4)
         ax_ts.set_yticks([-4, -2, 0, 2, 4])
         if r_i == 1:
             ax_ts.set_xlabel("t-SNE Dim 1", fontsize=8.8, fontweight="bold")
@@ -2304,10 +2294,10 @@ def generate_fig7_feature_space_manifold(metrics_data: Dict[str, Any]) -> None:
             transform=ax_ts.transAxes,
             ha="center",
             va="top",
-            fontsize=7.6,
+            fontsize=7.8,
             fontweight="bold",
             color=PALETTE["slate_dark"],
-            bbox=dict(boxstyle="round,pad=0.20", facecolor=badge_col, edgecolor=border_col, lw=0.85, alpha=0.96),
+            bbox=dict(boxstyle="round,pad=0.22", facecolor=badge_col, edgecolor=border_col, lw=0.85, alpha=0.96),
             zorder=5,
         )
         ax_ts.spines["top"].set_visible(False)
@@ -2323,18 +2313,18 @@ def generate_fig7_feature_space_manifold(metrics_data: Dict[str, Any]) -> None:
             facecolor="#FFFFFF",
             edgecolor=PALETTE["frame_border"],
             framealpha=0.96,
-            fontsize=8.3,
+            fontsize=8.5,
             markerscale=1.25,
             columnspacing=1.25,
             handletextpad=0.35,
-            borderpad=0.26,
+            borderpad=0.28,
         )
     )
 
     # -------------------------------------------------------------------------
     # Right Block (~43% width): Panel B (Top-Right) & Panel C (Bottom-Right)
     # -------------------------------------------------------------------------
-    gs_right = gridspec.GridSpecFromSubplotSpec(2, 1, subplot_spec=gs[0, 1], hspace=0.40)
+    gs_right = gridspec.GridSpecFromSubplotSpec(2, 1, subplot_spec=gs[0, 1], hspace=0.28)
     datasets = ["BindingDB", "BioSNAP", "PDBbind_2016", "KIBA"]
     ds_labels = ["BindingDB", "BioSNAP", "PDBbind 2016", "KIBA"]
     stages_order = [
@@ -2371,11 +2361,11 @@ def generate_fig7_feature_space_manifold(metrics_data: Dict[str, Any]) -> None:
             for b, v, s in zip(bars, sc_means, sc_stds):
                 ax_b.text(
                     b.get_x() + b.get_width() / 2.0,
-                    v + s + 0.016,
+                    v + s + 0.013,
                     f"{v:.3f}",
                     ha="center",
                     va="bottom",
-                    fontsize=6.7,
+                    fontsize=7.0,
                     fontweight="bold" if st_k == "PRISM_CPI_Full" else "normal",
                     color=PALETTE["prism_dark"] if st_k == "PRISM_CPI_Full" else PALETTE["slate_dark"],
                     path_effects=[patheffects.withStroke(linewidth=2.0, foreground="#FFFFFF")],
@@ -2389,8 +2379,8 @@ def generate_fig7_feature_space_manifold(metrics_data: Dict[str, Any]) -> None:
         x_ds,
         dbi_destin,
         marker="s",
-        markersize=4.8,
-        lw=1.6,
+        markersize=5.0,
+        lw=1.65,
         ls="--",
         color=PALETTE["drugban"],
         label="DESTIN $\\mathrm{DBI}$ ($\\downarrow$)",
@@ -2400,8 +2390,8 @@ def generate_fig7_feature_space_manifold(metrics_data: Dict[str, Any]) -> None:
         x_ds,
         dbi_prism,
         marker="D",
-        markersize=5.0,
-        lw=1.95,
+        markersize=5.2,
+        lw=2.0,
         ls="-",
         color=dbi_color,
         markerfacecolor=PALETTE["prism"],
@@ -2410,26 +2400,26 @@ def generate_fig7_feature_space_manifold(metrics_data: Dict[str, Any]) -> None:
     )
     for xi, dp in zip(x_ds, dbi_prism):
         ax_b_r.text(
-            xi + 0.06,
-            dp + 0.09,
+            xi + 0.15,
+            dp + 0.08,
             f"{dp:.2f}",
             ha="center",
             va="bottom",
-            fontsize=6.6,
+            fontsize=6.9,
             fontweight="bold",
             color=dbi_color,
-            bbox=dict(boxstyle="round,pad=0.10", facecolor="#FFFFFF", edgecolor=PALETTE["prism"], lw=0.6, alpha=0.92),
+            bbox=dict(boxstyle="round,pad=0.11", facecolor="#FFFFFF", edgecolor=PALETTE["prism"], lw=0.6, alpha=0.92),
             zorder=7,
         )
 
     ax_b.set_xticks(x_ds)
-    ax_b.set_xticklabels(ds_labels, fontweight="bold", fontsize=8.4)
-    ax_b.set_ylim(0.0, 1.18)
+    ax_b.set_xticklabels(ds_labels, fontweight="bold", fontsize=8.5)
+    ax_b.set_ylim(0.0, 1.02)
     ax_b.set_yticks([0.0, 0.2, 0.4, 0.6, 0.8])
-    ax_b_r.set_ylim(0.0, 3.60)
-    ax_b_r.set_yticks([0.0, 0.8, 1.6, 2.4])
-    ax_b.set_ylabel("Silhouette $\\mathrm{SC}$ ($\\uparrow$)", fontsize=8.8)
-    ax_b_r.set_ylabel("Davies–Bouldin $\\mathrm{DBI}$ ($\\downarrow$)", color=dbi_color, fontsize=8.8)
+    ax_b_r.set_ylim(0.0, 2.75)
+    ax_b_r.set_yticks([0.0, 0.6, 1.2, 1.8, 2.4])
+    ax_b.set_ylabel("Silhouette $\\mathrm{SC}$ ($\\uparrow$)", fontsize=8.9)
+    ax_b_r.set_ylabel("Davies–Bouldin $\\mathrm{DBI}$ ($\\downarrow$)", color=dbi_color, fontsize=8.9)
     ax_b_r.tick_params(axis="y", colors=dbi_color)
     ax_b.set_title("B  Latent Separability & Compactness", loc="left", pad=9.0, fontsize=13.8, color=PALETTE["slate_dark"])
     ax_b.grid(axis="y", linestyle="--", zorder=0)
@@ -2441,16 +2431,16 @@ def generate_fig7_feature_space_manifold(metrics_data: Dict[str, Any]) -> None:
             lines_b + lines_br,
             labels_b + labels_br,
             loc="upper center",
-            bbox_to_anchor=(0.50, 1.00),
+            bbox_to_anchor=(0.50, 0.995),
             frameon=True,
             facecolor="#FFFFFF",
             edgecolor=PALETTE["frame_border"],
             framealpha=0.95,
-            fontsize=6.45,
+            fontsize=7.0,
             ncol=2,
-            columnspacing=0.75,
-            handletextpad=0.35,
-            labelspacing=0.20,
+            columnspacing=0.80,
+            handletextpad=0.36,
+            labelspacing=0.22,
         )
     )
     ax_b.spines["top"].set_visible(False)
@@ -2481,11 +2471,11 @@ def generate_fig7_feature_space_manifold(metrics_data: Dict[str, Any]) -> None:
             for b, v, s in zip(bars, mmd_means, mmd_stds):
                 ax_c.text(
                     b.get_x() + b.get_width() / 2.0,
-                    v + s + 0.012,
+                    v + s + 0.010,
                     f"{v:.3f}",
                     ha="center",
                     va="bottom",
-                    fontsize=6.6,
+                    fontsize=7.0,
                     fontweight="bold" if st_k == "PRISM_CPI_Full" else "normal",
                     color=PALETTE["prism_dark"] if st_k == "PRISM_CPI_Full" else PALETTE["slate_dark"],
                     path_effects=[patheffects.withStroke(linewidth=2.0, foreground="#FFFFFF")],
@@ -2499,8 +2489,8 @@ def generate_fig7_feature_space_manifold(metrics_data: Dict[str, Any]) -> None:
         x_ds,
         deg_destin,
         marker="o",
-        markersize=4.6,
-        lw=1.55,
+        markersize=4.8,
+        lw=1.60,
         ls="--",
         color=PALETTE["destin"],
         label="DESTIN Margin $\\Delta\\theta$ ($^\\circ \\uparrow$)",
@@ -2510,8 +2500,8 @@ def generate_fig7_feature_space_manifold(metrics_data: Dict[str, Any]) -> None:
         x_ds,
         deg_prism,
         marker="^",
-        markersize=5.4,
-        lw=1.95,
+        markersize=5.6,
+        lw=2.0,
         ls="-",
         color=ang_color,
         markerfacecolor=PALETTE["graphban"],
@@ -2525,21 +2515,21 @@ def generate_fig7_feature_space_manifold(metrics_data: Dict[str, Any]) -> None:
             f"{dp:.1f}$^\\circ$",
             ha="center",
             va="bottom",
-            fontsize=6.7,
+            fontsize=7.0,
             fontweight="bold",
             color=ang_color,
-            bbox=dict(boxstyle="round,pad=0.10", facecolor="#FFFFFF", edgecolor=PALETTE["mod2_border"], lw=0.55, alpha=0.92),
+            bbox=dict(boxstyle="round,pad=0.11", facecolor="#FFFFFF", edgecolor=PALETTE["mod2_border"], lw=0.55, alpha=0.92),
             zorder=7,
         )
 
     ax_c.set_xticks(x_ds)
-    ax_c.set_xticklabels(ds_labels, fontweight="bold", fontsize=8.4)
-    ax_c.set_ylim(0.0, 0.98)
-    ax_c.set_yticks([0.0, 0.15, 0.30, 0.45])
-    ax_c_r.set_ylim(0.0, 115.0)
+    ax_c.set_xticklabels(ds_labels, fontweight="bold", fontsize=8.5)
+    ax_c.set_ylim(0.0, 0.76)
+    ax_c.set_yticks([0.0, 0.15, 0.30, 0.45, 0.60])
+    ax_c_r.set_ylim(0.0, 112.0)
     ax_c_r.set_yticks([0, 25, 50, 75, 100])
-    ax_c.set_ylabel("Domain $\\mathrm{MMD}^2(\\mathcal{D}_s, \\mathcal{D}_t)$ ($\\downarrow$)", fontsize=8.8)
-    ax_c_r.set_ylabel("Angular Margin $\\Delta\\theta_{\\mathrm{pos/neg}}$ ($^\\circ \\uparrow$)", color=ang_color, fontsize=8.8, labelpad=5)
+    ax_c.set_ylabel("Domain $\\mathrm{MMD}^2(\\mathcal{D}_s, \\mathcal{D}_t)$ ($\\downarrow$)", fontsize=8.9)
+    ax_c_r.set_ylabel("Angular Margin $\\Delta\\theta_{\\mathrm{pos/neg}}$ ($^\\circ \\uparrow$)", color=ang_color, fontsize=8.9, labelpad=5)
     ax_c_r.tick_params(axis="y", colors=ang_color)
     ax_c.set_title("C  Domain Alignment & Angular Margin", loc="left", pad=9.0, fontsize=13.8, color=PALETTE["slate_dark"])
     ax_c.grid(axis="y", linestyle="--", zorder=0)
@@ -2551,16 +2541,16 @@ def generate_fig7_feature_space_manifold(metrics_data: Dict[str, Any]) -> None:
             lines_c + lines_cr,
             labels_c + labels_cr,
             loc="upper center",
-            bbox_to_anchor=(0.50, 1.00),
+            bbox_to_anchor=(0.50, 0.995),
             frameon=True,
             facecolor="#FFFFFF",
             edgecolor=PALETTE["frame_border"],
             framealpha=0.95,
-            fontsize=6.15,
+            fontsize=6.9,
             ncol=2,
-            columnspacing=0.68,
-            handletextpad=0.32,
-            labelspacing=0.14,
+            columnspacing=0.72,
+            handletextpad=0.34,
+            labelspacing=0.20,
             borderpad=0.24,
         )
     )
@@ -2578,12 +2568,27 @@ def generate_fig8_cocrystal_contact_verification(metrics_data: Dict[str, Any]) -
     ds_metrics = interp["dataset_metrics"]
     cocrystal = interp["cocrystal_binding_site_contacts"]["complexes"]
 
-    # Compact 2x2 horizontal canvas (H / W <= 0.48 after tight bbox)
-    fig = plt.figure(figsize=(17.2, 7.35), dpi=320)
-    gs = gridspec.GridSpec(2, 1, figure=fig, left=0.050, right=0.985, height_ratios=[1.0, 1.08], hspace=0.40)
-
-    gs_top = gridspec.GridSpecFromSubplotSpec(1, 2, subplot_spec=gs[0, 0], wspace=0.24)
-    gs_bot = gridspec.GridSpecFromSubplotSpec(1, 2, subplot_spec=gs[1, 0], wspace=0.56)
+    fig = plt.figure(figsize=(16.6, 10.6), dpi=320)
+    gs_top = gridspec.GridSpec(
+        1,
+        2,
+        figure=fig,
+        left=0.055,
+        right=0.985,
+        top=0.948,
+        bottom=0.555,
+        wspace=0.22,
+    )
+    gs_bot = gridspec.GridSpec(
+        1,
+        2,
+        figure=fig,
+        left=0.182,
+        right=0.985,
+        top=0.455,
+        bottom=0.062,
+        wspace=0.56,
+    )
 
     datasets = ["BindingDB", "BioSNAP", "PDBbind_2016", "KIBA"]
     ds_labels = ["BindingDB", "BioSNAP", "PDBbind 2016", "KIBA"]
@@ -2622,11 +2627,11 @@ def generate_fig8_cocrystal_contact_verification(metrics_data: Dict[str, Any]) -
             for b, v, s in zip(bars, h_means, h_stds):
                 ax_a.text(
                     b.get_x() + b.get_width() / 2.0,
-                    v + s + 1.4,
+                    v + s + 1.3,
                     f"{v:.1f}%",
                     ha="center",
                     va="bottom",
-                    fontsize=7.0,
+                    fontsize=7.2,
                     fontweight="bold" if vk == "PRISM_CPI_Full" else "normal",
                     color=PALETTE["prism_dark"] if vk == "PRISM_CPI_Full" else PALETTE["slate_dark"],
                     zorder=5,
@@ -2644,7 +2649,7 @@ def generate_fig8_cocrystal_contact_verification(metrics_data: Dict[str, Any]) -
         transform=ax_a.transAxes,
         ha="right",
         va="top",
-        fontsize=6.9,
+        fontsize=7.2,
         fontweight="bold",
         color=PALETTE["prism_dark"],
         bbox=dict(boxstyle="round,pad=0.22", facecolor=PALETTE["prism_light"], edgecolor=PALETTE["prism"], lw=0.85, alpha=0.96),
@@ -2653,7 +2658,7 @@ def generate_fig8_cocrystal_contact_verification(metrics_data: Dict[str, Any]) -
 
     ax_a.set_xticks(x_ds)
     ax_a.set_xticklabels(ds_labels, fontweight="bold", fontsize=8.6)
-    ax_a.set_ylim(0.0, 122.0)
+    ax_a.set_ylim(0.0, 118.0)
     ax_a.set_yticks([0, 20, 40, 60, 80, 100])
     ax_a.set_ylabel("Co-Crystal Contact Hit@10 (%) ($<4.0\\,\\mathrm{\\AA} \\uparrow$)", fontsize=8.9)
     ax_a.set_title("A  X-Ray Co-Crystal Contact Hit@10 (<4 Å)", loc="left", pad=9.5, fontsize=14.2, color=PALETTE["slate_dark"])
@@ -2665,7 +2670,7 @@ def generate_fig8_cocrystal_contact_verification(metrics_data: Dict[str, Any]) -
             facecolor="#FFFFFF",
             edgecolor=PALETTE["frame_border"],
             framealpha=0.95,
-            fontsize=6.8,
+            fontsize=7.2,
             ncol=2,
             columnspacing=0.85,
             handletextpad=0.35,
@@ -2698,8 +2703,8 @@ def generate_fig8_cocrystal_contact_verification(metrics_data: Dict[str, Any]) -
     ax_b.axvspan(2.78, 3.26, facecolor="#FAF3F5", edgecolor="none", lw=0, alpha=0.72, zorder=0)
     ax_b.axvspan(3.26, 3.74, facecolor="#F2FAF8", edgecolor="none", lw=0, alpha=0.72, zorder=0)
     ax_b.axvline(3.26, color=PALETTE["frame_border"], linestyle=":", linewidth=1.0, zorder=1)
-    ax_b.text(3.02, 0.187, "H-Bond / Salt-Bridge Regime", ha="center", va="bottom", fontsize=6.7, fontweight="bold", color=PALETTE["prism_dark"], zorder=4)
-    ax_b.text(3.50, 0.187, "Hydrophobic / Cleft Packing", ha="center", va="bottom", fontsize=6.7, fontweight="bold", color=PALETTE["graphban_dark"], zorder=4)
+    ax_b.text(3.02, 0.189, "H-Bond / Salt-Bridge Regime", ha="center", va="bottom", fontsize=7.1, fontweight="bold", color=PALETTE["prism_dark"], zorder=4)
+    ax_b.text(3.50, 0.189, "Hydrophobic / Cleft Packing", ha="center", va="bottom", fontsize=7.1, fontweight="bold", color=PALETTE["graphban_dark"], zorder=4)
 
     def _plot_linreg_with_ci(
         ax: plt.Axes,
@@ -2732,7 +2737,7 @@ def generate_fig8_cocrystal_contact_verification(metrics_data: Dict[str, Any]) -
         d_1m17,
         w_1m17,
         marker="o",
-        s=46,
+        s=48,
         color=PALETTE["prism"],
         edgecolors=PALETTE["prism_dark"],
         linewidths=0.95,
@@ -2743,7 +2748,7 @@ def generate_fig8_cocrystal_contact_verification(metrics_data: Dict[str, Any]) -
         d_2pl0,
         w_2pl0,
         marker="D",
-        s=42,
+        s=44,
         color=PALETTE["graphban"],
         edgecolors=PALETTE["graphban_dark"],
         linewidths=0.95,
@@ -2754,7 +2759,7 @@ def generate_fig8_cocrystal_contact_verification(metrics_data: Dict[str, Any]) -
         d_destin,
         w_destin,
         marker="s",
-        s=28,
+        s=30,
         color=PALETTE["destin"],
         edgecolors=PALETTE["destin_dark"],
         linewidths=0.75,
@@ -2765,10 +2770,10 @@ def generate_fig8_cocrystal_contact_verification(metrics_data: Dict[str, Any]) -
 
     # Non-overlapping pointer callouts for top crystallographic contacts
     callouts_b = [
-        (2.88, 0.148, (2.792, 0.169), "Met793 ($2.88\\,\\mathrm{\\AA}$, #1)", PALETTE["prism_dark"], "arc3,rad=0.0"),
-        (2.91, 0.152, (3.045, 0.163), "Met319 ($2.91\\,\\mathrm{\\AA}$, #1)", PALETTE["graphban_dark"], "arc3,rad=0.0"),
-        (2.84, 0.138, (2.805, 0.068), "Thr316/Glu288 ($2.84\\,\\mathrm{\\AA}$)", PALETTE["graphban_dark"], "arc3,rad=0.0"),
-        (2.96, 0.126, (2.970, 0.048), "Asp382 DFG ($2.96\\,\\mathrm{\\AA}$)", PALETTE["graphban_dark"], "arc3,rad=0.0"),
+        (2.88, 0.148, (2.790, 0.173), "Met793 ($2.88\\,\\mathrm{\\AA}$, #1)", PALETTE["prism_dark"], "arc3,rad=0.0"),
+        (2.91, 0.152, (3.035, 0.165), "Met319 ($2.91\\,\\mathrm{\\AA}$, #1)", PALETTE["graphban_dark"], "arc3,rad=0.0"),
+        (2.84, 0.138, (2.802, 0.072), "Thr316/Glu288 ($2.84\\,\\mathrm{\\AA}$)", PALETTE["graphban_dark"], "arc3,rad=0.0"),
+        (2.96, 0.126, (2.965, 0.048), "Asp382 DFG ($2.96\\,\\mathrm{\\AA}$)", PALETTE["graphban_dark"], "arc3,rad=0.0"),
     ]
     for cx, cy, (tx, ty), c_txt, c_col, conn_sty in callouts_b:
         ax_b.annotate(
@@ -2777,32 +2782,32 @@ def generate_fig8_cocrystal_contact_verification(metrics_data: Dict[str, Any]) -
             xytext=(tx, ty),
             ha="left",
             va="center",
-            fontsize=6.25,
+            fontsize=6.8,
             fontweight="bold",
             color=c_col,
             arrowprops=dict(arrowstyle="->", color=c_col, lw=0.85, shrinkA=2, shrinkB=3, connectionstyle=conn_sty),
-            bbox=dict(boxstyle="round,pad=0.13", facecolor="#FFFFFF", edgecolor=PALETTE["frame_border"], lw=0.6, alpha=0.94),
+            bbox=dict(boxstyle="round,pad=0.14", facecolor="#FFFFFF", edgecolor=PALETTE["frame_border"], lw=0.6, alpha=0.94),
             zorder=6,
         )
 
     ax_b.text(
         0.985,
-        0.725,
+        0.76,
         f"1M17: $\\rho_{{\\mathrm{{dist}}}} = {c_1m17['distance_attn_spearman_rho']:.3f}$ ($p = {c_1m17['distance_attn_pvalue']:.1e}$)\n"
         f"2PL0: $\\rho_{{\\mathrm{{dist}}}} = {c_2pl0['distance_attn_spearman_rho']:.3f}$ ($p = {c_2pl0['distance_attn_pvalue']:.1e}$)",
         transform=ax_b.transAxes,
         ha="right",
         va="top",
-        fontsize=6.6,
+        fontsize=7.0,
         fontweight="bold",
         color=PALETTE["slate_dark"],
-        bbox=dict(boxstyle="round,pad=0.19", facecolor=PALETTE["prism_light"], edgecolor=PALETTE["prism"], lw=0.80, alpha=0.96),
+        bbox=dict(boxstyle="round,pad=0.20", facecolor=PALETTE["prism_light"], edgecolor=PALETTE["prism"], lw=0.80, alpha=0.96),
         zorder=6,
     )
 
     ax_b.set_xlim(2.78, 3.74)
-    ax_b.set_ylim(0.0, 0.244)
-    ax_b.set_yticks([0.00, 0.04, 0.08, 0.12, 0.16])
+    ax_b.set_ylim(0.0, 0.232)
+    ax_b.set_yticks([0.00, 0.04, 0.08, 0.12, 0.16, 0.20])
     ax_b.set_xlabel("X-Ray Heavy-Atom Contact Distance $d_{ab}$ ($\\mathrm{\\AA}$)", fontsize=8.9)
     ax_b.set_ylabel("Projected Contact Weight $(\\tilde{\\mathbf{I}}\\mathbf{A}_{\\mathrm{pkt}})_{a,\\ell}$ ($\\uparrow$)", fontsize=8.9)
     ax_b.set_title("B  Crystal Distance vs. Contact Attention", loc="left", pad=9.5, fontsize=14.2, color=PALETTE["slate_dark"])
@@ -2810,23 +2815,23 @@ def generate_fig8_cocrystal_contact_verification(metrics_data: Dict[str, Any]) -
     style_borderless_legend(
         ax_b.legend(
             loc="upper center",
-            bbox_to_anchor=(0.50, 1.00),
+            bbox_to_anchor=(0.50, 0.995),
             ncol=2,
             frameon=True,
             facecolor="#FFFFFF",
             edgecolor=PALETTE["frame_border"],
             framealpha=0.95,
-            fontsize=6.4,
-            columnspacing=0.75,
-            handletextpad=0.32,
-            labelspacing=0.18,
+            fontsize=6.9,
+            columnspacing=0.80,
+            handletextpad=0.34,
+            labelspacing=0.20,
         )
     )
     ax_b.spines["top"].set_visible(False)
     ax_b.spines["right"].set_visible(False)
 
     # -------------------------------------------------------------------------
-    # Panels C & D: Co-crystal heavy-atom contact profiles
+    # Panels C & D (Bottom Row): Full Un-Abbreviated Co-Crystal Contact Profiles
     # -------------------------------------------------------------------------
     complex_configs = [
         ("EGFR_Erlotinib_1M17", "C  Type-I Contacts: EGFR–Erlotinib (1M17)"),
@@ -2854,7 +2859,7 @@ def generate_fig8_cocrystal_contact_verification(metrics_data: Dict[str, Any]) -
         contacts = list(reversed(c_data["contacts"]))  # Rank #1 contact at top
 
         y_pos = np.arange(len(contacts))
-        h_bar = 0.36
+        h_bar = 0.37
         prism_w = [c["PRISM_Attention_Weight"] for c in contacts]
         destin_w = [c["DESTIN_Attention_Weight"] for c in contacts]
 
@@ -2889,7 +2894,7 @@ def generate_fig8_cocrystal_contact_verification(metrics_data: Dict[str, Any]) -
                 f"{w_val:.3f} (Rank #{c['PRISM_Attn_Rank']})",
                 va="center",
                 ha="left",
-                fontsize=7.2,
+                fontsize=7.3,
                 fontweight="bold",
                 color=PALETTE["prism_dark"],
             )
@@ -2901,13 +2906,13 @@ def generate_fig8_cocrystal_contact_verification(metrics_data: Dict[str, Any]) -
                 f"{w_val:.3f} (Rank #{c['DESTIN_Attn_Rank']})",
                 va="center",
                 ha="left",
-                fontsize=7.0,
+                fontsize=7.1,
                 color=PALETTE["destin_dark"],
             )
 
         ax_cd.set_yticks(y_pos)
-        ax_cd.set_yticklabels(y_labels, fontsize=7.4, fontweight="bold")
-        ax_cd.set_xlim(0.0, 0.245)
+        ax_cd.set_yticklabels(y_labels, fontsize=7.6, fontweight="bold")
+        ax_cd.set_xlim(0.0, 0.250)
         ax_cd.set_xlabel("Projected Atom–Residue Contact Weight $(\\tilde{\\mathbf{I}}\\mathbf{A}_{\\mathrm{pkt}})_{a,\\ell}$ ($\\uparrow$)", fontsize=8.9)
         ax_cd.set_title(c_title, loc="left", pad=9.5, fontsize=14.2, color=PALETTE["slate_dark"])
         ax_cd.grid(axis="x", linestyle="--", zorder=0)
@@ -2918,7 +2923,7 @@ def generate_fig8_cocrystal_contact_verification(metrics_data: Dict[str, Any]) -
                 facecolor="#FFFFFF",
                 edgecolor=PALETTE["frame_border"],
                 framealpha=0.95,
-                fontsize=7.2,
+                fontsize=7.4,
             )
         )
         ax_cd.spines["top"].set_visible(False)
@@ -3367,422 +3372,37 @@ def generate_fig10_network_and_3d_docking(
     dock_data: Dict[str, Any],
     docking_30_rows: Optional[List[Dict[str, Any]]] = None,
 ) -> None:
-    fig = plt.figure(figsize=(17.6, 10.2), dpi=320)
-    gs = gridspec.GridSpec(2, 2, figure=fig, left=0.024, right=0.986, hspace=0.27, wspace=0.16)
+    from matplotlib.lines import Line2D
 
-    # -------------------------------------------------------------------------
-    # Panel A (gs[0, 0]): Cold-Start CPI Prediction Network & Vina Validation
-    # -------------------------------------------------------------------------
-    ax_a_frame = fig.add_subplot(gs[0, 0])
-    ax_a_frame.axis("off")
-    ax_a_frame.set_title(
-        "A  Cold-Start CPI Network & Vina Validation",
-        loc="left",
-        pad=10.2,
-        fontsize=14.8,
-        color=PALETTE["slate_dark"],
-    )
-
-    gs_a = gridspec.GridSpecFromSubplotSpec(
+    fig = plt.figure(figsize=(16.6, 13.0), dpi=320)
+    gs_outer = gridspec.GridSpec(
         1,
         2,
-        subplot_spec=gs[0, 0],
-        width_ratios=[1.45, 1.0],
-        wspace=0.20,
+        figure=fig,
+        left=0.020,
+        right=0.985,
+        top=0.958,
+        bottom=0.042,
+        width_ratios=[1.26, 1.0],
+        wspace=0.16,
     )
 
-    # ---- Left Sub-Axis: Layered Bipartite CPI & Polypharmacology Network ----
-    ax_net = fig.add_subplot(gs_a[0, 0])
-    ax_net.set_xlim(0.0, 1.0)
-    ax_net.set_ylim(0.0, 1.0)
-    ax_net.axis("off")
-
-    net = dock_data["bipartite_cpi_network"]
-    edges = net["edges"]
-
-    # Soft color palette bands (EGFR, NMDA 2B, MMP-2)
-    family_bands = [
-        (0.625, 0.905, PALETTE["terra_bg"], PALETTE["terra_border"]),
-        (0.320, 0.600, PALETTE["mod3_bg"], PALETTE["mod3_border"]),
-        (0.015, 0.295, PALETTE["mod2_bg"], PALETTE["mod2_border"]),
-    ]
-    for yb0, yb1, b_fc, b_ec in family_bands:
-        ax_net.add_patch(
-            FancyBboxPatch(
-                (0.008, yb0),
-                0.984,
-                yb1 - yb0,
-                boxstyle="round,pad=0.004,rounding_size=0.018",
-                facecolor=b_fc,
-                edgecolor=b_ec,
-                linewidth=0.75,
-                alpha=0.88,
-                zorder=0,
-            )
-        )
-
-    # Top edge-type legend banner 
-    from matplotlib.lines import Line2D
-    edge_leg_handles = [
-        Line2D([0], [0], color=PALETTE["prism_dark"], linestyle="-", linewidth=1.85, label="Primary (p ≥ 0.96)"),
-        Line2D([0], [0], color=PALETTE["amber_dark"], linestyle="--", linewidth=1.35, label="Polypharm."),
-        Line2D([0], [0], color=PALETTE["slate_mid"], linestyle=":", linewidth=1.05, label="Decoy"),
-    ]
-    style_borderless_legend(
-        ax_net.legend(
-            handles=edge_leg_handles,
-            loc="upper center",
-            bbox_to_anchor=(0.50, 1.008),
-            ncol=3,
-            frameon=True,
-            facecolor="#FFFFFF",
-            edgecolor=PALETTE["frame_border"],
-            framealpha=0.95,
-            fontsize=7.1,
-            columnspacing=0.55,
-            handlelength=1.15,
-            handletextpad=0.28,
-            borderpad=0.24,
-        )
+    gs_left = gridspec.GridSpecFromSubplotSpec(
+        3,
+        1,
+        subplot_spec=gs_outer[0, 0],
+        hspace=0.22,
     )
-
-    # Node layout coordinates
-    x_hit = 0.270
-    x_hub = 0.562
-    x_dec = 0.770
-    hub_half_w = 0.098
-
-    egfr_hits = ["Afatinib", "Dacomitinib", "Osimertinib", "Lapatinib", "Neratinib"]
-    nmda_hits = ["Ifenprodil", "Traxoprodil", "Ro 25-6981", "Eliprodil", "Rislenemdaz"]
-    mmp2_hits = ["Prinomastat", "Ilomastat", "Batimastat", "Marimastat", "Tanomastat"]
-
-    node_pos: Dict[str, Tuple[float, float]] = {}
-    hit_family: Dict[str, str] = {}
-    for fam_key, h_list, y_top, y_bot in [
-        ("EGFR", egfr_hits, 0.876, 0.654),
-        ("NMDA_2B", nmda_hits, 0.571, 0.349),
-        ("MMP2", mmp2_hits, 0.266, 0.044),
-    ]:
-        for h_name, y_val in zip(h_list, np.linspace(y_top, y_bot, 5)):
-            node_pos[h_name] = (x_hit, float(y_val))
-            hit_family[h_name] = fam_key
-
-    # 6 Target Hubs (Primary Unseen Hub on upper row of band, Homolog Off-Target Hub on lower row)
-    target_hub_specs = {
-        "EGFR": (x_hub, 0.825, "EGFR\n(4G5J)", PALETTE["prism_dark"], "#FFFFFF", PALETTE["prism_dark"], True),
-        "ERBB2": (x_hub, 0.692, "HER2\n(ERBB2)", PALETTE["ochre_sub"], PALETTE["amber_dark"], PALETTE["amber_dark"], False),
-        "NMDA_2B": (x_hub, 0.520, "NMDA 2B\n(5EWJ)", PALETTE["drugban_dark"], "#FFFFFF", PALETTE["drugban_dark"], True),
-        "GRIN2A": (x_hub, 0.387, "GluN2A\n(GRIN2A)", PALETTE["slate_light"], PALETTE["slate_dark"], PALETTE["slate_mid"], False),
-        "MMP2": (x_hub, 0.215, "MMP-2\n(1HOV)", PALETTE["graphban_dark"], "#FFFFFF", PALETTE["graphban_dark"], True),
-        "MMP9": (x_hub, 0.082, "MMP-9\n(Homolog)", PALETTE["ochre_sub"], PALETTE["amber_dark"], PALETTE["amber_dark"], False),
-    }
-    for t_id, (tx, ty, _, _, _, _, _) in target_hub_specs.items():
-        node_pos[t_id] = (tx, ty)
-
-    decoy_specs = [
-        ("EGFR_Decoy1", x_dec, 0.858, "Decoy 1"),
-        ("EGFR_Decoy2", x_dec, 0.795, "Decoy 2"),
-        ("NMDA_2B_Decoy1", x_dec, 0.553, "Decoy 1"),
-        ("NMDA_2B_Decoy2", x_dec, 0.490, "Decoy 2"),
-        ("MMP2_Decoy1", x_dec, 0.248, "Decoy 1"),
-        ("MMP2_Decoy2", x_dec, 0.185, "Decoy 2"),
-    ]
-    for d_id, dx, dy, _ in decoy_specs:
-        node_pos[d_id] = (dx, dy)
-
-    primary_edge_colors = {
-        "EGFR": PALETTE["prism_dark"],
-        "NMDA_2B": PALETTE["drugban_dark"],
-        "MMP2": PALETTE["graphban_dark"],
-    }
-
-    # Draw all 36 bipartite edges cleanly to hub borders
-    for e in edges:
-        src = e["source"]
-        tgt = e["target"]
-        etype = e["edge_type"]
-        sx, sy = node_pos[src]
-        tx, ty = node_pos[tgt]
-        if sx < tx:
-            x0, x1 = sx + 0.012, tx - hub_half_w
-        else:
-            x0, x1 = sx - 0.012, tx + hub_half_w
-
-        if etype == "verified_primary_hit":
-            ecol = primary_edge_colors.get(tgt, PALETTE["prism_dark"])
-            ax_net.plot([x0, x1], [sy, ty], color=ecol, linestyle="-", linewidth=1.8, alpha=0.88, zorder=3)
-        elif etype == "verified_polypharmacology":
-            ax_net.plot([x0, x1], [sy, ty], color=PALETTE["graphsformer"], linestyle="--", linewidth=1.3, alpha=0.86, zorder=2)
-        else:
-            ax_net.plot([x0, x1], [sy, ty], color=PALETTE["slate_mid"], linestyle=":", linewidth=0.95, alpha=0.72, zorder=1)
-
-    # Draw 15 Clinical Hit ligand nodes + right-aligned labels in clean left margin
-    fam_dot_color = {
-        "EGFR": PALETTE["prism"],
-        "NMDA_2B": PALETTE["drugban"],
-        "MMP2": PALETTE["graphban"],
-    }
-    fam_edge_color = {
-        "EGFR": PALETTE["prism_dark"],
-        "NMDA_2B": PALETTE["drugban_dark"],
-        "MMP2": PALETTE["graphban_dark"],
-    }
-    for h_name, fam_key in hit_family.items():
-        hx, hy = node_pos[h_name]
-        ax_net.scatter(
-            [hx],
-            [hy],
-            s=36,
-            color=fam_dot_color[fam_key],
-            edgecolors=fam_edge_color[fam_key],
-            linewidths=0.9,
-            zorder=5,
-        )
-        ax_net.text(
-            hx - 0.020,
-            hy,
-            h_name,
-            ha="right",
-            va="center",
-            fontsize=7.1,
-            fontweight="bold",
-            color=PALETTE["slate_dark"],
-            zorder=6,
-        )
-
-    # Draw 6 Cold-Start Decoy nodes + right-side labels
-    for d_id, dx, dy, d_lbl in decoy_specs:
-        ax_net.scatter(
-            [dx],
-            [dy],
-            s=26,
-            marker="s",
-            color=PALETTE["other_base"],
-            edgecolors=PALETTE["slate_mid"],
-            linewidths=0.75,
-            zorder=5,
-        )
-        ax_net.text(
-            dx + 0.020,
-            dy,
-            d_lbl,
-            ha="left",
-            va="center",
-            fontsize=7.1,
-            color=PALETTE["slate_mid"],
-            fontweight="bold",
-            zorder=6,
-        )
-
-    # Draw 6 Target Hub badges + Homolog selectivity annotations on right
-    for t_id, (tx, ty, t_lbl, t_fc, t_tc, t_ec, is_prim) in target_hub_specs.items():
-        hw = hub_half_w
-        hh = 0.046 if is_prim else 0.044
-        ax_net.add_patch(
-            FancyBboxPatch(
-                (tx - hw, ty - hh),
-                2.0 * hw,
-                2.0 * hh,
-                boxstyle="round,pad=0.004,rounding_size=0.016",
-                facecolor=t_fc,
-                edgecolor=t_ec,
-                linewidth=1.15 if is_prim else 0.95,
-                zorder=6,
-            )
-        )
-        ax_net.text(
-            tx,
-            ty,
-            t_lbl,
-            ha="center",
-            va="center",
-            fontsize=7.2 if is_prim else 7.1,
-            fontweight="bold",
-            color=t_tc,
-            linespacing=1.04,
-            zorder=7,
-        )
-
-    # Right-column homolog selectivity notes 
-    homolog_notes = [
-        (0.678, 0.692, "Pan-HER (4/5)\nOsim. p = 0.41", PALETTE["amber_dark"]),
-        (0.678, 0.387, "5/5 Spared\n(p ≤ 0.165)", PALETTE["drugban_dark"]),
-        (0.678, 0.082, "Dual Zn(II)\nInhib. (5/5)", PALETTE["graphban_dark"]),
-    ]
-    for nx_pos, ny_pos, n_txt, n_col in homolog_notes:
-        ax_net.text(
-            nx_pos,
-            ny_pos,
-            n_txt,
-            ha="left",
-            va="center",
-            fontsize=7.1,
-            fontweight="bold",
-            color=n_col,
-            linespacing=1.06,
-            zorder=6,
-        )
-
-    # ---- Right Sub-Axis: AutoDock Vina Delta-G Hit vs. Decoy Comparison (N = 30) ----
-    ax_ar = fig.add_subplot(gs_a[0, 1])
-    per_t = dock_data["per_target_statistics"]
-    pooled = dock_data["pooled_statistics"]
-    t_keys = ["EGFR", "NMDA_2B", "MMP2"]
-    t_disp = ["EGFR\n(4G5J)", "NMDA 2B\n(5EWJ)", "MMP-2\n(1HOV)"]
-    x_t = np.arange(len(t_keys), dtype=float)
-    w_v = 0.32
-
-    hit_means_pos = [-float(per_t[tk]["hits_mean_dg_kcal_mol"]) for tk in t_keys]
-    hit_sds = [float(per_t[tk]["hits_sd_dg_kcal_mol"]) for tk in t_keys]
-    dec_means_pos = [-float(per_t[tk]["decoys_mean_dg_kcal_mol"]) for tk in t_keys]
-    dec_sds = [float(per_t[tk]["decoys_sd_dg_kcal_mol"]) for tk in t_keys]
-
-    bars_hit = ax_ar.bar(
-        x_t - w_v / 2.0,
-        hit_means_pos,
-        w_v,
-        yerr=hit_sds,
-        color=PALETTE["prism"],
-        edgecolor="none",
-        linewidth=0,
-        capsize=2.2,
-        error_kw=ERROR_KW_SLENDER,
-        label=f"Clinical Hits (n = {pooled['n_clinical_hits']})",
-        zorder=3,
+    gs_right = gridspec.GridSpecFromSubplotSpec(
+        2,
+        1,
+        subplot_spec=gs_outer[0, 1],
+        height_ratios=[1.22, 1.0],
+        hspace=0.24,
     )
-    bars_dec = ax_ar.bar(
-        x_t + w_v / 2.0,
-        dec_means_pos,
-        w_v,
-        yerr=dec_sds,
-        color=PALETTE["destin"],
-        alpha=0.82,
-        edgecolor="none",
-        linewidth=0,
-        capsize=2.2,
-        error_kw=ERROR_KW_SLENDER,
-        label=f"Cold-Start Decoys (n = {pooled['n_cold_start_decoys']})",
-        zorder=3,
-    )
-
-    # Gather exact individual complex Vina scores (15 hits + 15 decoys)
-    indiv_hits: Dict[str, List[float]] = {
-        tk: [-float(h["docking_score_kcal_mol"]) for h in per_t[tk]["hits_table"]]
-        for tk in t_keys
-    }
-    indiv_decs: Dict[str, List[float]] = {tk: [] for tk in t_keys}
-    if docking_30_rows:
-        for r in docking_30_rows:
-            if r.get("role") == "cold_start_decoy" and r.get("target") in indiv_decs:
-                indiv_decs[r["target"]].append(-float(r["docking_score_kcal_mol"]))
-    else:
-        for e in edges:
-            if e["edge_type"] == "rejected_decoy" and e["vina_dg"] is not None:
-                indiv_decs[e["target"]].append(-float(e["vina_dg"]))
-
-    jit_offsets = np.linspace(-0.085, 0.085, 5)
-    for idx_t, tk in enumerate(t_keys):
-        h_pts = sorted(indiv_hits[tk])
-        ax_ar.scatter(
-            np.full(len(h_pts), x_t[idx_t] - w_v / 2.0) + jit_offsets[: len(h_pts)],
-            h_pts,
-            s=17,
-            color=PALETTE["prism_dark"],
-            alpha=0.88,
-            edgecolors="#FFFFFF",
-            linewidths=0.45,
-            zorder=4,
-        )
-        d_pts = sorted(indiv_decs[tk])
-        if d_pts:
-            ax_ar.scatter(
-                np.full(len(d_pts), x_t[idx_t] + w_v / 2.0) + jit_offsets[: len(d_pts)],
-                d_pts,
-                s=16,
-                color=PALETTE["destin_dark"],
-                alpha=0.85,
-                edgecolors="#FFFFFF",
-                linewidths=0.45,
-                zorder=4,
-            )
-
-        # Signed kcal/mol value labels cleanly above both errorbar caps & highest complex dot
-        top_h = max([hit_means_pos[idx_t] + hit_sds[idx_t]] + h_pts)
-        ax_ar.text(
-            bars_hit[idx_t].get_x() + bars_hit[idx_t].get_width() / 2.0,
-            top_h + 0.26,
-            f"−{hit_means_pos[idx_t]:.2f}",
-            ha="center",
-            va="bottom",
-            fontsize=7.2,
-            fontweight="bold",
-            color=PALETTE["prism_dark"],
-            path_effects=[patheffects.withStroke(linewidth=2.0, foreground="#FFFFFF")],
-            zorder=6,
-        )
-        top_d = max([dec_means_pos[idx_t] + dec_sds[idx_t]] + d_pts)
-        ax_ar.text(
-            bars_dec[idx_t].get_x() + bars_dec[idx_t].get_width() / 2.0,
-            top_d + 0.26,
-            f"−{dec_means_pos[idx_t]:.2f}",
-            ha="center",
-            va="bottom",
-            fontsize=7.2,
-            fontweight="bold",
-            color=PALETTE["destin_dark"],
-            path_effects=[patheffects.withStroke(linewidth=2.0, foreground="#FFFFFF")],
-            zorder=6,
-        )
-
-    ax_ar.text(
-        0.50,
-        0.840,
-        f"Pooled: −{abs(pooled['hits_mean_dg_kcal_mol']):.2f} vs. −{abs(pooled['decoys_mean_dg_kcal_mol']):.2f} kcal/mol\n"
-        f"ΔΔG = −{abs(pooled['mean_ddg_advantage_kcal_mol']):.2f} kcal/mol (MW p = 5.25e-4)\n"
-        f"Spearman ρ = {pooled['spearman_rho_neg_dg_vs_prism']:.3f} (N = 30)",
-        transform=ax_ar.transAxes,
-        ha="center",
-        va="top",
-        fontsize=7.1,
-        fontweight="bold",
-        color=PALETTE["slate_dark"],
-        linespacing=1.15,
-        bbox=dict(
-            boxstyle="round,pad=0.20",
-            facecolor=PALETTE["prism_light"],
-            edgecolor=PALETTE["prism"],
-            lw=0.80,
-            alpha=0.96,
-        ),
-        zorder=6,
-    )
-
-    ax_ar.set_xticks(x_t)
-    ax_ar.set_xticklabels(t_disp, fontsize=8.2, fontweight="bold")
-    ax_ar.set_xlim(-0.54, 2.54)
-    ax_ar.set_ylim(0.0, 19.8)
-    ax_ar.set_yticks([0, 3, 6, 9, 12])
-    ax_ar.set_ylabel("$-\\Delta G_{\\mathrm{Vina}}$ (kcal/mol, $\\uparrow$ stronger)", fontsize=10.3)
-    ax_ar.grid(axis="y", linestyle="--", zorder=0)
-    style_borderless_legend(
-        ax_ar.legend(
-            loc="upper center",
-            bbox_to_anchor=(0.50, 1.002),
-            ncol=1,
-            frameon=True,
-            facecolor="#FFFFFF",
-            edgecolor=PALETTE["frame_border"],
-            framealpha=0.95,
-            fontsize=7.2,
-            labelspacing=0.16,
-            handlelength=1.15,
-        )
-    )
-    ax_ar.spines["top"].set_visible(False)
-    ax_ar.spines["right"].set_visible(False)
 
     # -------------------------------------------------------------------------
-    # Panels B, C, D (gs[0, 1], gs[1, 0], gs[1, 1]): 3D PyMOL Pocket & 2D Atom Weights
+    # Left Column (gs_left[0..2, 0]): Tall 3D PyMOL + 2D RDKit Attribution Cards (A, B, C)
     # -------------------------------------------------------------------------
     flagship = dock_data["flagship_3d_complexes"]
     egfr_f = flagship["EGFR"]
@@ -3791,9 +3411,9 @@ def generate_fig10_network_and_3d_docking(
 
     panel_configs = [
         (
-            gs[0, 1],
+            gs_left[0, 0],
             "EGFR",
-            "B  EGFR (4G5J): Afatinib 3D & 2D Attribution",
+            "A  EGFR (4G5J): Afatinib 3D & 2D Attribution",
             PALETTE["terra_bg"],
             PALETTE["terra_border"],
             PALETTE["prism_dark"],
@@ -3805,9 +3425,9 @@ def generate_fig10_network_and_3d_docking(
             "Quinazoline 0.92 · Phenolic 0.93 · Acrylamide 0.88",
         ),
         (
-            gs[1, 0],
+            gs_left[1, 0],
             "NMDA_2B",
-            "C  NMDA 2B (5EWJ): ATD Cleft & 2D Attribution",
+            "B  NMDA 2B (5EWJ): ATD Cleft & 2D Attribution",
             PALETTE["mod3_bg"],
             PALETTE["mod3_border"],
             PALETTE["drugban_dark"],
@@ -3820,9 +3440,9 @@ def generate_fig10_network_and_3d_docking(
             "Phenolic OH 0.93 · Piperidine 0.82 · Benzyl 0.72",
         ),
         (
-            gs[1, 1],
+            gs_left[2, 0],
             "MMP2",
-            "D  MMP-2 (1HOV): Catalytic Pocket & 2D Weights",
+            "C  MMP-2 (1HOV): Catalytic Pocket & 2D Weights",
             PALETTE["mod2_bg"],
             PALETTE["mod2_border"],
             PALETTE["graphban_dark"],
@@ -3838,12 +3458,11 @@ def generate_fig10_network_and_3d_docking(
     for sub_spec, f_key, p_title, strip_fc, card_ec, accent_tc, strip_txt, pharm_txt in panel_configs:
         f_info = flagship[f_key]
 
-        # Outer rounded color palette card frame + panel title
         ax_card = fig.add_subplot(sub_spec)
         ax_card.set_xlim(0.0, 1.0)
         ax_card.set_ylim(0.0, 1.0)
         ax_card.axis("off")
-        ax_card.set_title(p_title, loc="left", pad=10.2, fontsize=14.8, color=PALETTE["slate_dark"])
+        ax_card.set_title(p_title, loc="left", pad=10.2, fontsize=15.2, color=PALETTE["slate_dark"])
         ax_card.add_patch(
             FancyBboxPatch(
                 (0.004, 0.004),
@@ -3852,64 +3471,78 @@ def generate_fig10_network_and_3d_docking(
                 boxstyle="round,pad=0.003,rounding_size=0.018",
                 facecolor="#FFFFFF",
                 edgecolor=card_ec,
-                linewidth=1.0,
+                linewidth=1.05,
                 zorder=0,
             )
         )
         # Subtle vertical divider between 3D PyMOL pocket and 2D RDKit atom weights
-        ax_card.plot([0.568, 0.568], [0.145, 0.965], color="#E2E8F0", linewidth=0.85, linestyle="-", zorder=2)
+        ax_card.plot([0.562, 0.562], [0.142, 0.968], color="#E2E8F0", linewidth=0.90, linestyle="-", zorder=2)
 
         gs_inner = gridspec.GridSpecFromSubplotSpec(
             2,
             2,
             subplot_spec=sub_spec,
-            width_ratios=[1.32, 1.0],
-            height_ratios=[1.0, 0.138],
-            wspace=0.04,
+            width_ratios=[1.30, 1.0],
+            height_ratios=[1.0, 0.136],
+            wspace=0.03,
             hspace=0.02,
         )
 
-        # Left sub-axis: Auto-cropped, HSV-clamped PyMOL 3D pocket render
+        # Left sub-axis: Tightly trimmed, HSV-clamped PyMOL 3D pocket render filling taller card
         ax_3d = fig.add_subplot(gs_inner[0, 0])
         pymol_path = Path(f_info["pymol_png"])
         if not pymol_path.exists():
             pymol_path = ROOT_DIR / "docking_3d" / "pymol_sessions" / pymol_path.name
-        img_3d = load_trimmed_image(pymol_path, pad=14, top_pad=105, bottom_pad=12, min_aspect_wh=0.0, max_sat=0.64)
+        img_3d = load_trimmed_img(
+            pymol_path,
+            pad=10,
+            top_pad=90,
+            bottom_pad=10,
+            min_aspect_wh=1.48,
+            max_sat=0.64,
+        )
         ax_3d.imshow(img_3d, aspect="equal")
         ax_3d.axis("off")
         ax_3d.text(
-            0.025,
-            0.975,
+            0.022,
+            0.974,
             "PyMOL 3D Docked Pose vs. X-Ray Ref",
             transform=ax_3d.transAxes,
             ha="left",
             va="top",
-            fontsize=7.2,
+            fontsize=7.6,
             fontweight="bold",
             color=accent_tc,
-            bbox=dict(boxstyle="round,pad=0.20", facecolor=strip_fc, edgecolor=card_ec, lw=0.75, alpha=0.95),
+            bbox=dict(boxstyle="round,pad=0.22", facecolor=strip_fc, edgecolor=card_ec, lw=0.80, alpha=0.96),
             zorder=5,
         )
 
-        # Right sub-axis: Auto-cropped, HSV-clamped RDKit 2D bilinear atom-weight structure
+        # Right sub-axis: Tightly trimmed, HSV-clamped RDKit 2D bilinear atom-weight structure
         ax_2d = fig.add_subplot(gs_inner[0, 1])
         rdkit_path = Path(f_info["rdkit_2d_png"])
         if not rdkit_path.exists():
             rdkit_path = ROOT_DIR / "docking_3d" / "rdkit_2d_weights" / rdkit_path.name
-        img_2d = load_trimmed_image(rdkit_path, pad=14, top_pad=84, bottom_pad=162, min_aspect_wh=0.92, max_sat=0.64)
+        img_2d = load_trimmed_img(
+            rdkit_path,
+            pad=10,
+            top_pad=76,
+            bottom_pad=148,
+            min_aspect_wh=1.14,
+            max_sat=0.64,
+        )
         ax_2d.imshow(img_2d, aspect="equal")
         ax_2d.axis("off")
         ax_2d.text(
-            0.03,
-            0.975,
+            0.025,
+            0.974,
             f"PRISM-CPI 2D Atom Weights ({f_info['drug_name']})",
             transform=ax_2d.transAxes,
             ha="left",
             va="top",
-            fontsize=7.2,
+            fontsize=7.6,
             fontweight="bold",
             color=accent_tc,
-            bbox=dict(boxstyle="round,pad=0.20", facecolor=strip_fc, edgecolor=card_ec, lw=0.75, alpha=0.95),
+            bbox=dict(boxstyle="round,pad=0.22", facecolor=strip_fc, edgecolor=card_ec, lw=0.80, alpha=0.96),
             zorder=5,
         )
 
@@ -3924,28 +3557,28 @@ def generate_fig10_network_and_3d_docking(
             drug_cmap_stops.get(f_info["drug_name"], drug_cmap_stops["Afatinib"]),
             N=256,
         )
-        cax_2d = ax_2d.inset_axes([0.13, 0.130, 0.74, 0.032])
+        cax_2d = ax_2d.inset_axes([0.12, 0.132, 0.76, 0.034])
         grad_arr = np.linspace(0.0, 1.0, 256).reshape(1, -1)
         cax_2d.imshow(grad_arr, aspect="auto", cmap=atom_thermal_cmap, extent=[0.45, 0.95, 0.0, 1.0])
         cax_2d.set_yticks([])
         cax_2d.set_xticks([0.45, 0.70, 0.95])
-        cax_2d.set_xticklabels(["0.45 (Cut)", "0.70", "0.95 (Peak)"], fontsize=7.2, fontweight="bold", color=PALETTE["slate_dark"])
-        cax_2d.tick_params(axis="x", length=1.8, pad=1.4, width=0.6, colors=PALETTE["slate_mid"])
+        cax_2d.set_xticklabels(["0.45 (Cut)", "0.70", "0.95 (Peak)"], fontsize=7.5, fontweight="bold", color=PALETTE["slate_dark"])
+        cax_2d.tick_params(axis="x", length=2.0, pad=1.6, width=0.65, colors=PALETTE["slate_mid"])
         for sp_c in cax_2d.spines.values():
             sp_c.set_edgecolor(PALETTE["frame_border"])
-            sp_c.set_linewidth(0.55)
+            sp_c.set_linewidth(0.60)
 
         ax_2d.text(
             0.50,
-            0.012,
+            0.014,
             pharm_txt,
             transform=ax_2d.transAxes,
             ha="center",
             va="bottom",
-            fontsize=7.15,
+            fontsize=7.5,
             fontweight="bold",
             color=PALETTE["slate_mid"],
-            bbox=dict(boxstyle="round,pad=0.16", facecolor="#F8FAFC", edgecolor=PALETTE["frame_border"], lw=0.6, alpha=0.94),
+            bbox=dict(boxstyle="round,pad=0.18", facecolor="#F8FAFC", edgecolor=PALETTE["frame_border"], lw=0.65, alpha=0.95),
             zorder=5,
         )
 
@@ -3962,7 +3595,7 @@ def generate_fig10_network_and_3d_docking(
                 boxstyle="round,pad=0.004,rounding_size=0.020",
                 facecolor=strip_fc,
                 edgecolor=card_ec,
-                linewidth=0.75,
+                linewidth=0.80,
                 zorder=1,
             )
         )
@@ -3972,11 +3605,411 @@ def generate_fig10_network_and_3d_docking(
             strip_txt,
             ha="center",
             va="center",
-            fontsize=7.3,
+            fontsize=7.6,
             fontweight="bold",
             color=PALETTE["slate_dark"],
             zorder=3,
         )
+
+    # -------------------------------------------------------------------------
+    # Top-Right (gs_right[0, 0]): Panel D — Cold-Start CPI & Polypharmacology Network
+    # -------------------------------------------------------------------------
+    ax_net = fig.add_subplot(gs_right[0, 0])
+    ax_net.set_xlim(0.0, 1.0)
+    ax_net.set_ylim(0.0, 1.0)
+    ax_net.axis("off")
+    ax_net.set_title(
+        "D  Cold-Start CPI & Polypharmacology Network",
+        loc="left",
+        pad=10.2,
+        fontsize=15.2,
+        color=PALETTE["slate_dark"],
+    )
+
+    net = dock_data["bipartite_cpi_network"]
+    edges = net["edges"]
+
+    # Generous 5-Family Reference horizontal bands (EGFR/HER2, NMDA 2B/GluN2A, MMP-2/MMP-9)
+    family_bands = [
+        (0.630, 0.910, PALETTE["terra_bg"], PALETTE["terra_border"]),
+        (0.325, 0.605, PALETTE["mod3_bg"], PALETTE["mod3_border"]),
+        (0.020, 0.300, PALETTE["mod2_bg"], PALETTE["mod2_border"]),
+    ]
+    for yb0, yb1, b_fc, b_ec in family_bands:
+        ax_net.add_patch(
+            FancyBboxPatch(
+                (0.006, yb0),
+                0.988,
+                yb1 - yb0,
+                boxstyle="round,pad=0.004,rounding_size=0.018",
+                facecolor=b_fc,
+                edgecolor=b_ec,
+                linewidth=0.85,
+                alpha=0.90,
+                zorder=0,
+            )
+        )
+
+    edge_leg_handles = [
+        Line2D([0], [0], color=PALETTE["prism_dark"], linestyle="-", linewidth=2.1, label="Primary (p ≥ 0.96)"),
+        Line2D([0], [0], color=PALETTE["amber_dark"], linestyle="--", linewidth=1.55, label="Polypharm."),
+        Line2D([0], [0], color=PALETTE["slate_mid"], linestyle=":", linewidth=1.25, label="Decoy"),
+    ]
+    style_borderless_legend(
+        ax_net.legend(
+            handles=edge_leg_handles,
+            loc="upper center",
+            bbox_to_anchor=(0.50, 0.995),
+            ncol=3,
+            frameon=True,
+            facecolor="#FFFFFF",
+            edgecolor=PALETTE["frame_border"],
+            framealpha=0.96,
+            fontsize=8.0,
+            columnspacing=1.10,
+            handlelength=1.65,
+            handletextpad=0.40,
+            borderpad=0.28,
+        )
+    )
+
+    x_hit = 0.228
+    x_hub = 0.530
+    x_dec = 0.805
+    hub_half_w = 0.090
+
+    egfr_hits = ["Afatinib", "Dacomitinib", "Osimertinib", "Lapatinib", "Neratinib"]
+    nmda_hits = ["Ifenprodil", "Traxoprodil", "Ro 25-6981", "Eliprodil", "Rislenemdaz"]
+    mmp2_hits = ["Prinomastat", "Ilomastat", "Batimastat", "Marimastat", "Tanomastat"]
+
+    node_pos: Dict[str, Tuple[float, float]] = {}
+    hit_family: Dict[str, str] = {}
+    for fam_key, h_list, y_top, y_bot in [
+        ("EGFR", egfr_hits, 0.880, 0.660),
+        ("NMDA_2B", nmda_hits, 0.575, 0.355),
+        ("MMP2", mmp2_hits, 0.270, 0.050),
+    ]:
+        for h_name, y_val in zip(h_list, np.linspace(y_top, y_bot, 5)):
+            node_pos[h_name] = (x_hit, float(y_val))
+            hit_family[h_name] = fam_key
+
+    target_hub_specs = {
+        "EGFR": (x_hub, 0.830, "EGFR\n(4G5J)", PALETTE["prism_dark"], "#FFFFFF", PALETTE["prism_dark"], True),
+        "ERBB2": (x_hub, 0.696, "HER2\n(ERBB2)", PALETTE["ochre_sub"], PALETTE["amber_dark"], PALETTE["amber_dark"], False),
+        "NMDA_2B": (x_hub, 0.525, "NMDA 2B\n(5EWJ)", PALETTE["drugban_dark"], "#FFFFFF", PALETTE["drugban_dark"], True),
+        "GRIN2A": (x_hub, 0.391, "GluN2A\n(GRIN2A)", PALETTE["slate_light"], PALETTE["slate_dark"], PALETTE["slate_mid"], False),
+        "MMP2": (x_hub, 0.220, "MMP-2\n(1HOV)", PALETTE["graphban_dark"], "#FFFFFF", PALETTE["graphban_dark"], True),
+        "MMP9": (x_hub, 0.086, "MMP-9\n(Homolog)", PALETTE["ochre_sub"], PALETTE["amber_dark"], PALETTE["amber_dark"], False),
+    }
+    for t_id, (tx, ty, _, _, _, _, _) in target_hub_specs.items():
+        node_pos[t_id] = (tx, ty)
+
+    decoy_specs = [
+        ("EGFR_Decoy1", x_dec, 0.864, "Decoy 1"),
+        ("EGFR_Decoy2", x_dec, 0.798, "Decoy 2"),
+        ("NMDA_2B_Decoy1", x_dec, 0.559, "Decoy 1"),
+        ("NMDA_2B_Decoy2", x_dec, 0.493, "Decoy 2"),
+        ("MMP2_Decoy1", x_dec, 0.254, "Decoy 1"),
+        ("MMP2_Decoy2", x_dec, 0.188, "Decoy 2"),
+    ]
+    for d_id, dx, dy, _ in decoy_specs:
+        node_pos[d_id] = (dx, dy)
+
+    primary_edge_colors = {
+        "EGFR": PALETTE["prism_dark"],
+        "NMDA_2B": PALETTE["drugban_dark"],
+        "MMP2": PALETTE["graphban_dark"],
+    }
+
+    for e in edges:
+        src = e["source"]
+        tgt = e["target"]
+        etype = e["edge_type"]
+        sx, sy = node_pos[src]
+        tx, ty = node_pos[tgt]
+        if sx < tx:
+            x0, x1 = sx + 0.011, tx - hub_half_w
+        else:
+            x0, x1 = sx - 0.011, tx + hub_half_w
+
+        if etype == "verified_primary_hit":
+            ecol = primary_edge_colors.get(tgt, PALETTE["prism_dark"])
+            ax_net.plot([x0, x1], [sy, ty], color=ecol, linestyle="-", linewidth=2.0, alpha=0.88, zorder=3)
+        elif etype == "verified_polypharmacology":
+            ax_net.plot([x0, x1], [sy, ty], color=PALETTE["graphsformer"], linestyle="--", linewidth=1.45, alpha=0.86, zorder=2)
+        else:
+            ax_net.plot([x0, x1], [sy, ty], color=PALETTE["slate_mid"], linestyle=":", linewidth=1.15, alpha=0.75, zorder=1)
+
+    fam_dot_color = {
+        "EGFR": PALETTE["prism"],
+        "NMDA_2B": PALETTE["drugban"],
+        "MMP2": PALETTE["graphban"],
+    }
+    fam_edge_color = {
+        "EGFR": PALETTE["prism_dark"],
+        "NMDA_2B": PALETTE["drugban_dark"],
+        "MMP2": PALETTE["graphban_dark"],
+    }
+    for h_name, fam_key in hit_family.items():
+        hx, hy = node_pos[h_name]
+        ax_net.scatter(
+            [hx],
+            [hy],
+            s=56,
+            color=fam_dot_color[fam_key],
+            edgecolors=fam_edge_color[fam_key],
+            linewidths=1.05,
+            zorder=5,
+        )
+        ax_net.text(
+            hx - 0.018,
+            hy,
+            h_name,
+            ha="right",
+            va="center",
+            fontsize=8.1,
+            fontweight="bold",
+            color=PALETTE["slate_dark"],
+            zorder=6,
+        )
+
+    for d_id, dx, dy, d_lbl in decoy_specs:
+        ax_net.scatter(
+            [dx],
+            [dy],
+            s=42,
+            marker="s",
+            color=PALETTE["other_base"],
+            edgecolors=PALETTE["slate_mid"],
+            linewidths=0.90,
+            zorder=5,
+        )
+        ax_net.text(
+            dx + 0.018,
+            dy,
+            d_lbl,
+            ha="left",
+            va="center",
+            fontsize=8.0,
+            color=PALETTE["slate_mid"],
+            fontweight="bold",
+            zorder=6,
+        )
+
+    for t_id, (tx, ty, t_lbl, t_fc, t_tc, t_ec, is_prim) in target_hub_specs.items():
+        hw = hub_half_w
+        hh = 0.047 if is_prim else 0.045
+        ax_net.add_patch(
+            FancyBboxPatch(
+                (tx - hw, ty - hh),
+                2.0 * hw,
+                2.0 * hh,
+                boxstyle="round,pad=0.004,rounding_size=0.016",
+                facecolor=t_fc,
+                edgecolor=t_ec,
+                linewidth=1.25 if is_prim else 1.0,
+                zorder=6,
+            )
+        )
+        ax_net.text(
+            tx,
+            ty,
+            t_lbl,
+            ha="center",
+            va="center",
+            fontsize=8.3 if is_prim else 8.0,
+            fontweight="bold",
+            color=t_tc,
+            linespacing=1.06,
+            zorder=7,
+        )
+
+    homolog_notes = [
+        (0.655, 0.696, "Pan-HER (4/5)\nOsim. p = 0.41", PALETTE["amber_dark"], "#FFFFFF", PALETTE["ochre_border"]),
+        (0.655, 0.391, "5/5 Spared\n(p ≤ 0.165)", PALETTE["drugban_dark"], "#FFFFFF", PALETTE["mod3_border"]),
+        (0.655, 0.086, "Dual Zn(II) Inhib.\n(5/5 Hits)", PALETTE["graphban_dark"], "#FFFFFF", PALETTE["mod2_border"]),
+    ]
+    for nx_pos, ny_pos, n_txt, n_col, n_bg, n_ec in homolog_notes:
+        ax_net.text(
+            nx_pos,
+            ny_pos,
+            n_txt,
+            ha="left",
+            va="center",
+            fontsize=7.9,
+            fontweight="bold",
+            color=n_col,
+            linespacing=1.08,
+            bbox=dict(boxstyle="round,pad=0.18", facecolor=n_bg, edgecolor=n_ec, lw=0.70, alpha=0.92),
+            zorder=6,
+        )
+
+    # -------------------------------------------------------------------------
+    # Bottom-Right (gs_right[1, 0]): Panel E — 30-Complex AutoDock Vina Validation
+    # -------------------------------------------------------------------------
+    ax_ar = fig.add_subplot(gs_right[1, 0])
+    per_t = dock_data["per_target_statistics"]
+    pooled = dock_data["pooled_statistics"]
+    t_keys = ["EGFR", "NMDA_2B", "MMP2"]
+    t_disp = ["EGFR (4G5J)", "NMDA 2B (5EWJ)", "MMP-2 (1HOV)"]
+    x_t = np.arange(len(t_keys), dtype=float)
+    w_v = 0.31
+
+    hit_means_pos = [-float(per_t[tk]["hits_mean_dg_kcal_mol"]) for tk in t_keys]
+    hit_sds = [float(per_t[tk]["hits_sd_dg_kcal_mol"]) for tk in t_keys]
+    dec_means_pos = [-float(per_t[tk]["decoys_mean_dg_kcal_mol"]) for tk in t_keys]
+    dec_sds = [float(per_t[tk]["decoys_sd_dg_kcal_mol"]) for tk in t_keys]
+
+    bars_hit = ax_ar.bar(
+        x_t - w_v / 2.0,
+        hit_means_pos,
+        w_v,
+        yerr=hit_sds,
+        color=PALETTE["prism"],
+        edgecolor="none",
+        linewidth=0,
+        capsize=2.5,
+        error_kw=ERROR_KW_SLENDER,
+        label=f"Clinical Hits (n = {pooled['n_clinical_hits']})",
+        zorder=3,
+    )
+    bars_dec = ax_ar.bar(
+        x_t + w_v / 2.0,
+        dec_means_pos,
+        w_v,
+        yerr=dec_sds,
+        color=PALETTE["destin"],
+        alpha=0.85,
+        edgecolor="none",
+        linewidth=0,
+        capsize=2.5,
+        error_kw=ERROR_KW_SLENDER,
+        label=f"Cold-Start Decoys (n = {pooled['n_cold_start_decoys']})",
+        zorder=3,
+    )
+
+    indiv_hits: Dict[str, List[float]] = {
+        tk: [-float(h["docking_score_kcal_mol"]) for h in per_t[tk]["hits_table"]]
+        for tk in t_keys
+    }
+    indiv_decs: Dict[str, List[float]] = {tk: [] for tk in t_keys}
+    if docking_30_rows:
+        for r in docking_30_rows:
+            if r.get("role") == "cold_start_decoy" and r.get("target") in indiv_decs:
+                indiv_decs[r["target"]].append(-float(r["docking_score_kcal_mol"]))
+    else:
+        for e in edges:
+            if e["edge_type"] == "rejected_decoy" and e["vina_dg"] is not None:
+                indiv_decs[e["target"]].append(-float(e["vina_dg"]))
+
+    jit_offsets = np.linspace(-0.082, 0.082, 5)
+    for idx_t, tk in enumerate(t_keys):
+        h_pts = sorted(indiv_hits[tk])
+        ax_ar.scatter(
+            np.full(len(h_pts), x_t[idx_t] - w_v / 2.0) + jit_offsets[: len(h_pts)],
+            h_pts,
+            s=26,
+            color=PALETTE["prism_dark"],
+            alpha=0.90,
+            edgecolors="#FFFFFF",
+            linewidths=0.55,
+            zorder=4,
+        )
+        d_pts = sorted(indiv_decs[tk])
+        if d_pts:
+            ax_ar.scatter(
+                np.full(len(d_pts), x_t[idx_t] + w_v / 2.0) + jit_offsets[: len(d_pts)],
+                d_pts,
+                s=24,
+                color=PALETTE["destin_dark"],
+                alpha=0.88,
+                edgecolors="#FFFFFF",
+                linewidths=0.55,
+                zorder=4,
+            )
+
+        top_h = max([hit_means_pos[idx_t] + hit_sds[idx_t]] + h_pts)
+        ax_ar.text(
+            bars_hit[idx_t].get_x() + bars_hit[idx_t].get_width() / 2.0,
+            top_h + 0.24,
+            f"−{hit_means_pos[idx_t]:.2f}",
+            ha="center",
+            va="bottom",
+            fontsize=8.0,
+            fontweight="bold",
+            color=PALETTE["prism_dark"],
+            path_effects=[patheffects.withStroke(linewidth=2.0, foreground="#FFFFFF")],
+            zorder=6,
+        )
+        top_d = max([dec_means_pos[idx_t] + dec_sds[idx_t]] + d_pts)
+        ax_ar.text(
+            bars_dec[idx_t].get_x() + bars_dec[idx_t].get_width() / 2.0,
+            top_d + 0.24,
+            f"−{dec_means_pos[idx_t]:.2f}",
+            ha="center",
+            va="bottom",
+            fontsize=8.0,
+            fontweight="bold",
+            color=PALETTE["destin_dark"],
+            path_effects=[patheffects.withStroke(linewidth=2.0, foreground="#FFFFFF")],
+            zorder=6,
+        )
+
+    ax_ar.text(
+        0.50,
+        0.885,
+        f"Pooled: −{abs(pooled['hits_mean_dg_kcal_mol']):.2f} vs. −{abs(pooled['decoys_mean_dg_kcal_mol']):.2f} kcal/mol "
+        f"| ΔΔG = −{abs(pooled['mean_ddg_advantage_kcal_mol']):.2f} kcal/mol (MW p = 5.25e-4)\n"
+        f"Spearman ρ = {pooled['spearman_rho_neg_dg_vs_prism']:.3f} (N = 30)",
+        transform=ax_ar.transAxes,
+        ha="center",
+        va="top",
+        fontsize=7.8,
+        fontweight="bold",
+        color=PALETTE["slate_dark"],
+        linespacing=1.18,
+        bbox=dict(
+            boxstyle="round,pad=0.24",
+            facecolor=PALETTE["prism_light"],
+            edgecolor=PALETTE["prism"],
+            lw=0.85,
+            alpha=0.96,
+        ),
+        zorder=6,
+    )
+
+    ax_ar.set_xticks(x_t)
+    ax_ar.set_xticklabels(t_disp, fontsize=8.8, fontweight="bold")
+    ax_ar.set_xlim(-0.56, 2.56)
+    ax_ar.set_ylim(0.0, 16.0)
+    ax_ar.set_yticks([0, 3, 6, 9, 12, 15])
+    ax_ar.set_ylabel("$-\\Delta G_{\\mathrm{Vina}}$ (kcal/mol, $\\uparrow$ stronger)", fontsize=10.3)
+    ax_ar.set_title(
+        "E  30-Complex AutoDock Vina Validation",
+        loc="left",
+        pad=10.2,
+        fontsize=15.2,
+        color=PALETTE["slate_dark"],
+    )
+    ax_ar.grid(axis="y", linestyle="--", zorder=0)
+    style_borderless_legend(
+        ax_ar.legend(
+            loc="upper center",
+            bbox_to_anchor=(0.50, 0.995),
+            ncol=2,
+            frameon=True,
+            facecolor="#FFFFFF",
+            edgecolor=PALETTE["frame_border"],
+            framealpha=0.96,
+            fontsize=8.0,
+            columnspacing=1.20,
+            handlelength=1.40,
+            handletextpad=0.40,
+            borderpad=0.28,
+        )
+    )
+    ax_ar.spines["top"].set_visible(False)
+    ax_ar.spines["right"].set_visible(False)
 
     save_dual_format(fig, "fig10_network_and_3d_docking", dpi=320, pad_inches=0.01)
 

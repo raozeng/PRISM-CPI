@@ -1756,14 +1756,20 @@ def render_graphical_abstract(
     ms_dir: Optional[Path] = None,
     metrics_data: Optional[dict] = None,
 ) -> None:
-    """Renders the graphical abstract (16:10 aspect ratio) into figures/."""
+    """Renders an ACS JCIM Table of Contents (TOC) Graphic ('For Table of Contents Only')
+    strictly within 3.25 in x 1.75 in (8.25 cm x 4.45 cm, 600 DPI -> 1950 x 1050 px,
+    234.0 x 126.0 pt PDF) with zero manuscript title banner, 6.3-7.6 pt bold actual-size
+    typography, 100% borderless bars, and the 5-Family Reference Academic Palette."""
     import json
+    from matplotlib.transforms import Bbox
+    from PIL import Image
 
     if metrics_data is None:
-        ms_path = figures_dir.parent / "results" / "metrics_summary.json"
-        if ms_path.exists():
-            with open(ms_path, "r", encoding="utf-8") as f:
-                metrics_data = json.load(f)
+        lf_path = figures_dir.parent / "locked_facts.json"
+        if lf_path.exists():
+            with open(lf_path, "r", encoding="utf-8") as f:
+                lf = json.load(f)
+            metrics_data = lf["metrics_data"]["results/metrics_summary.json"]
 
     if metrics_data is not None:
         ind = metrics_data["inductive_sota"]
@@ -1782,378 +1788,490 @@ def render_graphical_abstract(
         bdb_pr, bdb_de, bdb_gain = 0.6046, 0.5162, 17.1
         hit_rate = 90
 
-    fig = plt.figure(figsize=(13.6, 8.2), dpi=300)
-    ax = fig.add_axes([0.0, 0.0, 1.0, 1.0])
-    ax.set_xlim(0.0, 13.6)
-    ax.set_ylim(0.0, 8.2)
+    W_IN, H_IN, TOC_DPI = 3.25, 1.75, 600
+    fig = plt.figure(figsize=(W_IN, H_IN), dpi=TOC_DPI, facecolor="#FFFFFF")
+    ax = fig.add_axes([0.0, 0.0, 1.0, 1.0], facecolor="#FFFFFF")
+    ax.set_xlim(0.0, W_IN)
+    ax.set_ylim(0.0, H_IN)
     ax.axis("off")
 
-    # Top title banner
-    top_bar = FancyBboxPatch(
-        (0.14, 7.36),
-        13.32,
-        0.68,
-        boxstyle="round,pad=0.0,rounding_size=0.10",
-        facecolor="#2E4D72",
-        edgecolor="#1E3550",
-        linewidth=1.6,
-        zorder=2,
-    )
-    ax.add_patch(top_bar)
-    ax.text(
-        6.80,
-        7.78,
-        "PRISM-CPI: Pocket-Resolved Induced-Fit & Structure-Seeded Distillation",
-        ha="center",
-        va="center",
-        fontsize=15.6,
-        fontweight="bold",
-        color="#FFFFFF",
-        zorder=5,
-    )
-    ax.text(
-        6.80,
-        7.50,
-        "Genome-Wide 3D Compound-Protein Interaction Prediction Under Cold-Cluster Generalization",
-        ha="center",
-        va="center",
-        fontsize=11.2,
-        fontweight="bold",
-        color="#FFFFFF",
-        zorder=5,
-    )
+    # Pure white background canvas (no outer title banner per ACS JCIM TOC spec)
+    ax.add_patch(Rectangle((0.0, 0.0), W_IN, H_IN, facecolor="#FFFFFF", edgecolor="none", linewidth=0, zorder=0))
+
+    def toc_column(
+        x: float,
+        y: float,
+        w: float,
+        h: float,
+        title: str,
+        bg_fc: str,
+        border_ec: str,
+        header_fc: str,
+        header_h: float = 0.210,
+        title_fs: float = 7.2,
+    ) -> None:
+        ax.add_patch(
+            FancyBboxPatch(
+                (x, y),
+                w,
+                h,
+                boxstyle="round,pad=0.0,rounding_size=0.045",
+                facecolor=bg_fc,
+                edgecolor=border_ec,
+                linewidth=0.85,
+                zorder=1,
+            )
+        )
+        hy = y + h - header_h
+        ax.add_patch(
+            FancyBboxPatch(
+                (x, hy),
+                w,
+                header_h,
+                boxstyle="round,pad=0.0,rounding_size=0.042",
+                facecolor=header_fc,
+                edgecolor=border_ec,
+                linewidth=0.75,
+                zorder=2,
+            )
+        )
+        ax.add_patch(
+            Rectangle(
+                (x + 0.008, hy),
+                w - 0.016,
+                header_h * 0.48,
+                facecolor=header_fc,
+                edgecolor="none",
+                linewidth=0,
+                zorder=2,
+            )
+        )
+        ax.text(
+            x + w / 2.0,
+            hy + header_h / 2.0,
+            title,
+            ha="center",
+            va="center",
+            fontsize=title_fs,
+            fontweight="bold",
+            color="#FFFFFF",
+            zorder=4,
+        )
+
+    def toc_card(
+        x: float,
+        y: float,
+        w: float,
+        h: float,
+        title: str,
+        fc: str,
+        ec: str,
+        header_fc: str,
+        title_col: str,
+        header_h: float = 0.155,
+        title_fs: float = 6.4,
+    ) -> None:
+        ax.add_patch(
+            FancyBboxPatch(
+                (x, y),
+                w,
+                h,
+                boxstyle="round,pad=0.0,rounding_size=0.036",
+                facecolor=fc,
+                edgecolor=ec,
+                linewidth=0.75,
+                zorder=4,
+            )
+        )
+        if header_h > 0.0 and title:
+            hy = y + h - header_h
+            ax.add_patch(
+                FancyBboxPatch(
+                    (x, hy),
+                    w,
+                    header_h,
+                    boxstyle="round,pad=0.0,rounding_size=0.034",
+                    facecolor=header_fc,
+                    edgecolor="none",
+                    linewidth=0,
+                    zorder=5,
+                )
+            )
+            ax.add_patch(
+                Rectangle(
+                    (x + 0.006, hy),
+                    w - 0.012,
+                    header_h * 0.48,
+                    facecolor=header_fc,
+                    edgecolor="none",
+                    linewidth=0,
+                    zorder=5,
+                )
+            )
+            ax.text(
+                x + w / 2.0,
+                hy + header_h / 2.0,
+                title,
+                ha="center",
+                va="center",
+                fontsize=title_fs,
+                fontweight="bold",
+                color=title_col,
+                zorder=7,
+            )
+
+    def toc_arrow(
+        p0: Tuple[float, float],
+        p1: Tuple[float, float],
+        color: str,
+        lw: float = 1.25,
+        mut: float = 7.5,
+        style: str = "-|>",
+    ) -> None:
+        arr = FancyArrowPatch(
+            p0,
+            p1,
+            arrowstyle=style,
+            mutation_scale=mut,
+            linewidth=lw,
+            color=color,
+            shrinkA=0.0,
+            shrinkB=0.0,
+            zorder=9,
+        )
+        ax.add_patch(arr)
+
+    def toc_atom(cx: float, cy: float, r: float, col: str, ec: str = "#FFFFFF", lw: float = 0.45) -> None:
+        ax.add_patch(Circle((cx, cy), radius=r, facecolor=col, edgecolor=ec, linewidth=lw, zorder=9))
+
+    def toc_matrix(x: float, y: float, w: float, h: float, data: np.ndarray, cmap_name: str, ec: str) -> None:
+        nr, nc = data.shape
+        cw, ch = w / nc, h / nr
+        cmap = REF_CMAPS[cmap_name]
+        for ri in range(nr):
+            for ci in range(nc):
+                val = float(np.clip(data[ri, ci], 0.0, 1.0))
+                ax.add_patch(
+                    Rectangle(
+                        (x + ci * cw, y + (nr - 1 - ri) * ch),
+                        cw,
+                        ch,
+                        facecolor=cmap(val),
+                        edgecolor="#FFFFFF",
+                        linewidth=0.35,
+                        zorder=7,
+                    )
+                )
+        ax.add_patch(Rectangle((x, y), w, h, facecolor="none", edgecolor=ec, linewidth=0.65, zorder=8))
 
     # =========================================================================
-    # LEFT CONTAINER: Inputs (x: 0.14 .. 3.74, y: 0.18 .. 7.12)
+    # COLUMN 1: 3D Inputs (x: 0.025 .. 0.765, w = 0.740)
     # =========================================================================
-    add_panel_container(
-        ax,
-        x=0.14,
-        y=0.18,
-        w=3.60,
-        h=6.94,
-        badge="I",
-        title="Inputs",
+    toc_column(
+        x=0.025,
+        y=0.025,
+        w=0.740,
+        h=1.700,
+        title="3D Inputs",
         bg_fc="#F4F8FC",
         border_ec="#88A6C4",
         header_fc="#2E4D72",
-        header_h=0.46,
-        title_fontsize=14.2,
+        header_h=0.210,
+        title_fs=7.2,
     )
 
-    # Upper Input Card: Full-Length Protein Sequence (3Di + SaProt)
-    add_card(
-        ax,
-        x=0.30,
-        y=3.68,
-        w=3.28,
-        h=2.84,
-        title="Full-Length Protein Sequence",
+    # Upper Input Card: Seq + 3Di (Folded Pocket + Muted Loop)
+    toc_card(
+        x=0.050,
+        y=0.805,
+        w=0.690,
+        h=0.675,
+        title="Seq + 3Di",
         fc="#FFFFFF",
         ec="#88A6C4",
         header_fc="#DFECF3",
-        title_color="#2E4D72",
-        title_fontsize=12.4,
-        header_h=0.38,
+        title_col="#2E4D72",
+        header_h=0.165,
+        title_fs=6.4,
     )
-    ax.text(
-        1.94,
-        5.96,
-        "(3Di + SaProt)",
-        ha="center",
-        va="center",
-        fontsize=12.0,
-        fontweight="bold",
-        color="#2E4D72",
-        zorder=10,
+    ax.add_patch(
+        Ellipse(
+            (0.330, 1.135),
+            0.32,
+            0.21,
+            facecolor="#FAF5EA",
+            edgecolor="#C28B4E",
+            linewidth=0.75,
+            linestyle="--",
+            zorder=6,
+        )
     )
-    # Simplified Folded Protein + Catalytic Pocket Glow Schematic
-    pkt_glow = Ellipse((1.94, 4.92), 1.35, 0.88, facecolor="#FAF5EA", edgecolor="#C28B4E", lw=1.5, ls="--", zorder=6)
-    ax.add_patch(pkt_glow)
-    t_rib = np.linspace(0.0, 1.0, 160)
-    rx_rib = 0.62 + 2.64 * t_rib
-    ry_rib = 4.90 + 0.34 * np.sin(5.5 * math.pi * t_rib) * np.exp(-2.8 * (t_rib - 0.5) ** 2)
-    ax.plot(rx_rib, ry_rib, color="#2E4D72", lw=4.2, solid_capstyle="round", zorder=8)
-    ax.scatter([1.68, 1.94, 2.20], [5.08, 4.76, 5.06], s=85, color="#BC6E80", edgecolor="#914153", lw=1.1, zorder=9)
-    ax.text(
-        1.94,
-        4.02,
-        "Folded Domains + Disordered Loops",
-        ha="center",
-        va="center",
-        fontsize=11.0,
-        fontweight="bold",
-        color="#2B3542",
-        zorder=10,
-    )
+    t_fold = np.linspace(0.0, 1.0, 90)
+    xf = 0.105 + 0.425 * t_fold
+    yf = 1.135 + 0.070 * np.sin(4.5 * math.pi * t_fold)
+    ax.plot(xf, yf, color="#2E4D72", lw=1.70, solid_capstyle="round", zorder=7)
+    t_loop = np.linspace(0.0, 1.0, 45)
+    xl = 0.530 + 0.165 * t_loop
+    yl = yf[-1] - 0.044 * np.sin(1.8 * math.pi * t_loop)
+    ax.plot(xl, yl, color="#9AA6B5", lw=1.20, linestyle="--", solid_capstyle="round", zorder=7)
+    for px, py in [(0.255, 1.173), (0.335, 1.090), (0.415, 1.168)]:
+        toc_atom(px, py, r=0.023, col="#BC6E80", ec="#914153", lw=0.55)
+    ax.text(0.395, 0.885, "Pocket / Loop", ha="center", va="center", fontsize=6.3, fontweight="bold", color="#2B3542", zorder=8)
 
-    # Lower Input Card: 3D Ligand Conformer (Uni-Mol)
-    add_card(
-        ax,
-        x=0.30,
-        y=0.36,
-        w=3.28,
-        h=3.08,
-        title="3D Ligand Conformer",
+    # Lower Input Card: 3D Conformer (Uni-Mol Molecular Ring)
+    toc_card(
+        x=0.050,
+        y=0.060,
+        w=0.690,
+        h=0.700,
+        title="3D Ligand",
         fc="#FFFFFF",
         ec="#84B5AE",
         header_fc="#D6ECE8",
-        title_color="#2D6B64",
-        title_fontsize=12.6,
-        header_h=0.38,
+        title_col="#2D6B64",
+        header_h=0.165,
+        title_fs=6.4,
     )
-    ax.text(
-        1.94,
-        2.86,
-        "(Uni-Mol)",
-        ha="center",
-        va="center",
-        fontsize=12.2,
-        fontweight="bold",
-        color="#2D6B64",
-        zorder=10,
+    ax.add_patch(
+        Circle(
+            (0.395, 0.405),
+            0.150,
+            facecolor="#F2FAF8",
+            edgecolor="#43877E",
+            linewidth=0.70,
+            linestyle="--",
+            zorder=6,
+        )
     )
-    # Clean 3D Molecule Ring + Distance Shell
-    shell_ga = Circle((1.94, 1.78), 0.72, facecolor="#F2FAF8", edgecolor="#43877E", lw=1.3, ls="--", zorder=6)
-    ax.add_patch(shell_ga)
-    ring_pts = [
-        (1.66 + 0.34 * math.cos(math.radians(60 * k)), 1.78 + 0.34 * math.sin(math.radians(60 * k)))
-        for k in range(6)
-    ]
-    sub_pts = [(2.32, 1.98), (2.56, 1.72), (1.22, 1.95)]
+    cx_m, cy_m, r_m = 0.370, 0.405, 0.084
+    ring_xy = [(cx_m + r_m * math.cos(math.radians(60 * k)), cy_m + r_m * math.sin(math.radians(60 * k))) for k in range(6)]
+    subs_xy = [(0.530, 0.458), (0.600, 0.390), (0.195, 0.452)]
     for k in range(6):
-        p1, p2 = ring_pts[k], ring_pts[(k + 1) % 6]
-        ax.plot([p1[0], p2[0]], [p1[1], p2[1]], color="#2B3542", lw=2.4, zorder=7)
-    ax.plot([ring_pts[0][0], sub_pts[0][0]], [ring_pts[0][1], sub_pts[0][1]], color="#2B3542", lw=2.4, zorder=7)
-    ax.plot([sub_pts[0][0], sub_pts[1][0]], [sub_pts[0][1], sub_pts[1][1]], color="#2B3542", lw=2.4, zorder=7)
-    ax.plot([ring_pts[3][0], sub_pts[2][0]], [ring_pts[3][1], sub_pts[2][1]], color="#2B3542", lw=2.4, zorder=7)
-    for k, (px, py) in enumerate(ring_pts):
-        draw_3d_atom(ax, px, py, r=0.068, base_color="#4E769E" if k in (1, 4) else "#2B3542", zorder=9)
-    draw_3d_atom(ax, sub_pts[0][0], sub_pts[0][1], r=0.072, base_color="#43877E", zorder=9)
-    draw_3d_atom(ax, sub_pts[1][0], sub_pts[1][1], r=0.074, base_color="#BC6E80", zorder=9)
-    draw_3d_atom(ax, sub_pts[2][0], sub_pts[2][1], r=0.072, base_color="#C28B4E", zorder=9)
-    ax.text(
-        1.94,
-        0.68,
-        "3D Atomic Coordinates & Geometry",
-        ha="center",
-        va="center",
-        fontsize=11.0,
-        fontweight="bold",
-        color="#2B3542",
-        zorder=10,
-    )
+        p1, p2 = ring_xy[k], ring_xy[(k + 1) % 6]
+        ax.plot([p1[0], p2[0]], [p1[1], p2[1]], color="#2B3542", lw=1.15, zorder=7)
+    ax.plot([ring_xy[0][0], subs_xy[0][0]], [ring_xy[0][1], subs_xy[0][1]], color="#2B3542", lw=1.15, zorder=7)
+    ax.plot([subs_xy[0][0], subs_xy[1][0]], [subs_xy[0][1], subs_xy[1][1]], color="#2B3542", lw=1.15, zorder=7)
+    ax.plot([ring_xy[3][0], subs_xy[2][0]], [ring_xy[3][1], subs_xy[2][1]], color="#2B3542", lw=1.15, zorder=7)
+    for k, (ax_x, ax_y) in enumerate(ring_xy):
+        toc_atom(ax_x, ax_y, r=0.020, col="#4E769E" if k in (1, 4) else "#2B3542")
+    toc_atom(subs_xy[0][0], subs_xy[0][1], r=0.022, col="#43877E")
+    toc_atom(subs_xy[1][0], subs_xy[1][1], r=0.023, col="#BC6E80")
+    toc_atom(subs_xy[2][0], subs_xy[2][1], r=0.022, col="#C28B4E")
+    ax.text(0.395, 0.140, "Uni-Mol 3D", ha="center", va="center", fontsize=6.3, fontweight="bold", color="#2D6B64", zorder=8)
 
     # =========================================================================
-    # CENTER 3 COMPACT REFERENCE-PALETTE CARDS (x: 4.30 .. 9.30, w = 5.00)
+    # COLUMN 2: PRISM-CPI (x: 0.845 .. 2.115, w = 1.270)
     # =========================================================================
-    # Card (1): Confidence-Gated Subsite Routing (K=32) 
-    add_card(
-        ax,
-        x=4.30,
-        y=5.02,
-        w=5.00,
-        h=2.10,
-        title="(1) Confidence-Gated Subsite Routing (K=32)",
+    toc_column(
+        x=0.845,
+        y=0.025,
+        w=1.270,
+        h=1.700,
+        title="PRISM-CPI",
+        bg_fc="#F8FAFC",
+        border_ec="#88A6C4",
+        header_fc="#2B3542",
+        header_h=0.210,
+        title_fs=7.5,
+    )
+
+    # Module 1: 1. 3Di Pocket Routing + K=32 — Warm Amber-Bronze Header + Navy/Rose Borderless Bars
+    toc_card(
+        x=0.875,
+        y=1.050,
+        w=1.210,
+        h=0.430,
+        title="1. 3Di Pocket Routing",
         fc="#FAF5EA",
         ec="#CFAF82",
         header_fc="#9D6833",
-        title_color="#FFFFFF",
-        title_fontsize=12.8,
-        lw=1.65,
-        header_h=0.42,
+        title_col="#FFFFFF",
+        header_h=0.152,
+        title_fs=6.3,
     )
-    bar_x0 = 4.56
-    bar_hs = [0.22, 0.25, 0.92, 1.02, 0.38, 0.98, 0.88, 0.20]
-    bar_cs = ["#9AA6B5", "#9AA6B5", "#BC6E80", "#BC6E80", "#6E7D91", "#BC6E80", "#BC6E80", "#9AA6B5"]
-    for bi, (bh, bc) in enumerate(zip(bar_hs, bar_cs)):
-        ax.add_patch(Rectangle((bar_x0 + bi * 0.22, 5.38), 0.16, bh, facecolor=bc, edgecolor="none", linewidth=0, zorder=8))
-    draw_manhattan_arrow(ax, [(6.42, 5.88), (6.92, 5.88)], color="#9D6833", lw=2.2, halo=False)
-    pkt_mat = np.array([[0.85, 0.45, 0.92, 0.60, 0.88], [0.50, 0.90, 0.42, 0.95, 0.55], [0.88, 0.58, 0.84, 0.48, 0.91]])
-    draw_mini_matrix(ax, x=7.02, y=5.52, w=2.02, h=0.72, data=pkt_mat, cmap_name="ref_rose", ec="#914153", zorder=8)
-    ax.text(
-        6.80,
-        5.19,
-        "Loop Noise Filtered  |  32 Pocket Subsite Tokens",
-        ha="center",
-        va="center",
-        fontsize=10.4,
-        fontweight="bold",
-        color="#9D6833",
-        zorder=10,
+    m1_hs = [0.065, 0.195, 0.215, 0.075, 0.205, 0.185, 0.060]
+    m1_cs = ["#4E769E", "#BC6E80", "#BC6E80", "#4E769E", "#BC6E80", "#BC6E80", "#4E769E"]
+    for bi, (bh, bc) in enumerate(zip(m1_hs, m1_cs)):
+        ax.add_patch(
+            Rectangle(
+                (0.905 + bi * 0.061, 1.082),
+                0.044,
+                bh,
+                facecolor=bc,
+                edgecolor="none",
+                linewidth=0,
+                zorder=7,
+            )
+        )
+    ax.text(1.455, 1.248, "K=32", ha="center", va="center", fontsize=6.2, fontweight="bold", color="#9D6833", zorder=8)
+    toc_arrow((1.355, 1.150), (1.555, 1.150), color="#9D6833", lw=1.15, mut=6.5)
+    pkt_mat = np.array(
+        [
+            [0.86, 0.42, 0.92, 0.56, 0.88],
+            [0.48, 0.90, 0.38, 0.95, 0.52],
+            [0.89, 0.54, 0.85, 0.44, 0.91],
+        ]
     )
+    toc_matrix(x=1.595, y=1.088, w=0.445, h=0.195, data=pkt_mat, cmap_name="ref_rose", ec="#914153")
 
-    # Card (2): Latent Induced-Fit 3D Cross-Attention 
-    add_card(
-        ax,
-        x=4.30,
-        y=2.60,
-        w=5.00,
-        h=2.10,
-        title="(2) Latent Induced-Fit 3D Cross-Attention",
+    # Module 2: 2. Induced-Fit 3D GAT — Forest Pine-Teal Header + RBF Waves + Contact Grid
+    toc_card(
+        x=0.875,
+        y=0.555,
+        w=1.210,
+        h=0.430,
+        title="2. Induced-Fit 3D GAT",
         fc="#F2FAF8",
         ec="#84B5AE",
         header_fc="#2D6B64",
-        title_color="#FFFFFF",
-        title_fontsize=12.8,
-        lw=1.65,
-        header_h=0.42,
+        title_col="#FFFFFF",
+        header_h=0.152,
+        title_fs=6.4,
     )
-    # Left: Smooth RBF curves; Center: Mutual Induced-Fit Adaptation; Right: Bilinear Contact Grid
-    xd_ga = np.linspace(4.54, 5.74, 100)
-    for mu_ga, col_ga in [(4.78, "#4E769E"), (5.05, "#43877E"), (5.32, "#C28B4E"), (5.54, "#BC6E80")]:
-        yd_ga = 3.12 + 0.78 * np.exp(-((xd_ga - mu_ga) / 0.16) ** 2)
-        ax.plot(xd_ga, yd_ga, color=col_ga, lw=2.0, zorder=8)
-    add_subpanel(ax, x=6.00, y=3.20, w=1.22, h=0.72, fc="#F4EBD7", ec="#C28B4E", lw=1.3, zorder=8)
-    ax.text(6.61, 3.56, "Mutual\nInduced-Fit", ha="center", va="center", fontsize=11.0, fontweight="bold", color="#9D6833", zorder=10)
-    draw_manhattan_arrow(ax, [(7.32, 3.56), (7.68, 3.56)], color="#2D6B64", lw=2.1, halo=False)
-    if_grid = np.array([
-        [0.15, 0.92, 0.25, 0.18],
-        [0.88, 0.30, 0.20, 0.85],
-        [0.20, 0.24, 0.95, 0.30],
-        [0.18, 0.82, 0.28, 0.90],
-    ])
-    draw_mini_matrix(ax, x=7.76, y=3.16, w=1.28, h=0.80, data=if_grid, cmap_name="ref_contact", ec="#2D6B64", zorder=8)
-    ax.text(
-        6.80,
-        2.78,
-        "16-Kernel 3D Distance Basis  |  Atom-Subsite Contacts",
-        ha="center",
-        va="center",
-        fontsize=10.4,
-        fontweight="bold",
-        color="#2D6B64",
-        zorder=10,
+    xr = np.linspace(0.920, 1.420, 80)
+    ax.plot([0.920, 1.420], [0.592, 0.592], color="#84B5AE", lw=0.65, zorder=6)
+    for mu_r, col_r in [(1.02, "#4E769E"), (1.12, "#43877E"), (1.22, "#C28B4E"), (1.32, "#BC6E80")]:
+        yr = 0.592 + 0.185 * np.exp(-((xr - mu_r) / 0.062) ** 2)
+        ax.plot(xr, yr, color=col_r, lw=1.15, zorder=7)
+    toc_arrow((1.440, 0.690), (1.615, 0.690), color="#2D6B64", lw=1.15, mut=6.2, style="<->")
+    if_grid = np.array(
+        [
+            [0.16, 0.92, 0.24, 0.18],
+            [0.88, 0.28, 0.20, 0.85],
+            [0.20, 0.24, 0.95, 0.28],
+            [0.18, 0.82, 0.26, 0.90],
+        ]
     )
+    toc_matrix(x=1.635, y=0.590, w=0.405, h=0.200, data=if_grid, cmap_name="ref_contact", ec="#2D6B64")
 
-    # Card (3): Structure-Seeded Uncertainty Distillation 
-    add_card(
-        ax,
-        x=4.30,
-        y=0.18,
-        w=5.00,
-        h=2.10,
-        title="(3) Structure-Seeded Uncertainty Distillation",
+    # Module 3: 3. Uncertainty GAE KD — Royal Iris-Purple Header + Bipartite k-NN + Manifold
+    toc_card(
+        x=0.875,
+        y=0.060,
+        w=1.210,
+        h=0.430,
+        title="3. Uncertainty GAE KD",
         fc="#F6F4FC",
         ec="#A599C8",
         header_fc="#5E468A",
-        title_color="#FFFFFF",
-        title_fontsize=12.6,
-        lw=1.65,
-        header_h=0.42,
+        title_col="#FFFFFF",
+        header_h=0.152,
+        title_fs=6.3,
     )
-    # Left: Bipartite 3D-Seeded Network -> Right: Aligned Cold-Start Manifold
-    c_nodes = [(4.78, 1.54), (4.78, 1.18), (4.78, 0.82)]
-    p_nodes = [(5.66, 1.54), (5.66, 1.18), (5.66, 0.82)]
-    for i_c, i_p in [(0, 0), (0, 1), (1, 1), (2, 1), (2, 2)]:
-        ax.plot([c_nodes[i_c][0], p_nodes[i_p][0]], [c_nodes[i_c][1], p_nodes[i_p][1]], color="#5E468A", lw=1.8, zorder=7)
-    for nx_c, ny_c in c_nodes:
-        draw_3d_atom(ax, nx_c, ny_c, r=0.075, base_color="#43877E", zorder=9)
-    for nx_p, ny_p in p_nodes:
-        draw_3d_atom(ax, nx_p, ny_p, r=0.075, base_color="#4E769E", zorder=9)
-    add_subpanel(ax, x=6.04, y=0.84, w=1.34, h=0.72, fc="#E5E0F5", ec="#A599C8", lw=1.3, zorder=8)
-    ax.text(6.71, 1.20, "Uncertainty\nGate", ha="center", va="center", fontsize=11.0, fontweight="bold", color="#5E468A", zorder=10)
-    draw_manhattan_arrow(ax, [(7.46, 1.20), (7.80, 1.20)], color="#5E468A", lw=2.1, halo=False)
-    add_subpanel(ax, x=7.86, y=0.76, w=1.22, h=0.88, fc="#FFFFFF", ec="#A599C8", lw=1.2, zorder=7)
-    ax.plot([7.96, 8.98], [0.86, 1.54], color="#526071", lw=1.3, ls="--", zorder=8)
-    ax.scatter([8.10, 8.26, 8.18], [1.40, 1.48, 1.26], s=48, marker="o", color="#BC6E80", zorder=9)
-    ax.scatter([8.32, 8.42], [1.34, 1.44], s=54, marker="^", color="#C28B4E", zorder=9)
-    ax.scatter([8.62, 8.80, 8.72], [0.98, 0.92, 1.10], s=48, marker="o", color="#4E769E", zorder=9)
-    ax.scatter([8.54, 8.88], [1.02, 0.96], s=54, marker="^", color="#5186A8", zorder=9)
-    ax.text(
-        6.80,
-        0.38,
-        "3D Network Prior  |  Cold-Cluster Domain Alignment",
-        ha="center",
-        va="center",
-        fontsize=10.4,
-        fontweight="bold",
-        color="#5E468A",
-        zorder=10,
+    c_nds = [(0.975, 0.275), (0.975, 0.195), (0.975, 0.115)]
+    p_nds = [(1.325, 0.275), (1.325, 0.195), (1.325, 0.115)]
+    for ic, ip in [(0, 0), (0, 1), (1, 1), (2, 1), (2, 2)]:
+        ax.plot([c_nds[ic][0], p_nds[ip][0]], [c_nds[ic][1], p_nds[ip][1]], color="#5E468A", lw=0.95, zorder=6)
+    for nx_c, ny_c in c_nds:
+        toc_atom(nx_c, ny_c, r=0.024, col="#43877E")
+    for nx_p, ny_p in p_nds:
+        toc_atom(nx_p, ny_p, r=0.024, col="#4E769E")
+    toc_arrow((1.395, 0.195), (1.565, 0.195), color="#5E468A", lw=1.15, mut=6.5)
+    ax.add_patch(
+        FancyBboxPatch(
+            (1.585, 0.092),
+            0.455,
+            0.206,
+            boxstyle="round,pad=0.0,rounding_size=0.028",
+            facecolor="#FFFFFF",
+            edgecolor="#A599C8",
+            linewidth=0.65,
+            zorder=6,
+        )
     )
+    ax.plot([1.615, 2.005], [0.112, 0.278], color="#526071", lw=0.75, linestyle="--", zorder=7)
+    ax.scatter([1.665, 1.725, 1.690], [0.238, 0.262, 0.205], s=11, marker="o", color="#BC6E80", edgecolors="none", zorder=8)
+    ax.scatter([1.755, 1.645], [0.225, 0.258], s=13, marker="^", color="#C28B4E", edgecolors="none", zorder=8)
+    ax.scatter([1.885, 1.955, 1.915], [0.145, 0.125, 0.172], s=11, marker="o", color="#4E769E", edgecolors="none", zorder=8)
+    ax.scatter([1.855, 1.975], [0.132, 0.158], s=13, marker="^", color="#5186A8", edgecolors="none", zorder=8)
 
-    # Vertical & Horizontal Flow Arrows Connecting Columns
-    draw_manhattan_arrow(ax, [(3.74, 5.40), (4.30, 5.40)], color="#2E4D72", lw=2.6, halo=True)
-    draw_manhattan_arrow(ax, [(3.74, 2.95), (4.30, 2.95)], color="#2D6B64", lw=2.6, halo=True)
-    draw_manhattan_arrow(ax, [(6.80, 5.02), (6.80, 4.70)], color="#9D6833", lw=2.5, halo=False)
-    draw_manhattan_arrow(ax, [(6.80, 2.60), (6.80, 2.28)], color="#5E468A", lw=2.5, halo=False)
-    draw_manhattan_arrow(ax, [(9.30, 3.65), (9.86, 3.65)], color="#914153", lw=2.8, halo=True)
+    # Inter-module & inter-column flow arrows
+    toc_arrow((0.768, 1.255), (0.845, 1.255), color="#2E4D72", lw=1.35, mut=7.0)
+    toc_arrow((0.768, 0.720), (0.845, 0.720), color="#2D6B64", lw=1.35, mut=7.0)
+    toc_arrow((1.480, 1.050), (1.480, 0.988), color="#9D6833", lw=1.20, mut=6.2)
+    toc_arrow((1.480, 0.555), (1.480, 0.493), color="#5E468A", lw=1.20, mut=6.2)
+    toc_arrow((2.118, 0.770), (2.195, 0.770), color="#914153", lw=1.45, mut=7.4)
 
     # =========================================================================
-    # RIGHT OUTCOME CARD: Cross-Cluster Cold-Start Screening (x: 9.86 .. 13.46)
+    # COLUMN 3: Cold-Start Gains (x: 2.195 .. 3.225, w = 1.030)
     # =========================================================================
-    add_panel_container(
-        ax,
-        x=9.86,
-        y=0.18,
-        w=3.60,
-        h=6.94,
-        badge="O",
-        title="Cold-Start Screening",
+    toc_column(
+        x=2.195,
+        y=0.025,
+        w=1.030,
+        h=1.700,
+        title="Cold-Start Gains",
         bg_fc="#FAF3F5",
         border_ec="#C99AA5",
         header_fc="#914153",
-        header_h=0.46,
-        title_fontsize=13.8,
-    )
-    ax.text(
-        11.66,
-        6.36,
-        "Cross-Cluster Cold-Start\nScreening Gains",
-        ha="center",
-        va="center",
-        fontsize=13.2,
-        fontweight="bold",
-        color="#914153",
-        linespacing=1.20,
-        zorder=10,
+        header_h=0.210,
+        title_fs=6.9,
     )
 
-    # KPI 1: +59.5% KIBA AUPR
-    add_subpanel(ax, x=10.06, y=4.58, w=3.20, h=1.42, fc="#FFFFFF", ec="#C99AA5", lw=1.45, zorder=7)
-    ax.text(11.66, 5.66, f"+{kiba_gain:.1f}% KIBA AUPR", ha="center", va="center", fontsize=14.6, fontweight="bold", color="#914153", zorder=10)
-    ax.text(11.66, 5.28, f"PRISM-CPI {kiba_pr:.3f} vs. {kiba_de:.3f}", ha="center", va="center", fontsize=11.2, fontweight="bold", color="#2B3542", zorder=10)
-    ax.add_patch(Rectangle((10.30, 4.92), 1.45, 0.16, facecolor="#4E769E", edgecolor="none", linewidth=0, zorder=8))
-    ax.add_patch(Rectangle((10.30, 4.71), 2.32, 0.16, facecolor="#BC6E80", edgecolor="none", linewidth=0, zorder=8))
-    ax.text(12.72, 4.79, "Ours", ha="left", va="center", fontsize=10.6, fontweight="bold", color="#914153", zorder=10)
-
-    # KPI 2: +17.1% BindingDB AUPR
-    add_subpanel(ax, x=10.06, y=2.92, w=3.20, h=1.42, fc="#FFFFFF", ec="#88A6C4", lw=1.45, zorder=7)
-    ax.text(11.66, 4.00, f"+{bdb_gain:.1f}% BindingDB AUPR", ha="center", va="center", fontsize=13.8, fontweight="bold", color="#2E4D72", zorder=10)
-    ax.text(11.66, 3.62, f"PRISM-CPI {bdb_pr:.3f} vs. {bdb_de:.3f}", ha="center", va="center", fontsize=11.2, fontweight="bold", color="#2B3542", zorder=10)
-    ax.add_patch(Rectangle((10.30, 3.26), 1.92, 0.16, facecolor="#4E769E", edgecolor="none", linewidth=0, zorder=8))
-    ax.add_patch(Rectangle((10.30, 3.05), 2.32, 0.16, facecolor="#BC6E80", edgecolor="none", linewidth=0, zorder=8))
-    ax.text(12.72, 3.13, "Ours", ha="left", va="center", fontsize=10.6, fontweight="bold", color="#914153", zorder=10)
-
-    # KPI 3: 90% Top-10 Hit Rate
-    add_subpanel(ax, x=10.06, y=0.44, w=3.20, h=2.24, fc="#FFFFFF", ec="#84B5AE", lw=1.45, zorder=7)
-    ax.text(11.66, 2.32, f"{hit_rate}% Top-10 Hit Rate", ha="center", va="center", fontsize=14.4, fontweight="bold", color="#2D6B64", zorder=10)
-    ax.text(11.66, 1.92, "9 / 10 Verified Sub-μM Hits", ha="center", va="center", fontsize=11.4, fontweight="bold", color="#2B3542", zorder=10)
-    for di in range(10):
-        dx = 10.34 + di * 0.292
-        col_d = "#BC6E80" if di < 9 else "#DFECF3"
-        ec_d = "#914153" if di < 9 else "#9AA6B5"
-        circ_d = Circle((dx, 1.42), radius=0.105, facecolor=col_d, edgecolor=ec_d, lw=0.95, zorder=9)
-        ax.add_patch(circ_d)
-    ax.text(
-        11.66,
-        0.84,
-        "Unseen EGFR, NMDA 2B\n& MMP-2 Targets",
-        ha="center",
-        va="center",
-        fontsize=11.2,
-        fontweight="bold",
-        color="#2E4D72",
-        linespacing=1.20,
-        zorder=10,
+    # KPI 1: KIBA AUPR +59.5%
+    toc_card(
+        x=2.222,
+        y=1.050,
+        w=0.976,
+        h=0.430,
+        title="",
+        fc="#FFFFFF",
+        ec="#C99AA5",
+        header_fc="none",
+        title_col="#914153",
+        header_h=0.0,
     )
+    ax.text(2.710, 1.392, f"KIBA AUPR +{kiba_gain:.1f}%", ha="center", va="center", fontsize=6.25, fontweight="bold", color="#914153", zorder=8)
+    ax.add_patch(Rectangle((2.262, 1.215), 0.360, 0.086, facecolor="#4E769E", edgecolor="none", linewidth=0, zorder=7))
+    ax.text(2.645, 1.258, f"{kiba_de:.2f}", ha="left", va="center", fontsize=6.3, fontweight="bold", color="#2E4D72", zorder=8)
+    ax.add_patch(Rectangle((2.262, 1.092), 0.585, 0.086, facecolor="#BC6E80", edgecolor="none", linewidth=0, zorder=7))
+    ax.text(2.870, 1.135, f"{kiba_pr:.2f}", ha="left", va="center", fontsize=6.3, fontweight="bold", color="#914153", zorder=8)
+
+    # KPI 2: BindingDB +17.1%
+    toc_card(
+        x=2.222,
+        y=0.555,
+        w=0.976,
+        h=0.430,
+        title="",
+        fc="#FFFFFF",
+        ec="#88A6C4",
+        header_fc="none",
+        title_col="#2E4D72",
+        header_h=0.0,
+    )
+    ax.text(2.710, 0.897, f"BindingDB +{bdb_gain:.1f}%", ha="center", va="center", fontsize=6.25, fontweight="bold", color="#2E4D72", zorder=8)
+    ax.add_patch(Rectangle((2.262, 0.720), 0.495, 0.086, facecolor="#4E769E", edgecolor="none", linewidth=0, zorder=7))
+    ax.text(2.780, 0.763, f"{bdb_de:.2f}", ha="left", va="center", fontsize=6.3, fontweight="bold", color="#2E4D72", zorder=8)
+    ax.add_patch(Rectangle((2.262, 0.597), 0.585, 0.086, facecolor="#BC6E80", edgecolor="none", linewidth=0, zorder=7))
+    ax.text(2.870, 0.640, f"{bdb_pr:.2f}", ha="left", va="center", fontsize=6.3, fontweight="bold", color="#914153", zorder=8)
+
+    # KPI 3: 90% Top-10 Hits (Sub-μM Verified)
+    toc_card(
+        x=2.222,
+        y=0.060,
+        w=0.976,
+        h=0.430,
+        title="",
+        fc="#FFFFFF",
+        ec="#84B5AE",
+        header_fc="none",
+        title_col="#2D6B64",
+        header_h=0.0,
+    )
+    ax.text(2.710, 0.405, f"{hit_rate}% Top-10 Hits", ha="center", va="center", fontsize=6.35, fontweight="bold", color="#2D6B64", zorder=8)
+    ax.add_patch(Rectangle((2.262, 0.236), 0.615, 0.088, facecolor="#D6ECE8", edgecolor="none", linewidth=0, zorder=6))
+    ax.add_patch(Rectangle((2.262, 0.236), 0.615 * (hit_rate / 100.0), 0.088, facecolor="#43877E", edgecolor="none", linewidth=0, zorder=7))
+    ax.text(2.900, 0.280, "9/10", ha="left", va="center", fontsize=6.3, fontweight="bold", color="#2D6B64", zorder=8)
+    ax.text(2.710, 0.132, "Sub-μM Verified", ha="center", va="center", fontsize=6.3, fontweight="bold", color="#2B3542", zorder=8)
 
     enforce_reference_palette(ax, max_sat=0.68)
 
     ga_pdf = figures_dir / "graphical_abstract.pdf"
     ga_png = figures_dir / "graphical_abstract.png"
-    fig.savefig(ga_pdf, format="pdf", dpi=300, bbox_inches="tight", pad_inches=0.01, facecolor="#FFFFFF")
-    fig.savefig(ga_png, format="png", dpi=300, bbox_inches="tight", pad_inches=0.01, facecolor="#FFFFFF")
+    exact_bbox = Bbox([[0.0, 0.0], [W_IN, H_IN]])
+    fig.savefig(ga_pdf, format="pdf", dpi=TOC_DPI, bbox_inches=exact_bbox, pad_inches=0.0, facecolor="#FFFFFF")
+    fig.savefig(ga_png, format="png", dpi=TOC_DPI, bbox_inches=exact_bbox, pad_inches=0.0, facecolor="#FFFFFF")
     plt.close(fig)
 
     if ms_dir is not None and ms_dir.exists():
@@ -2162,8 +2280,18 @@ def render_graphical_abstract(
         for src in [ga_pdf, ga_png]:
             shutil.copy2(src, ms_fig_dir / src.name)
 
+    # Export standalone ACS JCIM portal upload copies (600 DPI RGB TIFF + vector PDF)
+    final_review_dir = figures_dir.parent.parent / "06_final_review"
+    if final_review_dir.exists():
+        toc_pdf_out = final_review_dir / "toc_graphic_jcim.pdf"
+        toc_tif_out = final_review_dir / "toc_graphic_jcim.tif"
+        shutil.copy2(ga_pdf, toc_pdf_out)
+        with Image.open(ga_png) as im_png:
+            im_rgb = im_png.convert("RGB")
+            im_rgb.save(toc_tif_out, format="TIFF", dpi=(TOC_DPI, TOC_DPI), compression="tiff_lzw")
+
     print(
-        f"[GENERATED] {ga_pdf.name} ({ga_pdf.stat().st_size // 1024} KB) "
+        f"[GENERATED ACS JCIM 3.25x1.75 TOC GRAPHIC] {ga_pdf.name} ({ga_pdf.stat().st_size // 1024} KB) "
         f"& {ga_png.name} ({ga_png.stat().st_size // 1024} KB)"
     )
 

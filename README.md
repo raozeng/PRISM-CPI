@@ -6,11 +6,11 @@ Official PyTorch implementation, curated multi-seed benchmark datasets, trained 
 
 ## 1. Overview & Architecture
 
-**PRISM-CPI** is an uncertainty-calibrated intelligent decision-support framework designed for genome-wide 3D compound–protein interaction (CPI) prediction under strict out-of-distribution (cold-cluster) generalization. It resolves three coupled bottlenecks in structure-informed CPI prediction through three synergistic modules:
+**PRISM-CPI** is an uncertainty-calibrated three-dimensional geometric deep learning framework designed for genome-wide 3D compound–protein interaction (CPI) prediction under strict out-of-distribution (cold-cluster) generalization. It addresses three coupled limitations in structure-informed CPI prediction through three complementary modules:
 
-1. **Module 1 — Confidence-Calibrated Pocket-Aware Attention Encoder (`CC-PAE`)**:
-   Integrates Foldseek 3Di structural token confidence from ProstT5 (`1024-D`) with residue-level SaProt sequence–structure hidden states (`1280-D`), routing full-length receptor sequences into $K = 32$ orthogonally regularized functional pocket subsite tokens while suppressing disordered-loop noise without requiring pre-cropped 3D cavity coordinates.
-2. **Module 2 — Pocket-Conditioned Induced-Fit 3D Multi-Scale Geometric Cross-Attention (`PC-IFGA`)**:
+1. **Module 1 — Confidence-Calibrated Pocket-Aware 3D Protein Encoding (`CC-PAE`)**:
+   Integrates Foldseek 3Di structural token confidence from ProstT5 (`1024-D`) with residue-level SaProt sequence–structure hidden states (`1280-D`), routing full-length receptor sequences into $K = 32$ orthogonally regularized functional pocket subsite tokens while attenuating disordered-loop noise without requiring pre-cropped 3D cavity coordinates.
+2. **Module 2 — Pocket-Conditioned Induced-Fit Multi-Scale Geometric Cross-Attention (`PC-IFGA`)**:
    Replaces static binary distance cutoffs and isolated in-vacuum conformer embeddings with $B = 16$ learnable Gaussian radial basis function (RBF) kernels ($0\text{--}6.0\,\text{\AA}$) coupled with bidirectional pocket-conditioned induced-fit gating ($\Delta\mathbf{M}_{\mathrm{IF}}(\mathbf{P})$) and full-rank ($n \times K$) bilinear atom–subsite cross-attention.
 3. **Module 3 — Structure-Seeded Uncertainty-Aware Relational Knowledge Distillation (`SS-UAKD`) & Entropy-Conditioned Domain Adversarial Alignment (`E-CDAN`)**:
    Initializes the bipartite CPI graph autoencoder (GAE) teacher with detached 3D structural priors ($\mathbf{u}', \bar{\mathbf{p}}_{\mathrm{node},p}$) and $k_{\mathrm{sim}} = 5$ structural $k$-NN edges, weights pairwise relational manifold distillation via $T = 10$ Monte Carlo dropout epistemic uncertainty gates ($w_i^{\mathrm{rel}}$), and aligns source and unseen cold-cluster target manifolds via prediction-entropy-conditioned adversarial alignment.
@@ -135,14 +135,26 @@ python3 scripts/generate_all_figures.py
 
 | Benchmark | Compounds | Proteins | Total Pairs | Pos. Ratio | DESTIN AUC | **PRISM-CPI AUC** | DESTIN AUPR | **PRISM-CPI AUPR** | Relative AUPR Gain |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **BindingDB** | 14,643 | 2,623 | 49,199 | 42.0% | 0.628 ± 0.025 | **0.689 ± 0.012** | 0.516 ± 0.030 | **0.605 ± 0.020** | **+17.1%** ($p = 1.58 \times 10^{-4}$) |
-| **BioSNAP** | 4,505 | 2,181 | 27,464 | 50.4% | 0.793 ± 0.013 | **0.856 ± 0.011** | 0.810 ± 0.013 | **0.869 ± 0.011** | **+7.3%** ($p = 4.30 \times 10^{-5}$) |
-| **PDBbind 2016** | 3,227 | 2,410 | 8,106 | 50.0% | 0.728 ± 0.019 | **0.779 ± 0.011** | 0.713 ± 0.016 | **0.775 ± 0.015** | **+8.7%** ($p = 1.00 \times 10^{-6}$) |
+| **BindingDB** | 14,643 | 2,623 | 49,199 | 42.0% | 0.628 ± 0.018 | **0.689 ± 0.012** | 0.516 ± 0.030 | **0.605 ± 0.020** | **+17.1%** ($p = 1.58 \times 10^{-4}$) |
+| **BioSNAP** | 4,505 | 2,181 | 27,464 | 50.4% | 0.805 ± 0.008 | **0.856 ± 0.006** | 0.821 ± 0.010 | **0.869 ± 0.005** | **+5.8%** ($p = 4.30 \times 10^{-5}$) |
+| **PDBbind 2016** | 3,227 | 2,410 | 8,106 | 50.0% | 0.724 ± 0.017 | **0.779 ± 0.012** | 0.707 ± 0.017 | **0.775 ± 0.015** | **+9.6%** ($p = 1.00 \times 10^{-6}$) |
 | **KIBA** | 2,068 | 229 | 118,254 | 19.2% | 0.624 ± 0.012 | **0.728 ± 0.009** | 0.281 ± 0.011 | **0.447 ± 0.018** | **+59.5%** ($p = 4.00 \times 10^{-6}$) |
 
 ---
 
-## 7. License
+## 7. Authors & Contact
+
+- **Fang Fang** — School of Information Engineering, Hainan Vocational University of Science and Technology, Haikou 571126, Hainan, China; Faculty of Applied Sciences, Macao Polytechnic University, Macao 999078, Macao, China
+- **Wenjuan Jiang** *(Corresponding Author)* — School of Artificial Intelligence, Hainan Normal University, No. 99 Longkun South Road, Haikou 571158, Hainan, China  
+  E-mail: [jwj@hainnu.edu.cn](mailto:jwj@hainnu.edu.cn)
+- **Rao Zeng** *(Corresponding Author)* — School of Artificial Intelligence & Key Laboratory of Data Science and Smart Education (Ministry of Education), Hainan Normal University, No. 99 Longkun South Road, Haikou 571158, Hainan, China  
+  E-mail: [rao.zeng@hainnu.edu.cn](mailto:rao.zeng@hainnu.edu.cn)
+
+For questions, bug reports, or collaboration inquiries, please open a GitHub Issue or contact **Prof. Rao Zeng** (`rao.zeng@hainnu.edu.cn`) and **Prof. Wenjuan Jiang** (`jwj@hainnu.edu.cn`).
+
+---
+
+## 8. License
 
 This project is released under the [MIT License](LICENSE).
 
