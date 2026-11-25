@@ -6,12 +6,21 @@ Official PyTorch implementation, curated multi-seed benchmark datasets, trained 
 
 ## 1. Overview & Architecture
 
-**PRISM-CPI** is an uncertainty-calibrated three-dimensional geometric deep learning framework designed for genome-wide 3D compound–protein interaction (CPI) prediction under strict out-of-distribution (cold-cluster) generalization. It addresses three coupled limitations in structure-informed CPI prediction through three complementary modules:
+**PRISM-CPI** is an uncertainty-calibrated three-dimensional geometric deep learning framework designed for genome-wide 3D compound–protein interaction (CPI) prediction under strict out-of-distribution (cold-cluster) generalization.
+
+<p align="center">
+  <img src="figures/fig1_model_architecture.png" alt="PRISM-CPI End-to-End Model Architecture" width="100%" />
+</p>
+<p align="center">
+  <em><strong>Overview of PRISM-CPI.</strong> (A) Confidence-Calibrated Pocket-Aware 3D Protein Encoding (CC-PAE), (B) Pocket-Conditioned Induced-Fit Multi-Scale Geometric Cross-Attention (PC-IFGA), and (C) Structure-Seeded Uncertainty-Aware Relational Knowledge Distillation with Entropy-Conditioned Domain Adversarial Alignment (SS-UAKD &amp; E-CDAN).</em>
+</p>
+
+It addresses three coupled limitations in structure-informed CPI prediction through three complementary modules:
 
 1. **Module 1 — Confidence-Calibrated Pocket-Aware 3D Protein Encoding (`CC-PAE`)**:
    Integrates Foldseek 3Di structural token confidence from ProstT5 (`1024-D`) with residue-level SaProt sequence–structure hidden states (`1280-D`), routing full-length receptor sequences into $K = 32$ orthogonally regularized functional pocket subsite tokens while attenuating disordered-loop noise without requiring pre-cropped 3D cavity coordinates.
 2. **Module 2 — Pocket-Conditioned Induced-Fit Multi-Scale Geometric Cross-Attention (`PC-IFGA`)**:
-   Replaces static binary distance cutoffs and isolated in-vacuum conformer embeddings with $B = 16$ learnable Gaussian radial basis function (RBF) kernels ($0\text{--}6.0\,\text{\AA}$) coupled with bidirectional pocket-conditioned induced-fit gating ($\Delta\mathbf{M}_{\mathrm{IF}}(\mathbf{P})$) and full-rank ($n \times K$) bilinear atom–subsite cross-attention.
+   Replaces static binary distance cutoffs and isolated in-vacuum conformer embeddings with $B = 16$ learnable Gaussian radial basis function (RBF) kernels (0–6.0 Å) coupled with bidirectional pocket-conditioned induced-fit gating ($\Delta\mathbf{M}_{\mathrm{IF}}(\mathbf{P})$) and full-rank ($n \times K$) bilinear atom–subsite cross-attention.
 3. **Module 3 — Structure-Seeded Uncertainty-Aware Relational Knowledge Distillation (`SS-UAKD`) & Entropy-Conditioned Domain Adversarial Alignment (`E-CDAN`)**:
    Initializes the bipartite CPI graph autoencoder (GAE) teacher with detached 3D structural priors ($\mathbf{u}', \bar{\mathbf{p}}_{\mathrm{node},p}$) and $k_{\mathrm{sim}} = 5$ structural $k$-NN edges, weights pairwise relational manifold distillation via $T = 10$ Monte Carlo dropout epistemic uncertainty gates ($w_i^{\mathrm{rel}}$), and aligns source and unseen cold-cluster target manifolds via prediction-entropy-conditioned adversarial alignment.
 
@@ -55,7 +64,7 @@ PRISM-CPI/
 │   ├── runs/                      # All 800 individual per-seed experiment run JSON records
 │   └── logs/                      # Training curves (training_runs.json.gz) & execution logs
 ├── docking_3d/                    # 30-complex AutoDock Vina docked poses (.pdb/.sdf/.pdbqt), PyMOL & RDKit outputs
-└── figures/                       # Publication-ready vector PDFs, 300-DPI PNGs (Figs. 1-10) & LaTeX tables
+└── figures/                       # Architecture overview (fig1_model_architecture.png); run scripts/generate_all_figures.py to regenerate all paper figures & tables
 ```
 
 ---
@@ -156,5 +165,5 @@ For questions, bug reports, or collaboration inquiries, please open a GitHub Iss
 
 ## 8. License
 
-This project is released under the [MIT License](LICENSE).
+The source code in this repository is released under the [MIT License](LICENSE).
 

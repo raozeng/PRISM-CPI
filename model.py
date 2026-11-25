@@ -520,7 +520,7 @@ if HAS_TORCH:
 
     class BipartiteGAETeacher(nn.Module):
         """
-        Module 3 Step 1: 3D-Structure-Seeded Bipartite Graph Autoencoder (GAE) Teacher (Section 2.5).
+        Module 3 Step 1: 3D-Structure-Seeded Bipartite Graph Autoencoder (GAE) Teacher (Eqs. 112-113).
         """
 
         def __init__(
@@ -735,7 +735,7 @@ if HAS_TORCH:
 
     class EntropyConditionedCDAN(nn.Module):
         """
-        Module 3 Step 3: Entropy-Conditioned Domain Adversarial Network (Section 2.5).
+        Module 3 Step 3: Entropy-Conditioned Domain Adversarial Network (Eqs. 122-123).
         """
 
         def __init__(self, d_fused: int = 256) -> None:
@@ -772,7 +772,7 @@ if HAS_TORCH:
     class SSUAKDModule(nn.Module):
         """
         Module 3: Structure-Seeded Uncertainty-Aware Relational Knowledge Distillation
-        & Spectral Domain Alignment (SS-UAKD, Section 2.5).
+        & Spectral Domain Alignment (SS-UAKD, Eqs. 112-125).
         """
 
         def __init__(
@@ -1067,7 +1067,7 @@ else:
     # =========================================================================
 
     class CCPAEModule:  # type: ignore[no-redef]
-        """NumPy execution of Module 1 (CC-PAE, Section 2.3)."""
+        """NumPy execution of Module 1 (CC-PAE, Eqs. 66-77)."""
 
         def __init__(
             self,
@@ -1176,7 +1176,7 @@ else:
             }
 
     class PCIFGAModule:  # type: ignore[no-redef]
-        """NumPy execution of Module 2 (PC-IFGA, Section 2.4)."""
+        """NumPy execution of Module 2 (PC-IFGA, Eqs. 84-104)."""
 
         def __init__(
             self,
@@ -1291,7 +1291,7 @@ else:
             }
 
     class BipartiteGAETeacher:  # type: ignore[no-redef]
-        """NumPy execution of Module 3 Bipartite GAE Teacher (Section 2.5)."""
+        """NumPy execution of Module 3 Bipartite GAE Teacher (Eqs. 112-113)."""
 
         def __init__(self, d_model: int = 128, d_fused: int = 256, k_sim: int = 5, use_ss_uakd: bool = True) -> None:
             self.d_model = d_model
@@ -1300,7 +1300,7 @@ else:
             self.use_ss_uakd = use_ss_uakd
 
     class EntropyConditionedCDAN:  # type: ignore[no-redef]
-        """NumPy execution of Entropy-Conditioned CDAN (Section 2.5)."""
+        """NumPy execution of Entropy-Conditioned CDAN (Eqs. 122-123)."""
 
         def __init__(self, d_fused: int = 256) -> None:
             self.d_fused = d_fused
